@@ -1,0 +1,61 @@
+---
+// Sticky Header Component
+---
+
+<header class="sticky top-0 z-50 bg-[#0a3d62]/95 backdrop-blur-md shadow-lg border-b border-white/5">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16 md:h-20">
+      <!-- Logo / Brand -->
+      <a href="#" class="flex items-center gap-2 hover:opacity-90 transition-opacity">
+        <div class="bg-white rounded-lg px-2 py-1.5">
+          <img src="/logo.png" alt="مؤسسة إتقان" class="h-10 w-auto" width="190" height="102" />
+        </div>
+      </a>
+      
+      <!-- Navigation -->
+      <nav class="hidden md:flex items-center gap-8">
+        <a href="#about" class="text-white/70 hover:text-white text-sm font-medium transition-colors relative group">
+          عن المؤسسة
+          <span class="absolute -bottom-1 right-0 w-0 h-0.5 bg-[#8bc34a] group-hover:w-full transition-all duration-300"></span>
+        </a>
+        <a href="#projects" class="text-white/70 hover:text-white text-sm font-medium transition-colors relative group">
+          مشاريعنا
+          <span class="absolute -bottom-1 right-0 w-0 h-0.5 bg-[#8bc34a] group-hover:w-full transition-all duration-300"></span>
+        </a>
+        <a href="#areas" class="text-white/70 hover:text-white text-sm font-medium transition-colors relative group">
+          مناطق التوزع
+          <span class="absolute -bottom-1 right-0 w-0 h-0.5 bg-[#8bc34a] group-hover:w-full transition-all duration-300"></span>
+        </a>
+        <a href="#contact" class="text-white/70 hover:text-white text-sm font-medium transition-colors relative group">
+          تواصل معنا
+          <span class="absolute -bottom-1 right-0 w-0 h-0.5 bg-[#8bc34a] group-hover:w-full transition-all duration-300"></span>
+        </a>
+      </nav>
+      
+      <!-- Mobile Menu Button -->
+      <button id="mobile-menu-btn" class="md:hidden text-white p-2" aria-label="القائمة">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+  
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="hidden md:hidden bg-[#072a40] border-t border-white/10">
+    <div class="px-4 py-3 space-y-1">
+      <a href="#about" class="block text-white/70 hover:text-white hover:bg-white/5 py-3 px-4 rounded-lg text-sm transition-colors">عن المؤسسة</a>
+      <a href="#projects" class="block text-white/70 hover:text-white hover:bg-white/5 py-3 px-4 rounded-lg text-sm transition-colors">مشاريعنا</a>
+      <a href="#areas" class="block text-white/70 hover:text-white hover:bg-white/5 py-3 px-4 rounded-lg text-sm transition-colors">مناطق التوزع</a>
+      <a href="#contact" class="block text-white/70 hover:text-white hover:bg-white/5 py-3 px-4 rounded-lg text-sm transition-colors">تواصل معنا</a>
+    </div>
+  </div>
+</header>
+
+<script>
+  const btn = document.getElementById('mobile-menu-btn');
+  const menu = document.getElementById('mobile-menu');
+  btn?.addEventListener('click', () => {
+    menu?.classList.toggle('hidden');
+  });
+</script>

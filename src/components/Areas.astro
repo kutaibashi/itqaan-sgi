@@ -1,0 +1,116 @@
+---
+// Distribution Areas Section
+const syriaAreas = [
+  "ريف دمشق",
+  "حلب وأريافها",
+  "إدلب وأريافها",
+  "مدينة حماة",
+];
+
+const turkeyAreas = [
+  "مدينة إسطنبول",
+  "مدينة عنتاب",
+  "مدينة مرعش",
+  "مدينة نيزب",
+  "مدينة كلس",
+];
+---
+
+<section id="areas" class="py-20 md:py-28 bg-gradient-to-br from-[#0a3d62] to-[#0d4e7a] relative overflow-hidden">
+  <!-- Islamic pattern overlay -->
+  <div class="absolute inset-0 islamic-pattern opacity-100"></div>
+  
+  <!-- Decorative orbs -->
+  <div class="absolute top-20 right-20 w-64 h-64 bg-[#1a9a98]/10 rounded-full blur-3xl"></div>
+  <div class="absolute bottom-20 left-20 w-80 h-80 bg-[#8bc34a]/10 rounded-full blur-3xl"></div>
+
+  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <div class="text-center max-w-3xl mx-auto mb-16 reveal">
+      <span class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 text-[#8bc34a] text-sm font-bold rounded-full mb-4 border border-white/10">
+        مناطق التوزع
+      </span>
+      <h2 class="text-4xl md:text-5xl font-black text-white mb-5">
+        نصل إلى <span class="text-[#8bc34a]">كل مكان</span>
+      </h2>
+      <p class="text-xl text-white/70">
+        نعمل في سوريا وتركيا، ونخدم الطلاب من كافة أنحاء العالم عبر مركزنا الإلكتروني.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      
+      <!-- Syria -->
+      <div class="reveal reveal-delay-1 bg-white/10 backdrop-blur-sm rounded-3xl p-8 border border-white/10 hover:bg-white/15 transition-all duration-500 group">
+        <div class="flex items-center gap-4 mb-8">
+          <div class="w-14 h-14 bg-red-600/20 rounded-xl flex items-center justify-center border border-red-400/20">
+            <svg class="w-7 h-7 text-red-300" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+            </svg>
+          </div>
+          <div>
+            <h3 class="text-2xl font-bold text-white">سوريا</h3>
+            <p class="text-white/50 text-sm">4 مناطق</p>
+          </div>
+        </div>
+        <ul class="space-y-4">
+          {syriaAreas.map(area => (
+            <li class="flex items-center gap-3 text-white/80 py-2 border-b border-white/5 last:border-0">
+              <div class="w-2 h-2 bg-[#8bc34a] rounded-full"></div>
+              <span class="font-medium">{area}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- Turkey -->
+      <div class="reveal reveal-delay-2 bg-white/10 backdrop-blur-sm rounded-3xl p-8 border border-white/10 hover:bg-white/15 transition-all duration-500 group">
+        <div class="flex items-center gap-4 mb-8">
+          <div class="w-14 h-14 bg-red-500/20 rounded-xl flex items-center justify-center border border-red-300/20">
+            <svg class="w-7 h-7 text-red-200" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+            </svg>
+          </div>
+          <div>
+            <h3 class="text-2xl font-bold text-white">تركيا</h3>
+            <p class="text-white/50 text-sm">5 مدن</p>
+          </div>
+        </div>
+        <ul class="space-y-4">
+          {turkeyAreas.map(area => (
+            <li class="flex items-center gap-3 text-white/80 py-2 border-b border-white/5 last:border-0">
+              <div class="w-2 h-2 bg-[#8bc34a] rounded-full"></div>
+              <span class="font-medium">{area}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- Online -->
+      <div class="reveal reveal-delay-3 bg-gradient-to-br from-[#8bc34a]/20 to-[#1a9a98]/20 rounded-3xl p-8 border border-[#8bc34a]/30 hover:border-[#8bc34a]/50 transition-all duration-500 group">
+        <div class="flex items-center gap-4 mb-8">
+          <div class="w-14 h-14 bg-[#8bc34a] rounded-xl flex items-center justify-center shadow-lg shadow-[#8bc34a]/20">
+            <svg class="w-7 h-7 text-[#0a3d62]" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM4.332 8.027a6.012 6.012 0 011.912-2.706C6.512 5.73 6.974 6 7.5 6A1.5 1.5 0 019 7.5V8a2 2 0 004 0 2 2 0 011.523-1.943A5.977 5.977 0 0116 10c0 .34-.028.675-.083 1H15a2 2 0 00-2 2v2.197A5.973 5.973 0 0110 16v-2a2 2 0 00-2-2 2 2 0 01-2-2 2 2 0 00-1.668-1.973z" clip-rule="evenodd"/>
+            </svg>
+          </div>
+          <div>
+            <h3 class="text-2xl font-bold text-white">المركز الإلكتروني</h3>
+            <p class="text-white/50 text-sm">عالمياً</p>
+          </div>
+        </div>
+        <p class="text-white/80 mb-6 leading-relaxed">
+          نصل إلى الطلاب من كافة أنحاء العالم عبر منصتنا الإلكترونية التعليمية.
+        </p>
+        <div class="bg-white/10 rounded-xl p-5 text-center border border-white/10">
+          <div class="flex items-center justify-center gap-2 mb-2">
+            <span class="text-3xl">🌍</span>
+          </div>
+          <p class="text-[#8bc34a] font-bold text-lg">الطلاب من كافة أنحاء العالم</p>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>

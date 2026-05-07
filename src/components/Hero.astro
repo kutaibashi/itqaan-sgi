@@ -1,0 +1,100 @@
+---
+// Hero Section
+---
+
+<section class="relative bg-[#0a3d62] overflow-hidden min-h-[85vh] flex items-center">
+  <!-- Islamic geometric pattern overlay -->
+  <div class="absolute inset-0 islamic-pattern opacity-100"></div>
+  
+  <!-- Decorative gradient orbs -->
+  <div class="absolute top-16 right-1/4 w-72 h-72 bg-[#1a9a98]/15 rounded-full blur-3xl animate-pulse-soft"></div>
+  <div class="absolute bottom-16 left-1/4 w-96 h-96 bg-[#8bc34a]/10 rounded-full blur-3xl animate-pulse-soft"></div>
+  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#1a9a98]/5 rounded-full blur-3xl"></div>
+
+  <!-- Subtle star/mosque silhouette decoration -->
+  <div class="absolute bottom-0 left-0 right-0 opacity-[0.07]">
+    <svg viewBox="0 0 1440 200" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full">
+      <path d="M720 40L750 100H810L760 140L780 200L720 160L660 200L680 140L630 100H690L720 40Z" fill="white"/>
+      <circle cx="200" cy="120" r="60" fill="white"/>
+      <circle cx="1240" cy="120" r="60" fill="white"/>
+      <path d="M100 200V140C100 110 130 110 130 140V200H100Z" fill="white"/>
+      <path d="M200 200V100C200 60 240 60 240 100V200H200Z" fill="white"/>
+      <path d="M300 200V140C300 110 330 110 330 140V200H300Z" fill="white"/>
+      <path d="M1110 200V140C1110 110 1140 110 1140 140V200H1110Z" fill="white"/>
+      <path d="M1200 200V100C1200 60 1240 60 1240 100V200H1200Z" fill="white"/>
+      <path d="M1290 200V140C1290 110 1320 110 1320 140V200H1290Z" fill="white"/>
+    </svg>
+  </div>
+
+  <!-- Content -->
+  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28">
+    <div class="max-w-4xl mx-auto text-center">
+      
+      <!-- Badge -->
+      <div class="animate-fade-in-up inline-flex items-center gap-2 px-5 py-2.5 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full mb-10">
+        <span class="w-2 h-2 bg-[#8bc34a] rounded-full animate-pulse"></span>
+        <span class="text-[#8bc34a] text-sm font-bold tracking-wide">بسم الله الرحمن الرحيم</span>
+      </div>
+
+      <!-- Headline -->
+      <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white leading-[1.1] mb-8 animate-fade-in-up" style="animation-delay: 0.1s;">
+        مؤسسة <span class="text-[#8bc34a]">إتقان</span>
+        <span class="block mt-2 text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white/90">
+          لتعليم القرآن الكريم
+        </span>
+      </h1>
+
+      <!-- Subheadline -->
+      <p class="text-lg md:text-xl lg:text-2xl text-white/75 max-w-3xl mx-auto mb-12 leading-relaxed animate-fade-in-up" style="animation-delay: 0.2s;">
+        مؤسسة تعليمية تهتم بتعليم العربية السليمة، وضبط القرآن الكريم وحفظه،
+        والتربية على قيمه ومبادئه؛ لإخراج جيل واعٍ يسهم في نهضة المجتمع ورقيه.
+      </p>
+
+      <!-- CTA Buttons -->
+      <div class="animate-fade-in-up flex flex-col sm:flex-row items-center justify-center gap-4 mb-16" style="animation-delay: 0.3s;">
+        <a href="#projects" class="inline-flex items-center justify-center w-full sm:w-auto px-10 py-4 bg-[#8bc34a] text-[#0a3d62] font-black text-lg rounded-xl hover:bg-[#7cb342] transition-all duration-300 shadow-2xl hover:shadow-[#8bc34a]/30 transform hover:-translate-y-1">
+          <svg class="w-5 h-5 ml-2" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0z"/>
+          </svg>
+          اكتشف مشاريعنا
+        </a>
+        <a href="#contact" class="inline-flex items-center justify-center w-full sm:w-auto px-10 py-4 bg-white/10 backdrop-blur-sm text-white border-2 border-white/30 font-bold text-lg rounded-xl hover:bg-white hover:text-[#0a3d62] hover:border-white transition-all duration-300 transform hover:-translate-y-1">
+          <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+          </svg>
+          تواصل معنا
+        </a>
+      </div>
+
+      <!-- Trust indicators row -->
+      <div class="animate-fade-in-up flex flex-wrap items-center justify-center gap-6 md:gap-10 mb-12" style="animation-delay: 0.35s;">
+        <div class="flex items-center gap-2 text-white/60 text-sm">
+          <svg class="w-5 h-5 text-[#8bc34a]" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+          </svg>
+          <span>مؤسسة مرخصة</span>
+        </div>
+        <div class="flex items-center gap-2 text-white/60 text-sm">
+          <svg class="w-5 h-5 text-[#8bc34a]" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+          </svg>
+          <span>تركيا وسوريا</span>
+        </div>
+        <div class="flex items-center gap-2 text-white/60 text-sm">
+          <svg class="w-5 h-5 text-[#8bc34a]" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+          </svg>
+          <span>تعليم متميز</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Bottom Wave -->
+  <div class="absolute bottom-0 left-0 right-0">
+    <svg class="w-full h-16 md:h-24" viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <path d="M0 120L60 110C120 100 240 80 360 70C480 60 600 60 720 65C840 70 960 80 1080 85C1200 90 1320 90 1380 90L1440 90V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z" fill="white"/>
+    </svg>
+  </div>
+</section>

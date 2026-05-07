@@ -1,0 +1,28 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import StatsSection from '../components/StatsSection.astro';
+import About from '../components/About.astro';
+import Objectives from '../components/Objectives.astro';
+import Projects from '../components/Projects.astro';
+import Testimonials from '../components/Testimonials.jsx';
+import Areas from '../components/Areas.astro';
+import Contact from '../components/Contact.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout>
+  <Header />
+  <main>
+    <Hero />
+    <StatsSection />
+    <About />
+    <Objectives />
+    <Projects />
+    <Testimonials client:visible />
+    <Areas />
+    <Contact />
+  </main>
+  <Footer />
+</Layout>
