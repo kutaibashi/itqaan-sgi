@@ -3,8 +3,20 @@
 ---
 
 <section class="relative bg-[#0a3d62] overflow-hidden min-h-[85vh] flex items-center border-b-[8px] border-[#8bc34a]">
+  <!-- Background image with low opacity -->
+  <div class="absolute inset-0">
+    <img
+      src="/slider-1.jpg"
+      alt=""
+      class="w-full h-full object-cover opacity-15"
+      fetchpriority="high"
+      decoding="async"
+    />
+    <div class="absolute inset-0 bg-gradient-to-b from-[#0a3d62]/70 via-[#0a3d62]/85 to-[#0a3d62]/95"></div>
+  </div>
+  
   <!-- Islamic geometric pattern overlay -->
-  <div class="absolute inset-0 islamic-pattern"></div>
+  <div class="absolute inset-0 islamic-pattern opacity-30"></div>
   
   <!-- Content -->
   <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28 w-full">
