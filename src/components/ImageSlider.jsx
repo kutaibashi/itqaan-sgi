@@ -13,6 +13,11 @@ const sliderImages = [
 export default function ImageSlider() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const nextSlide = useCallback(() => {
     setCurrentIndex((prev) => (prev + 1) % sliderImages.length);
@@ -38,21 +43,21 @@ export default function ImageSlider() {
   }, [isPaused, nextSlide]);
 
   return (
-    <section className="py-20 md:py-28 bg-white overflow-hidden">
+    <section className="py-16 md:py-24 bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-14">
-          <span className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#1a9a98]/10 text-[#0a3d62] text-sm font-bold rounded-full mb-5">
-            <svg className="w-4 h-4 text-[#1a9a98]" fill="currentColor" viewBox="0 0 20 20">
+        <div className="text-center max-w-3xl mx-auto mb-12">
+          <span className="inline-flex items-center gap-2 px-4 py-2 bg-[#8bc34a]/15 text-[#0a3d62] text-sm font-bold rounded-full mb-4">
+            <svg className="w-4 h-4 text-[#8bc34a]" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd"/>
             </svg>
             لحظات من إتقان
           </span>
-          <h2 className="text-4xl md:text-5xl font-black text-[#0a3d62] mb-5">
-            صور من <span className="gradient-text">أكاديميتنا</span>
+          <h2 className="text-4xl md:text-5xl font-bold text-[#0a3d62] mb-4 font-heading">
+            صور من <span className="text-[#1a9a98]">أكاديميتنا</span>
           </h2>
-          <p className="text-xl text-gray-500">
+          <p className="text-lg md:text-xl text-gray-600">
             لقطات من فعالياتنا وأنشطتنا التعليمية على أرض الواقع.
           </p>
         </div>
@@ -64,7 +69,7 @@ export default function ImageSlider() {
           onMouseLeave={() => setIsPaused(false)}
         >
           {/* Main Image */}
-          <div className="relative aspect-[16/10] rounded-3xl overflow-hidden shadow-2xl bg-gray-100 border-4 border-white">
+          <div className="relative aspect-[16/10] rounded-lg overflow-hidden shadow-xl bg-gray-100 border border-[#1a9a98]/20">
             {sliderImages.map((image, index) => (
               <div
                 key={index}
@@ -83,13 +88,13 @@ export default function ImageSlider() {
             ))}
 
             {/* Overlay Gradient */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent pointer-events-none" />
           </div>
 
           {/* Navigation Arrows */}
           <button
             onClick={prevSlide}
-            className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/90 hover:bg-white rounded-full shadow-lg flex items-center justify-center transition-all duration-200 hover:scale-110 z-10"
+            className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white hover:bg-gray-50 border border-gray-200 rounded-md shadow-md flex items-center justify-center transition-colors duration-200 z-10"
             aria-label="الصورة السابقة"
           >
             <svg className="w-6 h-6 text-[#0a3d62]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -99,7 +104,7 @@ export default function ImageSlider() {
 
           <button
             onClick={nextSlide}
-            className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/90 hover:bg-white rounded-full shadow-lg flex items-center justify-center transition-all duration-200 hover:scale-110 z-10"
+            className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white hover:bg-gray-50 border border-gray-200 rounded-md shadow-md flex items-center justify-center transition-colors duration-200 z-10"
             aria-label="الصورة التالية"
           >
             <svg className="w-6 h-6 text-[#0a3d62]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -113,10 +118,10 @@ export default function ImageSlider() {
               <button
                 key={index}
                 onClick={() => goToSlide(index)}
-                className={`h-3 rounded-full transition-all duration-300 ${
+                className={`h-2 rounded-full transition-all duration-300 ${
                   index === currentIndex
-                    ? 'bg-[#1a9a98] w-8'
-                    : 'bg-gray-300 hover:bg-gray-400 w-3'
+                    ? 'bg-[#0a3d62] w-8'
+                    : 'bg-gray-300 hover:bg-gray-400 w-2'
                 }`}
                 aria-label={`الانتقال إلى الصورة ${index + 1}`}
               />
@@ -124,8 +129,8 @@ export default function ImageSlider() {
           </div>
 
           {/* Image Counter */}
-          <div className="absolute top-4 left-4 bg-black/50 text-white px-4 py-1.5 rounded-full text-sm font-medium backdrop-blur-sm">
-            {currentIndex + 1} / {sliderImages.length}
+          <div suppressHydrationWarning className="absolute top-4 left-4 bg-[#0a3d62]/90 text-white px-4 py-1.5 rounded-md text-sm font-bold shadow-sm">
+            {mounted ? `${currentIndex + 1} / ${sliderImages.length}` : `1 / ${sliderImages.length}`}
           </div>
         </div>
       </div>

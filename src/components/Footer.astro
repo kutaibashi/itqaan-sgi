@@ -3,10 +3,7 @@
 import SocialLinks from './SocialLinks.astro';
 ---
 
-<footer class="bg-[#072a40] text-white relative overflow-hidden">
-  <!-- Subtle pattern -->
-  <div class="absolute inset-0 islamic-pattern opacity-50"></div>
-  
+<footer class="bg-[#072a40] text-white border-t-[6px] border-[#0a3d62]">
   <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 md:py-20">
     
     <div class="flex flex-col md:flex-row items-center justify-between gap-10">
@@ -14,11 +11,11 @@ import SocialLinks from './SocialLinks.astro';
       <!-- Brand -->
       <div class="text-center md:text-right">
         <div class="flex items-center gap-3 justify-center md:justify-start mb-4">
-          <div class="bg-white rounded-lg px-2 py-1.5">
+          <div class="bg-white rounded-md px-2 py-1.5 shadow-sm">
             <img src="/logo.png" alt="مؤسسة إتقان" class="h-12 w-auto" width="190" height="102" />
           </div>
         </div>
-        <p class="text-white/60 text-sm max-w-sm leading-relaxed">
+        <p class="text-white/80 text-sm max-w-sm leading-relaxed font-heading">
           مؤسسة مرجعية رائدة تسهم في بناء الجيل ونهضة المجتمع.
         </p>
         <SocialLinks variant="footer" />
@@ -26,22 +23,22 @@ import SocialLinks from './SocialLinks.astro';
       
       <!-- Quick Links -->
       <div class="flex flex-wrap items-center justify-center gap-8 text-sm">
-        <a href="#about" class="text-white/60 hover:text-[#8bc34a] transition-colors font-medium">عن المؤسسة</a>
-        <a href="#projects" class="text-white/60 hover:text-[#8bc34a] transition-colors font-medium">مشاريعنا</a>
-        <a href="#areas" class="text-white/60 hover:text-[#8bc34a] transition-colors font-medium">مناطق التوزع</a>
-        <a href="#contact" class="text-white/60 hover:text-[#8bc34a] transition-colors font-medium">تواصل معنا</a>
+        <a href="#about" class="text-white/70 hover:text-[#8bc34a] transition-colors font-medium">عن المؤسسة</a>
+        <a href="#projects" class="text-white/70 hover:text-[#8bc34a] transition-colors font-medium">مشاريعنا</a>
+        <a href="#areas" class="text-white/70 hover:text-[#8bc34a] transition-colors font-medium">مناطق التوزع</a>
+        <a href="#contact" class="text-white/70 hover:text-[#8bc34a] transition-colors font-medium">تواصل معنا</a>
       </div>
       
     </div>
     
     <!-- Divider -->
-    <div class="border-t border-white/10 my-10"></div>
+    <div class="border-t border-[#1a9a98]/20 my-10"></div>
     
     <!-- Bottom -->
-    <div class="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-white/50">
+    <div class="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-white/60">
       <p>© {new Date().getFullYear()} مؤسسة إتقان لتعليم القرآن الكريم. جميع الحقوق محفوظة.</p>
       <div class="flex items-center gap-2">
-        <svg class="w-4 h-4 text-[#8bc34a]" fill="currentColor" viewBox="0 0 20 20">
+        <svg class="w-4 h-4 text-[#1a9a98]" fill="currentColor" viewBox="0 0 20 20">
           <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
         </svg>
         <span>مؤسسة مرخصة - تركيا</span>

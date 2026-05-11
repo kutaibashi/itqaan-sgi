@@ -4,11 +4,11 @@ import SocialLinks from './SocialLinks.astro';
 ---
 
 <section id="contact" class="py-20 md:py-28 bg-[#f8fafb] relative">
-  <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#1a9a98]/20 to-transparent"></div>
+  <div class="absolute top-0 left-0 right-0 h-px border-t border-[#1a9a98]/20"></div>
   
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     
-    <div class="text-center max-w-3xl mx-auto mb-16 reveal">
+    <div class="text-center max-w-3xl mx-auto mb-16">
       <span class="inline-flex items-center gap-2 px-4 py-2 bg-[#1a9a98]/10 text-[#0a3d62] text-sm font-bold rounded-full mb-4">
         تواصل معنا
       </span>
@@ -23,7 +23,7 @@ import SocialLinks from './SocialLinks.astro';
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
       
       <!-- Contact Cards -->
-      <div class="space-y-4 reveal">
+      <div class="space-y-4">
         <!-- Address -->
         <div class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 flex items-start gap-5 group">
           <div class="w-14 h-14 bg-gradient-to-br from-[#0a3d62]/10 to-[#1a9a98]/10 rounded-xl flex items-center justify-center flex-shrink-0 border border-[#1a9a98]/10 group-hover:border-[#1a9a98]/30 transition-colors">
@@ -66,7 +66,7 @@ import SocialLinks from './SocialLinks.astro';
       </div>
 
       <!-- CTA Card -->
-      <div class="reveal reveal-delay-2 bg-gradient-to-br from-[#0a3d62] to-[#0d4e7a] rounded-3xl p-8 md:p-10 text-white flex flex-col justify-center relative overflow-hidden shadow-2xl">
+      <div class=" bg-[#0a3d62] rounded-lg p-8 md:p-10 text-white flex flex-col justify-center relative overflow-hidden shadow-2xl">
         <div class="absolute top-0 left-0 w-48 h-48 bg-[#8bc34a]/15 rounded-full -translate-y-1/2 -translate-x-1/2 blur-2xl"></div>
         <div class="absolute bottom-0 right-0 w-32 h-32 bg-[#1a9a98]/20 rounded-full translate-y-1/2 translate-x-1/2 blur-xl"></div>
         <div class="relative">
@@ -81,7 +81,7 @@ import SocialLinks from './SocialLinks.astro';
               </svg>
               اتصل بنا الآن
             </a>
-            <a href="mailto:info@itkan.info" class="inline-flex items-center justify-center w-full px-6 py-4 bg-white/10 border border-white/30 text-white font-semibold text-lg rounded-xl hover:bg-white/20 transition-all duration-300">
+            <a href="mailto:info@itkan.info" class="inline-flex items-center justify-center w-full px-6 py-4 border border-white/30 text-white font-semibold text-lg rounded-xl hover:bg-white/20 transition-all duration-300">
               <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
               </svg>
@@ -94,7 +94,7 @@ import SocialLinks from './SocialLinks.astro';
     </div>
 
     <!-- Social Media Links -->
-    <div class="mt-16 text-center reveal">
+    <div class="mt-16 text-center">
       <p class="text-gray-400 text-sm mb-5 font-medium">تابعنا على وسائل التواصل الاجتماعي</p>
       <SocialLinks variant="contact" />
     </div>

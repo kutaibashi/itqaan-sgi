@@ -6,12 +6,12 @@ const embedUrl = `https://www.youtube.com/embed/${videoId}?start=1&rel=0&modestb
 
 <section class="py-20 md:py-28 bg-gradient-to-b from-white to-[#f8fafb] relative overflow-hidden">
   <!-- Decorative top divider -->
-  <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#1a9a98]/20 to-transparent"></div>
+  <div class="absolute top-0 left-0 right-0 h-px border-t border-[#1a9a98]/20"></div>
 
   <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
 
     <!-- Section Header -->
-    <div class="text-center max-w-3xl mx-auto mb-14 reveal">
+    <div class="text-center max-w-3xl mx-auto mb-14">
       <span class="inline-flex items-center gap-2 px-5 py-2.5 bg-[#1a9a98]/10 text-[#0a3d62] text-sm font-bold rounded-full mb-5">
         <svg class="w-4 h-4 text-[#1a9a98]" fill="currentColor" viewBox="0 0 20 20">
           <path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z"/>
@@ -27,12 +27,11 @@ const embedUrl = `https://www.youtube.com/embed/${videoId}?start=1&rel=0&modestb
     </div>
 
     <!-- Video Embed -->
-    <div class="reveal reveal-delay-1 relative rounded-3xl overflow-hidden shadow-2xl bg-black border-4 border-white">
+    <div class=" relative rounded-lg overflow-hidden shadow-2xl bg-black border-4 border-white">
       <div class="relative w-full aspect-video">
         <iframe
           src={embedUrl}
           title="أكاديمية إتقان لتعليم القرآن الكريم"
-          frameborder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowfullscreen
           class="absolute inset-0 w-full h-full"
@@ -41,7 +40,7 @@ const embedUrl = `https://www.youtube.com/embed/${videoId}?start=1&rel=0&modestb
     </div>
 
     <!-- YouTube Channel CTA -->
-    <div class="mt-10 text-center reveal">
+    <div class="mt-10 text-center">
       <a
         href="https://www.youtube.com/@ITKANDERNEGI"
         target="_blank"

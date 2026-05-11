@@ -1,12 +1,12 @@
 @import "tailwindcss";
 
 :root {
-  --color-primary: #0a3d62;
+  --color-primary: #0a3d62; /* Navy Blue from Logo */
   --color-primary-dark: #072a40;
-  --color-accent: #1a9a98;
-  --color-accent-light: #8bc34a;
+  --color-accent: #1a9a98; /* Teal from Logo */
+  --color-accent-light: #8bc34a; /* Lime Green from Logo */
   --color-white: #FFFFFF;
-  --color-cream: #f0f7f7;
+  --color-cream: #f9fbfb;
   --color-text-dark: #1a1a1a;
   --color-text-gray: #4a4a4a;
 }
@@ -27,6 +27,10 @@ body {
   direction: rtl;
 }
 
+h1, h2, h3, .font-heading {
+  font-family: 'Amiri', serif;
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
@@ -45,74 +49,9 @@ body {
   background: #072a40;
 }
 
-/* Scroll reveal animations */
-.reveal {
-  opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.7s ease-out, transform 0.7s ease-out;
-}
-
-.reveal.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.reveal-delay-1 { transition-delay: 0.1s; }
-.reveal-delay-2 { transition-delay: 0.2s; }
-.reveal-delay-3 { transition-delay: 0.3s; }
-.reveal-delay-4 { transition-delay: 0.4s; }
-
-/* Islamic geometric pattern overlay */
+/* Subtle geometric pattern overlay */
 .islamic-pattern {
-  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-}
-
-/* Animation utilities */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-fade-in-up {
-  animation: fadeInUp 0.8s ease-out forwards;
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-}
-
-.animate-float {
-  animation: float 4s ease-in-out infinite;
-}
-
-@keyframes pulse-soft {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.7; }
-}
-
-.animate-pulse-soft {
-  animation: pulse-soft 3s ease-in-out infinite;
-}
-
-/* Section divider with geometric motif */
-.section-divider {
-  height: 40px;
-  background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 0L25 10L40 10L30 20L35 35L20 25L5 35L10 20L0 10L15 10Z' fill='%230a3d62' fill-opacity='0.08'/%3E%3C/svg%3E");
-  background-repeat: repeat-x;
-  background-position: center;
-}
-
-/* Gradient text */
-.gradient-text {
-  background: linear-gradient(135deg, #1a9a98 0%, #8bc34a 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  background-image: radial-gradient(var(--color-primary-dark) 1px, transparent 1px);
+  background-size: 20px 20px;
+  opacity: 0.1;
 }

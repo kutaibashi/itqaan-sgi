@@ -2,37 +2,25 @@
 // Sticky Header Component
 ---
 
-<header class="sticky top-0 z-50 bg-[#0a3d62]/95 backdrop-blur-md shadow-lg border-b border-white/5">
+<header class="sticky top-0 z-50 bg-[#0a3d62] shadow-md border-b-2 border-[#1a9a98]/50">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex items-center justify-between h-16 md:h-20">
       <!-- Logo / Brand -->
       <a href="#" class="flex items-center gap-2 hover:opacity-90 transition-opacity">
-        <div class="bg-white rounded-lg px-2 py-1.5">
+        <div class="bg-white rounded-md px-2 py-1.5 shadow-sm">
           <img src="/logo.png" alt="مؤسسة إتقان" class="h-10 w-auto" width="190" height="102" />
         </div>
       </a>
       
       <!-- Navigation -->
       <nav class="hidden md:flex items-center gap-8">
-        <a href="#about" class="text-white/70 hover:text-white text-sm font-medium transition-colors relative group">
-          عن المؤسسة
-          <span class="absolute -bottom-1 right-0 w-0 h-0.5 bg-[#8bc34a] group-hover:w-full transition-all duration-300"></span>
-        </a>
-        <a href="#projects" class="text-white/70 hover:text-white text-sm font-medium transition-colors relative group">
-          مشاريعنا
-          <span class="absolute -bottom-1 right-0 w-0 h-0.5 bg-[#8bc34a] group-hover:w-full transition-all duration-300"></span>
-        </a>
-        <a href="#areas" class="text-white/70 hover:text-white text-sm font-medium transition-colors relative group">
-          مناطق التوزع
-          <span class="absolute -bottom-1 right-0 w-0 h-0.5 bg-[#8bc34a] group-hover:w-full transition-all duration-300"></span>
-        </a>
-        <a href="#contact" class="text-white/70 hover:text-white text-sm font-medium transition-colors relative group">
-          تواصل معنا
-          <span class="absolute -bottom-1 right-0 w-0 h-0.5 bg-[#8bc34a] group-hover:w-full transition-all duration-300"></span>
-        </a>
+        <a href="#about" class="text-white/80 hover:text-[#8bc34a] text-sm font-medium transition-colors">عن المؤسسة</a>
+        <a href="#projects" class="text-white/80 hover:text-[#8bc34a] text-sm font-medium transition-colors">مشاريعنا</a>
+        <a href="#areas" class="text-white/80 hover:text-[#8bc34a] text-sm font-medium transition-colors">مناطق التوزع</a>
+        <a href="#contact" class="text-white/80 hover:text-[#8bc34a] text-sm font-medium transition-colors">تواصل معنا</a>
         <button
           id="donation-widget-1778468326670-yz11h-header"
-          class="donation-widget donation-widget-button inline-flex items-center px-5 py-2.5 bg-[#8bc34a] text-[#0a3d62] font-bold text-sm rounded-lg hover:bg-[#7cb342] transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 cursor-pointer"
+          class="donation-widget donation-widget-button inline-flex items-center px-5 py-2.5 bg-[#8bc34a] text-[#0a3d62] font-bold text-sm rounded-md hover:bg-[#7cb342] transition-colors duration-300 shadow-sm cursor-pointer"
           data-template-id="rcm86pmBCrlDhTbuU3tt"
           data-template-name="Itqaan Academy for Qur'an Memorization"
           data-tenant-id="bonyan-ngo"
@@ -55,15 +43,15 @@
   </div>
   
   <!-- Mobile Menu -->
-  <div id="mobile-menu" class="hidden md:hidden bg-[#072a40] border-t border-white/10">
+  <div id="mobile-menu" class="hidden md:hidden bg-[#072a40] border-t border-[#1a9a98]/30">
     <div class="px-4 py-3 space-y-1">
-      <a href="#about" class="block text-white/70 hover:text-white hover:bg-white/5 py-3 px-4 rounded-lg text-sm transition-colors">عن المؤسسة</a>
-      <a href="#projects" class="block text-white/70 hover:text-white hover:bg-white/5 py-3 px-4 rounded-lg text-sm transition-colors">مشاريعنا</a>
-      <a href="#areas" class="block text-white/70 hover:text-white hover:bg-white/5 py-3 px-4 rounded-lg text-sm transition-colors">مناطق التوزع</a>
-      <a href="#contact" class="block text-white/70 hover:text-white hover:bg-white/5 py-3 px-4 rounded-lg text-sm transition-colors">تواصل معنا</a>
+      <a href="#about" class="block text-white/80 hover:text-white hover:bg-[#1a9a98]/20 py-3 px-4 rounded-md text-sm transition-colors">عن المؤسسة</a>
+      <a href="#projects" class="block text-white/80 hover:text-white hover:bg-[#1a9a98]/20 py-3 px-4 rounded-md text-sm transition-colors">مشاريعنا</a>
+      <a href="#areas" class="block text-white/80 hover:text-white hover:bg-[#1a9a98]/20 py-3 px-4 rounded-md text-sm transition-colors">مناطق التوزع</a>
+      <a href="#contact" class="block text-white/80 hover:text-white hover:bg-[#1a9a98]/20 py-3 px-4 rounded-md text-sm transition-colors">تواصل معنا</a>
       <button
         id="donation-widget-1778468326670-yz11h-mobile"
-        class="donation-widget donation-widget-button w-full inline-flex items-center justify-center px-5 py-3 bg-[#8bc34a] text-[#0a3d62] font-bold text-sm rounded-lg hover:bg-[#7cb342] transition-all duration-300 cursor-pointer mt-2"
+        class="donation-widget donation-widget-button w-full inline-flex items-center justify-center px-5 py-3 bg-[#8bc34a] text-[#0a3d62] font-bold text-sm rounded-md hover:bg-[#7cb342] transition-colors duration-300 cursor-pointer mt-2"
         data-template-id="rcm86pmBCrlDhTbuU3tt"
         data-template-name="Itqaan Academy for Qur'an Memorization"
         data-tenant-id="bonyan-ngo"

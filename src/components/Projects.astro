@@ -68,11 +68,11 @@ const projects = [
 ---
 
 <section id="projects" class="py-20 md:py-28 bg-[#f8fafb] relative">
-  <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#1a9a98]/20 to-transparent"></div>
+  <div class="absolute top-0 left-0 right-0 h-px border-t border-[#1a9a98]/20"></div>
   
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     
-    <div class="text-center max-w-3xl mx-auto mb-16 reveal">
+    <div class="text-center max-w-3xl mx-auto mb-16">
       <span class="inline-flex items-center gap-2 px-4 py-2 bg-[#1a9a98]/10 text-[#0a3d62] text-sm font-bold rounded-full mb-4">
         مشاريعنا
       </span>
@@ -85,8 +85,8 @@ const projects = [
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
-      {projects.map((project, i) => (
-        <div class={`reveal reveal-delay-${(i % 3) + 1} bg-white rounded-2xl p-8 border border-gray-100 ${project.borderColor} border-t-[4px] shadow-sm hover:shadow-xl transition-all duration-500 group hover:-translate-y-2 bg-gradient-to-b ${project.bgGradient}`}>
+      {projects.map((project) => (
+        <div class={`bg-white rounded-lg p-8 border border-gray-100 ${project.borderColor} border-t-[4px] shadow-sm hover:shadow-xl transition-all duration-500 group hover:-translate-y-2 bg-[#0a3d62]`}>
           <div class={`w-14 h-14 ${project.iconBg} rounded-xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300`}>
             <svg class={`w-7 h-7 ${project.iconColor}`} fill="currentColor" viewBox="0 0 20 20">
               <path d={project.icon} />

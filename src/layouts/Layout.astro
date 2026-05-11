@@ -37,13 +37,13 @@ const siteUrl = "https://itqaan.sgi.ngo";
     <link rel="icon" type="image/png" href="/favicon.png" />
     <title>{title}</title>
     
-    <!-- Google Fonts: Tajawal -->
+    <!-- Google Fonts: Tajawal and Amiri -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet" />
     
     <!-- JSON-LD Schema Markup -->
-    <script type="application/ld+json">
+    <script type="application/ld+json" is:inline>
       {
         "@context": "https://schema.org",
         "@type": "Organization",
@@ -67,27 +67,9 @@ const siteUrl = "https://itqaan.sgi.ngo";
     </script>
 
     <!-- Infaque Donation Widget -->
-    <script src="https://infaque-cdn.web.app/main.js" async></script>
+    <script src="https://infaque-cdn.web.app/main.js" async is:inline></script>
   </head>
   <body class="bg-white">
     <slot />
-    
-    <!-- Scroll reveal script -->
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        const observer = new IntersectionObserver((entries) => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add('visible');
-            }
-          });
-        }, {
-          threshold: 0.1,
-          rootMargin: '0px 0px -50px 0px'
-        });
-        
-        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-      });
-    </script>
   </body>
 </html>
