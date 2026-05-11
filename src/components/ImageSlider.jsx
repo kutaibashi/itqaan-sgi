@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 
-const sliderImages = [
+const sliderImagesAr = [
   { src: "/slider-1.jpg", alt: "أنشطة مؤسسة إتقان لتعليم القرآن الكريم" },
   { src: "/slider-2.jpg", alt: "طلاب أكاديمية إتقان في حلقات التحفيظ" },
   { src: "/slider-3.jpg", alt: "برامج مؤسسة إتقان التعليمية" },
@@ -10,7 +10,19 @@ const sliderImages = [
   { src: "/slider-7.jpg", alt: "طلاب إتقان في رحلة تعليمية" },
 ];
 
-export default function ImageSlider() {
+const sliderImagesEn = [
+  { src: "/slider-1.jpg", alt: "Itkan Academy activities" },
+  { src: "/slider-2.jpg", alt: "Students in memorization circles" },
+  { src: "/slider-3.jpg", alt: "Educational programs at Itkan" },
+  { src: "/slider-4.jpg", alt: "Qur'an memorizers at Itkan" },
+  { src: "/slider-5.jpg", alt: "Events and activities at Itkan Academy" },
+  { src: "/slider-6.jpg", alt: "Daily life at Itkan Academy" },
+  { src: "/slider-7.jpg", alt: "Itkan students on an educational trip" },
+];
+
+export default function ImageSlider({ lang = 'ar' }) {
+  const isEn = lang === 'en';
+  const sliderImages = isEn ? sliderImagesEn : sliderImagesAr;
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [mounted, setMounted] = useState(false);

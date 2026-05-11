@@ -24,11 +24,18 @@ body {
   color: var(--color-text-dark);
   line-height: 1.8;
   overflow-x: hidden;
+}
+
+[dir="rtl"] body {
   direction: rtl;
 }
 
 h1, h2, h3, .font-heading {
   font-family: 'Amiri', serif;
+}
+
+[dir="ltr"] h1, [dir="ltr"] h2, [dir="ltr"] h3, [dir="ltr"] .font-heading {
+  font-family: 'Poppins', 'Segoe UI', sans-serif;
 }
 
 /* Custom scrollbar */
