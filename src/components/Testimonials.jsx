@@ -5,7 +5,6 @@ const testimonials = [
     quote: "إتقان الجميلة إسم على مسمىٰ",
     name: "يمنى شحيبر",
     image: "/avatar-ymn.png",
-    rating: 5,
     duration: "28 شهراً",
     role: "طالبة",
   },
@@ -13,7 +12,6 @@ const testimonials = [
     quote: "شكرا لكم على هذه الحلقه وشكرا لمعلمتي الغاليه هدى المصري🌷",
     name: "رفيف عثمان",
     image: "/avatar-rf.png",
-    rating: 5,
     duration: "22 شهراً",
     role: "طالبة",
   },
@@ -21,7 +19,6 @@ const testimonials = [
     quote: "الحلقة جميلة، والأستاذ رائع",
     name: "علي البلخي",
     image: "/avatar-ali.png",
-    rating: 4,
     duration: "51 شهراً",
     role: "طالب",
   },
@@ -29,7 +26,6 @@ const testimonials = [
     quote: "معهد ممتاز جداً لي تعليم القران الكريم",
     name: "حسين محمد",
     image: "/avatar-hsn.png",
-    rating: 5,
     duration: "8 شهراً",
     role: "طالب",
   },
@@ -37,28 +33,10 @@ const testimonials = [
     quote: "ماشاءالله عليكم وبارك الله بكم ونفعنا ونفع أولادنا من علمكم",
     name: "أحمد رواس",
     image: "/avatar-ahm.png",
-    rating: 5,
     duration: "48 شهراً",
     role: "طالب",
   },
 ];
-
-function StarRating({ rating }) {
-  return (
-    <div className="flex items-center gap-0.5 justify-center">
-      {[1, 2, 3, 4, 5].map((star) => (
-        <svg
-          key={star}
-          className={`w-4 h-4 ${star <= rating ? 'text-[#FABC1C]' : 'text-gray-300'}`}
-          fill="currentColor"
-          viewBox="0 0 20 20"
-        >
-          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-        </svg>
-      ))}
-    </div>
-  );
-}
 
 export default function Testimonials() {
   const [active, setActive] = useState(0);
@@ -102,11 +80,7 @@ export default function Testimonials() {
           </div>
 
           {/* Author info */}
-          <div className="flex items-center justify-center gap-4 mb-6">
-            <div className="text-end">
-              <h4 className="font-bold text-[#0a3d62] text-lg">{current.name}</h4>
-              <StarRating rating={current.rating} />
-            </div>
+          <div className="flex items-center justify-center gap-4 mb-8">
             <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-[#1a9a98]/20 flex-shrink-0">
               <img
                 src={current.image}
@@ -115,6 +89,10 @@ export default function Testimonials() {
                 loading="lazy"
                 decoding="async"
               />
+            </div>
+            <div>
+              <h4 className="font-bold text-[#0a3d62] text-lg">{current.name}</h4>
+              <p className="text-gray-500 text-sm">{current.role}</p>
             </div>
           </div>
 
@@ -125,13 +103,14 @@ export default function Testimonials() {
             </blockquote>
           </div>
 
-          {/* Footer: duration + role */}
+          {/* Footer: duration */}
           <div className="text-center border-t border-gray-100 pt-6">
-            <div className="flex items-center justify-center gap-3 text-sm">
-              <span className="text-[#1a9a98] font-bold">{current.duration}</span>
-              <span className="w-px h-4 bg-gray-300"></span>
-              <span className="text-gray-500">{current.role}</span>
-            </div>
+            <span className="inline-flex items-center gap-2 px-4 py-1.5 bg-[#1a9a98]/10 text-[#0a3d62] text-sm font-bold rounded-full">
+              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd"/>
+              </svg>
+              {current.duration}
+            </span>
           </div>
 
           {/* Dots */}
