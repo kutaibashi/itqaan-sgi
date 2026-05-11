@@ -4,23 +4,26 @@ import '../styles/global.css';
 interface Props {
   title?: string;
   description?: string;
+  lang?: 'ar' | 'en';
 }
 
 const {
   title = "مؤسسة إتقان لتعليم القرآن الكريم",
-  description = "مؤسسة إتقان لتعليم القرآن الكريم - مؤسسة تعليمية تهتم بتعليم العربية السليمة، وضبط القرآن الكريم وحفظه، والتربية على قيمه ومبادئه."
+  description = "مؤسسة إتقان لتعليم القرآن الكريم - مؤسسة تعليمية تهتم بتعليم العربية السليمة، وضبط القرآن الكريم وحفظه، والتربية على قيمه ومبادئه.",
+  lang = 'ar'
 } = Astro.props;
 
 const siteUrl = "https://itqaan.sgi.ngo";
+const isEn = lang === 'en';
 ---
 
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang={lang} dir={isEn ? 'ltr' : 'rtl'}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
-    <meta name="keywords" content="إتقان, تعليم القرآن, حفظ القرآن, تعليم العربية, سوريا, تركيا, مؤسسة خيرية" />
+    <meta name="keywords" content={isEn ? "Itkan, Quran teaching, Quran memorization, Arabic teaching, Syria, Turkey, charity" : "إتقان, تعليم القرآن, حفظ القرآن, تعليم العربية, سوريا, تركيا, مؤسسة خيرية"} />
     
     <!-- Open Graph -->
     <meta property="og:title" content={title} />

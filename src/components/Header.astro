@@ -1,23 +1,57 @@
 ---
 // Sticky Header Component
+interface Props {
+  lang?: 'ar' | 'en';
+}
+
+const { lang = 'ar' } = Astro.props;
+const isEn = lang === 'en';
+
+const nav = isEn ? {
+  about: 'About',
+  projects: 'Programs',
+  areas: 'Locations',
+  contact: 'Contact',
+  donate: 'Donate',
+  donateMobile: 'Donate Now',
+  menuAria: 'Menu',
+  switchLang: 'العربية',
+  switchHref: '/',
+} : {
+  about: 'عن المؤسسة',
+  projects: 'مشاريعنا',
+  areas: 'مناطق التوزع',
+  contact: 'تواصل معنا',
+  donate: 'تبرع',
+  donateMobile: 'تبرع الآن',
+  menuAria: 'القائمة',
+  switchLang: 'English',
+  switchHref: '/en/',
+};
 ---
 
 <header class="sticky top-0 z-50 bg-[#0a3d62] shadow-md border-b-2 border-[#1a9a98]/50">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex items-center justify-between h-16 md:h-20">
       <!-- Logo / Brand -->
-      <a href="#" class="flex items-center gap-2 hover:opacity-90 transition-opacity">
+      <a href={isEn ? '/en/' : '/'} class="flex items-center gap-2 hover:opacity-90 transition-opacity">
         <div class="bg-white rounded-md px-2 py-1.5 shadow-sm">
-          <img src="/logo.png" alt="مؤسسة إتقان" class="h-10 w-auto" width="190" height="102" />
+          <img src="/logo.png" alt="Itkan" class="h-10 w-auto" width="190" height="102" />
         </div>
       </a>
       
       <!-- Navigation -->
-      <nav class="hidden md:flex items-center gap-8">
-        <a href="#about" class="text-white/80 hover:text-[#8bc34a] text-sm font-medium transition-colors">عن المؤسسة</a>
-        <a href="#projects" class="text-white/80 hover:text-[#8bc34a] text-sm font-medium transition-colors">مشاريعنا</a>
-        <a href="#areas" class="text-white/80 hover:text-[#8bc34a] text-sm font-medium transition-colors">مناطق التوزع</a>
-        <a href="#contact" class="text-white/80 hover:text-[#8bc34a] text-sm font-medium transition-colors">تواصل معنا</a>
+      <nav class="hidden md:flex items-center gap-6">
+        <a href="#about" class="text-white/80 hover:text-[#8bc34a] text-sm font-medium transition-colors">{nav.about}</a>
+        <a href="#projects" class="text-white/80 hover:text-[#8bc34a] text-sm font-medium transition-colors">{nav.projects}</a>
+        <a href="#areas" class="text-white/80 hover:text-[#8bc34a] text-sm font-medium transition-colors">{nav.areas}</a>
+        <a href="#contact" class="text-white/80 hover:text-[#8bc34a] text-sm font-medium transition-colors">{nav.contact}</a>
+        <a
+          href={nav.switchHref}
+          class="text-white/80 hover:text-[#8bc34a] text-sm font-medium transition-colors border border-white/20 rounded-md px-3 py-1.5 hover:border-[#8bc34a]"
+        >
+          {nav.switchLang}
+        </a>
         <button
           id="donation-widget-1778468326670-yz11h-header"
           class="donation-widget donation-widget-button inline-flex items-center px-5 py-2.5 bg-[#8bc34a] text-[#0a3d62] font-bold text-sm rounded-md hover:bg-[#7cb342] transition-colors duration-300 shadow-sm cursor-pointer"
@@ -29,26 +63,34 @@
           <svg class="w-4 h-4 ml-1.5" fill="currentColor" viewBox="0 0 20 20">
             <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"/>
           </svg>
-          تبرع
+          {nav.donate}
         </button>
       </nav>
       
       <!-- Mobile Menu Button -->
-      <button id="mobile-menu-btn" class="md:hidden text-white p-2" aria-label="القائمة">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-        </svg>
-      </button>
+      <div class="flex items-center gap-3 md:hidden">
+        <a
+          href={nav.switchHref}
+          class="text-white/80 hover:text-[#8bc34a] text-sm font-medium transition-colors border border-white/20 rounded-md px-3 py-1.5"
+        >
+          {nav.switchLang}
+        </a>
+        <button id="mobile-menu-btn" class="text-white p-2" aria-label={nav.menuAria}>
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+        </button>
+      </div>
     </div>
   </div>
   
   <!-- Mobile Menu -->
   <div id="mobile-menu" class="hidden md:hidden bg-[#072a40] border-t border-[#1a9a98]/30">
     <div class="px-4 py-3 space-y-1">
-      <a href="#about" class="block text-white/80 hover:text-white hover:bg-[#1a9a98]/20 py-3 px-4 rounded-md text-sm transition-colors">عن المؤسسة</a>
-      <a href="#projects" class="block text-white/80 hover:text-white hover:bg-[#1a9a98]/20 py-3 px-4 rounded-md text-sm transition-colors">مشاريعنا</a>
-      <a href="#areas" class="block text-white/80 hover:text-white hover:bg-[#1a9a98]/20 py-3 px-4 rounded-md text-sm transition-colors">مناطق التوزع</a>
-      <a href="#contact" class="block text-white/80 hover:text-white hover:bg-[#1a9a98]/20 py-3 px-4 rounded-md text-sm transition-colors">تواصل معنا</a>
+      <a href="#about" class="block text-white/80 hover:text-white hover:bg-[#1a9a98]/20 py-3 px-4 rounded-md text-sm transition-colors">{nav.about}</a>
+      <a href="#projects" class="block text-white/80 hover:text-white hover:bg-[#1a9a98]/20 py-3 px-4 rounded-md text-sm transition-colors">{nav.projects}</a>
+      <a href="#areas" class="block text-white/80 hover:text-white hover:bg-[#1a9a98]/20 py-3 px-4 rounded-md text-sm transition-colors">{nav.areas}</a>
+      <a href="#contact" class="block text-white/80 hover:text-white hover:bg-[#1a9a98]/20 py-3 px-4 rounded-md text-sm transition-colors">{nav.contact}</a>
       <button
         id="donation-widget-1778468326670-yz11h-mobile"
         class="donation-widget donation-widget-button w-full inline-flex items-center justify-center px-5 py-3 bg-[#8bc34a] text-[#0a3d62] font-bold text-sm rounded-md hover:bg-[#7cb342] transition-colors duration-300 cursor-pointer mt-2"
@@ -60,7 +102,7 @@
         <svg class="w-4 h-4 ml-1.5" fill="currentColor" viewBox="0 0 20 20">
           <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"/>
         </svg>
-        تبرع الآن
+        {nav.donateMobile}
       </button>
     </div>
   </div>
