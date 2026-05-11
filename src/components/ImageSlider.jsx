@@ -54,6 +54,24 @@ export default function ImageSlider({ lang = 'ar' }) {
     return () => clearInterval(interval);
   }, [isPaused, nextSlide]);
 
+  const t = isEn ? {
+    badge: 'Moments from Itkan',
+    title1: 'Glimpses of ',
+    title2: 'Our Academy',
+    subtitle: 'Moments from our events and educational activities on the ground.',
+    prev: 'Previous image',
+    next: 'Next image',
+    goto: (i) => `Go to image ${i + 1}`,
+  } : {
+    badge: 'لحظات من إتقان',
+    title1: 'صور من ',
+    title2: 'أكاديميتنا',
+    subtitle: 'لقطات من فعالياتنا وأنشطتنا التعليمية على أرض الواقع.',
+    prev: 'الصورة السابقة',
+    next: 'الصورة التالية',
+    goto: (i) => `الانتقال إلى الصورة ${i + 1}`,
+  };
+
   return (
     <section className="py-16 md:py-24 bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -64,13 +82,13 @@ export default function ImageSlider({ lang = 'ar' }) {
             <svg className="w-4 h-4 text-[#8bc34a]" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd"/>
             </svg>
-            لحظات من إتقان
+            {t.badge}
           </span>
           <h2 className="text-4xl md:text-5xl font-bold text-[#0a3d62] mb-4 font-heading">
-            صور من <span className="text-[#1a9a98]">أكاديميتنا</span>
+            {t.title1}<span className="text-[#1a9a98]">{t.title2}</span>
           </h2>
           <p className="text-lg md:text-xl text-gray-600">
-            لقطات من فعالياتنا وأنشطتنا التعليمية على أرض الواقع.
+            {t.subtitle}
           </p>
         </div>
 
@@ -103,24 +121,24 @@ export default function ImageSlider({ lang = 'ar' }) {
             <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent pointer-events-none" />
           </div>
 
-          {/* Navigation Arrows */}
+          {/* Navigation Arrows - swap positions for LTR */}
           <button
             onClick={prevSlide}
-            className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white hover:bg-gray-50 border border-gray-200 rounded-md shadow-md flex items-center justify-center transition-colors duration-200 z-10"
-            aria-label="الصورة السابقة"
+            className={`absolute top-1/2 -translate-y-1/2 w-12 h-12 bg-white hover:bg-gray-50 border border-gray-200 rounded-md shadow-md flex items-center justify-center transition-colors duration-200 z-10 ${isEn ? 'left-4' : 'right-4'}`}
+            aria-label={t.prev}
           >
             <svg className="w-6 h-6 text-[#0a3d62]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isEn ? "M15 19l-7-7 7-7" : "M9 5l7 7-7 7"} />
             </svg>
           </button>
 
           <button
             onClick={nextSlide}
-            className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white hover:bg-gray-50 border border-gray-200 rounded-md shadow-md flex items-center justify-center transition-colors duration-200 z-10"
-            aria-label="الصورة التالية"
+            className={`absolute top-1/2 -translate-y-1/2 w-12 h-12 bg-white hover:bg-gray-50 border border-gray-200 rounded-md shadow-md flex items-center justify-center transition-colors duration-200 z-10 ${isEn ? 'right-4' : 'left-4'}`}
+            aria-label={t.next}
           >
             <svg className="w-6 h-6 text-[#0a3d62]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isEn ? "M9 5l7 7-7 7" : "M15 19l-7-7 7-7"} />
             </svg>
           </button>
 
@@ -135,13 +153,13 @@ export default function ImageSlider({ lang = 'ar' }) {
                     ? 'bg-[#0a3d62] w-8'
                     : 'bg-gray-300 hover:bg-gray-400 w-2'
                 }`}
-                aria-label={`الانتقال إلى الصورة ${index + 1}`}
+                aria-label={t.goto(index)}
               />
             ))}
           </div>
 
           {/* Image Counter */}
-          <div suppressHydrationWarning className="absolute top-4 left-4 bg-[#0a3d62]/90 text-white px-4 py-1.5 rounded-md text-sm font-bold shadow-sm">
+          <div suppressHydrationWarning className={`absolute top-4 bg-[#0a3d62]/90 text-white px-4 py-1.5 rounded-md text-sm font-bold shadow-sm ${isEn ? 'right-4' : 'left-4'}`}>
             {mounted ? `${currentIndex + 1} / ${sliderImages.length}` : `1 / ${sliderImages.length}`}
           </div>
         </div>
