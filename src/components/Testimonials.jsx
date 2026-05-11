@@ -4,7 +4,7 @@ const testimonials = [
   {
     quote: "إتقان الجميلة إسم على مسمىٰ",
     name: "يمنى شحيبر",
-    image: "https://itkan.info/profile/text/img_avatar_fmale25.png",
+    image: "/avatar-ymn.png",
     rating: 5,
     duration: "28 شهراً",
     role: "طالبة",
@@ -12,7 +12,7 @@ const testimonials = [
   {
     quote: "شكرا لكم على هذه الحلقه وشكرا لمعلمتي الغاليه هدى المصري🌷",
     name: "رفيف عثمان",
-    image: "https://itkan.info/profile/text/img_avatar_fmale25.png",
+    image: "/avatar-rf.png",
     rating: 5,
     duration: "22 شهراً",
     role: "طالبة",
@@ -20,7 +20,7 @@ const testimonials = [
   {
     quote: "الحلقة جميلة، والأستاذ رائع",
     name: "علي البلخي",
-    image: "https://itkan.info/profile/text/1753682107.png",
+    image: "/avatar-ali.png",
     rating: 4,
     duration: "51 شهراً",
     role: "طالب",
@@ -28,7 +28,7 @@ const testimonials = [
   {
     quote: "معهد ممتاز جداً لي تعليم القران الكريم",
     name: "حسين محمد",
-    image: "https://itkan.info/profile/text/1761394444.png",
+    image: "/avatar-hsn.png",
     rating: 5,
     duration: "8 شهراً",
     role: "طالب",
@@ -36,7 +36,7 @@ const testimonials = [
   {
     quote: "ماشاءالله عليكم وبارك الله بكم ونفعنا ونفع أولادنا من علمكم",
     name: "أحمد رواس",
-    image: "https://itkan.info/profile/text/1658152227.png",
+    image: "/avatar-ahm.png",
     rating: 5,
     duration: "48 شهراً",
     role: "طالب",
