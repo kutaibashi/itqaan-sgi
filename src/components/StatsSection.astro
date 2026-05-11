@@ -1,10 +1,9 @@
 ---
 // Stats Section (Static)
 const stats = [
-  { value: "٥٠٠", suffix: "+", label: "طالب وطالبة", color: "text-[#8bc34a]" },
-  { value: "١٥", suffix: "+", label: "مركز تعليمي", color: "text-[#8bc34a]" },
-  { value: "٧", suffix: "", label: "مشاريع نوعية", color: "text-[#8bc34a]" },
-  { value: "٩", suffix: "+", label: "مدينة ومنطقة", color: "text-[#8bc34a]" },
+  { value: "١٥٠٠٠", suffix: "+", label: "طالب وطالبة", color: "text-[#8bc34a]" },
+  { value: "٤٠", suffix: "+", label: "مركز تعليمي", color: "text-[#8bc34a]" },
+  { value: "٣٠", suffix: "+", label: "مدينة ومنطقة", color: "text-[#8bc34a]" },
 ];
 ---
 
@@ -13,7 +12,7 @@ const stats = [
     <div class="bg-[#0a3d62] rounded-lg p-8 md:p-10 shadow-xl border-t-[6px] border-[#8bc34a] relative overflow-hidden">
       <div class="absolute inset-0 islamic-pattern"></div>
       <div class="relative z-10">
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
           {stats.map((stat) => (
             <div class="bg-[#072a40] rounded-lg px-4 py-6 border border-[#1a9a98]/30 text-center transition-colors duration-300 shadow-sm hover:border-[#1a9a98]/60">
               <p class={`text-3xl md:text-4xl font-bold font-heading ${stat.color} mb-2 drop-shadow-md`}>

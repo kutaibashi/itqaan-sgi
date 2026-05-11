@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 
 const sliderImagesAr = [
-  { src: "/slider-1.jpg", alt: "أنشطة مؤسسة إتقان لتعليم القرآن الكريم" },
+  { src: "/slider-1.jpg", alt: "أنشطة مؤسسة إتقان للتعليم والتنمية" },
   { src: "/slider-2.jpg", alt: "طلاب أكاديمية إتقان في حلقات التحفيظ" },
   { src: "/slider-3.jpg", alt: "برامج مؤسسة إتقان التعليمية" },
   { src: "/slider-4.jpg", alt: "حفظة القرآن الكريم في مؤسسة إتقان" },
