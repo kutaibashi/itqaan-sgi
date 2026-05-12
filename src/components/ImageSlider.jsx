@@ -11,12 +11,12 @@ const sliderImagesAr = [
 ];
 
 const sliderImagesEn = [
-  { src: "/slider-1.jpg", alt: "Itkan Academy activities" },
+  { src: "/slider-1.jpg", alt: "Itkan Foundation activities" },
   { src: "/slider-2.jpg", alt: "Students in memorization circles" },
   { src: "/slider-3.jpg", alt: "Educational programs at Itkan" },
   { src: "/slider-4.jpg", alt: "Qur'an memorizers at Itkan" },
-  { src: "/slider-5.jpg", alt: "Events and activities at Itkan Academy" },
-  { src: "/slider-6.jpg", alt: "Daily life at Itkan Academy" },
+  { src: "/slider-5.jpg", alt: "Events and activities at Itkan Foundation" },
+  { src: "/slider-6.jpg", alt: "Daily life at Itkan Foundation" },
   { src: "/slider-7.jpg", alt: "Itkan students on an educational trip" },
 ];
 
@@ -57,7 +57,7 @@ export default function ImageSlider({ lang = 'ar' }) {
   const t = isEn ? {
     badge: 'Moments from Itkan',
     title1: 'Glimpses of ',
-    title2: 'Our Academy',
+    title2: 'Our Foundation',
     subtitle: 'Moments from our events and educational activities on the ground.',
     prev: 'Previous image',
     next: 'Next image',
@@ -65,7 +65,7 @@ export default function ImageSlider({ lang = 'ar' }) {
   } : {
     badge: 'لحظات من إتقان',
     title1: 'صور من ',
-    title2: 'أكاديميتنا',
+    title2: 'مؤسستنا',
     subtitle: 'لقطات من فعالياتنا وأنشطتنا التعليمية على أرض الواقع.',
     prev: 'الصورة السابقة',
     next: 'الصورة التالية',
