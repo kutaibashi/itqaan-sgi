@@ -2,11 +2,11 @@ import { useState, useEffect, useCallback } from 'react';
 
 const sliderImagesAr = [
   { src: "/slider-1.jpg", alt: "أنشطة مؤسسة إتقان للتعليم والتنمية" },
-  { src: "/slider-2.jpg", alt: "طلاب أكاديمية إتقان في حلقات التحفيظ" },
+  { src: "/slider-2.jpg", alt: "طلاب مؤسسة إتقان في حلقات التحفيظ" },
   { src: "/slider-3.jpg", alt: "برامج مؤسسة إتقان التعليمية" },
   { src: "/slider-4.jpg", alt: "حفظة القرآن الكريم في مؤسسة إتقان" },
-  { src: "/slider-5.jpg", alt: "فعاليات وأنشطة أكاديمية إتقان" },
-  { src: "/slider-6.jpg", alt: "الحياة اليومية في أكاديمية إتقان" },
+  { src: "/slider-5.jpg", alt: "فعاليات وأنشطة مؤسسة إتقان" },
+  { src: "/slider-6.jpg", alt: "الحياة اليومية في مؤسسة إتقان" },
   { src: "/slider-7.jpg", alt: "طلاب إتقان في رحلة تعليمية" },
 ];
 
