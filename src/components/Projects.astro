@@ -1,12 +1,18 @@
 ---
 // Projects Section
-const projects = [
+interface Props {
+  lang?: 'ar' | 'en';
+}
+
+const { lang = 'ar' } = Astro.props;
+const isEn = lang === 'en';
+
+const projectsAr = [
   {
     title: "بالقراءة نحيا",
     desc: "برنامج متكامل لتعليم القراءة الصحيحة والتجويد للمبتدئين من جميع الأعمار.",
     icon: "M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z",
     borderColor: "border-t-[#1a9a98]",
-    bgGradient: "from-[#1a9a98]/5 to-transparent",
     iconBg: "bg-[#1a9a98]/10",
     iconColor: "text-[#1a9a98]",
   },
@@ -15,7 +21,6 @@ const projects = [
     desc: "مشروع ختمة جماعية وسفرة قرآنية لتعزيز الارتباط بالكتاب الكريم.",
     icon: "M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z",
     borderColor: "border-t-[#8bc34a]",
-    bgGradient: "from-[#8bc34a]/5 to-transparent",
     iconBg: "bg-[#8bc34a]/10",
     iconColor: "text-[#689f38]",
   },
@@ -24,7 +29,6 @@ const projects = [
     desc: "برنامج تأهيلي لإتقان التلاوة والحفظ بأسلوب علمي متقن.",
     icon: "M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z",
     borderColor: "border-t-[#0a3d62]",
-    bgGradient: "from-[#0a3d62]/5 to-transparent",
     iconBg: "bg-[#0a3d62]/10",
     iconColor: "text-[#0a3d62]",
   },
@@ -33,7 +37,6 @@ const projects = [
     desc: "برنامج تربوي يهتم ببناء الشخصية الإيمانية والأخلاقية للطلاب.",
     icon: "M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z",
     borderColor: "border-t-[#e67e22]",
-    bgGradient: "from-[#e67e22]/5 to-transparent",
     iconBg: "bg-[#e67e22]/10",
     iconColor: "text-[#d35400]",
   },
@@ -42,7 +45,6 @@ const projects = [
     desc: "إنشاء وتجهيز مقارئ قرآنية مجهزة بأفضل الوسائل التعليمية.",
     icon: "M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4",
     borderColor: "border-t-[#9b59b6]",
-    bgGradient: "from-[#9b59b6]/5 to-transparent",
     iconBg: "bg-[#9b59b6]/10",
     iconColor: "text-[#8e44ad]",
   },
@@ -51,7 +53,6 @@ const projects = [
     desc: "دورات متخصصة لتأهيل المعلمين والمعلمات بأحدث المناهج التربوية.",
     icon: "M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z",
     borderColor: "border-t-[#1abc9c]",
-    bgGradient: "from-[#1abc9c]/5 to-transparent",
     iconBg: "bg-[#1abc9c]/10",
     iconColor: "text-[#16a085]",
   },
@@ -60,11 +61,84 @@ const projects = [
     desc: "مسابقات قرآنية تشجيعية لتحفيز الطلاب على الحفظ والمراجعة.",
     icon: "M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 7a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V9a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM19 5a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2zM19 9a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2h-2zM19 13a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2h-2z",
     borderColor: "border-t-[#e74c3c]",
-    bgGradient: "from-[#e74c3c]/5 to-transparent",
     iconBg: "bg-[#e74c3c]/10",
     iconColor: "text-[#c0392b]",
   },
 ];
+
+const projectsEn = [
+  {
+    title: "Bi-Qira'ah Nahya",
+    desc: "A comprehensive program teaching correct reading and Tajweed for beginners of all ages.",
+    icon: "M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z",
+    borderColor: "border-t-[#1a9a98]",
+    iconBg: "bg-[#1a9a98]/10",
+    iconColor: "text-[#1a9a98]",
+  },
+  {
+    title: "Al-Safra",
+    desc: "A group Qur'an completion project strengthening connection with the Holy Book.",
+    icon: "M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z",
+    borderColor: "border-t-[#8bc34a]",
+    iconBg: "bg-[#8bc34a]/10",
+    iconColor: "text-[#689f38]",
+  },
+  {
+    title: "Al-Mahir bil-Qur'an",
+    desc: "An advanced program for mastering the ten Qira'at and becoming a Qur'an expert.",
+    icon: "M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z",
+    borderColor: "border-t-[#0a3d62]",
+    iconBg: "bg-[#0a3d62]/10",
+    iconColor: "text-[#0a3d62]",
+  },
+  {
+    title: "Zad Al-Mu'min",
+    desc: "Islamic sciences and faith enrichment program for comprehensive religious education.",
+    icon: "M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z",
+    borderColor: "border-t-[#e67e22]",
+    iconBg: "bg-[#e67e22]/10",
+    iconColor: "text-[#d35400]",
+  },
+  {
+    title: "Al-Maqari' Al-Qur'aniyya",
+    desc: "Specialized Qur'anic recitation circles focusing on beautiful voice and correct recitation.",
+    icon: "M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4",
+    borderColor: "border-t-[#9b59b6]",
+    iconBg: "bg-[#9b59b6]/10",
+    iconColor: "text-[#8e44ad]",
+  },
+  {
+    title: "Teacher Qualification",
+    desc: "Training teachers with modern educational methods to raise a Qur'anic generation.",
+    icon: "M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z",
+    borderColor: "border-t-[#1abc9c]",
+    iconBg: "bg-[#1abc9c]/10",
+    iconColor: "text-[#16a085]",
+  },
+  {
+    title: "Qur'anic Competition",
+    desc: "Encouraging Qur'anic competitions to motivate students in memorization and revision.",
+    icon: "M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 7a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V9a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM19 5a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2zM19 9a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2h-2zM19 13a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2h-2z",
+    borderColor: "border-t-[#e74c3c]",
+    iconBg: "bg-[#e74c3c]/10",
+    iconColor: "text-[#c0392b]",
+  },
+];
+
+const projects = isEn ? projectsEn : projectsAr;
+
+const t = isEn ? {
+  badge: "Our Programs",
+  title1: "Programs & ",
+  title2: "Projects",
+  desc: "Comprehensive educational programs serving students of all ages",
+} : {
+  badge: "مشاريعنا",
+  title1: "مشاريع ",
+  title2: "نوعية",
+  title3: " لهدفٍ واحد",
+  desc: "ننفذ مجموعة من المشاريع المؤسسية التي تخدم هدفنا الأسمى: إخراج جيل واعٍ يسهم في نهضة المجتمع.",
+};
 ---
 
 <section id="projects" class="py-20 md:py-28 bg-[#f8fafb] relative">
@@ -74,28 +148,32 @@ const projects = [
     
     <div class="text-center max-w-3xl mx-auto mb-16">
       <span class="inline-flex items-center gap-2 px-4 py-2 bg-[#1a9a98]/10 text-[#0a3d62] text-sm font-bold rounded-full mb-4">
-        مشاريعنا
+        {t.badge}
       </span>
       <h2 class="text-4xl md:text-5xl font-black text-[#0a3d62] mb-5">
-        مشاريع <span class="gradient-text">نوعية</span> لهدفٍ واحد
+        {t.title1}<span class="gradient-text">{t.title2}</span>{t.title3 || ''}
       </h2>
       <p class="text-xl text-gray-500">
-        ننفذ مجموعة من المشاريع المؤسسية التي تخدم هدفنا الأسمى: إخراج جيل واعٍ يسهم في نهضة المجتمع.
+        {t.desc}
       </p>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
-      {projects.map((project) => (
-        <div class={`bg-white rounded-lg p-8 border border-gray-100 ${project.borderColor} border-t-[4px] shadow-sm hover:shadow-xl transition-all duration-500 group hover:-translate-y-2 bg-[#0a3d62]`}>
-          <div class={`w-14 h-14 ${project.iconBg} rounded-xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300`}>
-            <svg class={`w-7 h-7 ${project.iconColor}`} fill="currentColor" viewBox="0 0 20 20">
-              <path d={project.icon} />
-            </svg>
+      {projects.map((project, index) => {
+        // Asymmetrical layout: Items 0 and 3 span 2 columns on lg screens
+        const isWide = index === 0 || index === 3;
+        return (
+          <div class={`bg-white rounded-lg p-8 border border-gray-100 ${project.borderColor} border-t-[4px] shadow-sm hover:shadow-xl transition-all duration-500 group hover:-translate-y-2 flex flex-col ${isWide ? 'lg:col-span-2' : ''}`}>
+            <div class={`w-14 h-14 ${project.iconBg} rounded-xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300`}>
+              <svg class={`w-7 h-7 ${project.iconColor}`} fill="currentColor" viewBox="0 0 20 20">
+                <path d={project.icon} />
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-[#0a3d62] mb-3">{project.title}</h3>
+            <p class={`text-gray-500 text-sm leading-relaxed ${isWide ? 'max-w-xl' : ''}`}>{project.desc}</p>
           </div>
-          <h3 class="text-xl font-bold text-[#0a3d62] mb-3">{project.title}</h3>
-          <p class="text-gray-500 text-sm leading-relaxed">{project.desc}</p>
-        </div>
-      ))}
+        );
+      })}
     </div>
 
   </div>

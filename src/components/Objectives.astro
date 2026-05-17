@@ -1,12 +1,45 @@
 ---
 // Objectives Section
-const objectives = [
+interface Props {
+  lang?: 'ar' | 'en';
+}
+
+const { lang = 'ar' } = Astro.props;
+const isEn = lang === 'en';
+
+const objectivesAr = [
   "نشر العلم والتعليم وتفعيل دوره في المجتمع",
   "محاربة الجهل والأمية بين أبناء المجتمع السوري",
   "تأهيل الكوادر التعليمية المتخصصة",
   "ربط أبناء الشعب السوري بمصادر الشريعة المطهرة؛ لمحاربة الجهل والتطرف",
   "توفير بيئة تعليمية آمنة ومحفزة",
 ];
+
+const objectivesEn = [
+  "Spreading Qur'anic knowledge and Islamic sciences",
+  "Combating illiteracy and teaching proper Arabic",
+  "Qualifying teachers with modern educational methods",
+  "Connecting students with authentic Islamic sources",
+  "Providing a safe and nurturing learning environment",
+];
+
+const objectives = isEn ? objectivesEn : objectivesAr;
+
+const t = isEn ? {
+  badge: "Our Goals",
+  title1: "What We ",
+  title2: "Strive For",
+  desc: "We believe that knowledge is the true path to the nation's advancement, and we strive to achieve these blessed goals in serving our people.",
+  hadith: `"Read the Qur'an, for it will come as an intercessor for its companions on the Day of Resurrection."`,
+  hadithSource: "— Muslim"
+} : {
+  badge: "أهدافنا",
+  title1: "نسعى لبناء جيلٍ ",
+  title2: "واعٍ",
+  desc: "نؤمن بأن العلم هو السبيل الحقيقي لنهضة الأمة، ونسعى جاهدين لتحقيق هذه الأهداف المباركة في خدمة أبناء شعبنا.",
+  hadith: `"اقرأوا القرآن فإنه يأتي يوم القيامة شفيعاً لأصحابه"`,
+  hadithSource: "رواه مسلم"
+};
 ---
 
 <section class="py-20 md:py-28 bg-white relative overflow-hidden">
@@ -20,13 +53,13 @@ const objectives = [
       <!-- Left: Content -->
       <div class="">
         <span class="inline-flex items-center gap-2 px-4 py-2 bg-[#8bc34a]/15 text-[#0a3d62] text-sm font-bold rounded-full mb-5">
-          أهدافنا
+          {t.badge}
         </span>
         <h2 class="text-4xl md:text-5xl font-black text-[#0a3d62] mb-6 leading-tight">
-          نسعى لبناء جيلٍ <span class="gradient-text">واعٍ</span> ومتمكن
+          {t.title1}<span class="gradient-text">{t.title2}</span> {isEn ? '' : 'ومتمكن'}
         </h2>
         <p class="text-xl text-gray-500 mb-10 leading-relaxed">
-          نؤمن بأن العلم هو السبيل الحقيقي لنهضة الأمة، ونسعى جاهدين لتحقيق هذه الأهداف المباركة في خدمة أبناء شعبنا.
+          {t.desc}
         </p>
         
         <div class="space-y-4">
@@ -52,11 +85,11 @@ const objectives = [
                 <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z"/>
               </svg>
               <blockquote class="text-2xl md:text-3xl font-bold leading-relaxed mb-8">
-                "اقرأوا القرآن فإنه يأتي يوم القيامة شفيعاً لأصحابه"
+                {t.hadith}
               </blockquote>
               <div class="flex items-center gap-3">
                 <div class="w-10 h-px bg-[#8bc34a]"></div>
-                <p class="text-white/60 text-sm font-medium">رواه مسلم</p>
+                <p class="text-white/80 text-sm font-medium">{t.hadithSource}</p>
               </div>
             </div>
           </div>

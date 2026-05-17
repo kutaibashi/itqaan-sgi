@@ -124,7 +124,7 @@ export default function ImageSlider({ lang = 'ar' }) {
           {/* Navigation Arrows - swap positions for LTR */}
           <button
             onClick={prevSlide}
-            className={`absolute top-1/2 -translate-y-1/2 w-12 h-12 bg-white hover:bg-gray-50 border border-gray-200 rounded-md shadow-md flex items-center justify-center transition-colors duration-200 z-10 ${isEn ? 'left-4' : 'right-4'}`}
+            className={`absolute top-1/2 -translate-y-1/2 w-12 h-12 bg-white hover:bg-gray-50 border border-gray-200 rounded-md shadow-md flex items-center justify-center transition-all duration-200 z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8bc34a] active:scale-95 ${isEn ? 'left-4' : 'right-4'}`}
             aria-label={t.prev}
           >
             <svg className="w-6 h-6 text-[#0a3d62]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -134,7 +134,7 @@ export default function ImageSlider({ lang = 'ar' }) {
 
           <button
             onClick={nextSlide}
-            className={`absolute top-1/2 -translate-y-1/2 w-12 h-12 bg-white hover:bg-gray-50 border border-gray-200 rounded-md shadow-md flex items-center justify-center transition-colors duration-200 z-10 ${isEn ? 'right-4' : 'left-4'}`}
+            className={`absolute top-1/2 -translate-y-1/2 w-12 h-12 bg-white hover:bg-gray-50 border border-gray-200 rounded-md shadow-md flex items-center justify-center transition-all duration-200 z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8bc34a] active:scale-95 ${isEn ? 'right-4' : 'left-4'}`}
             aria-label={t.next}
           >
             <svg className="w-6 h-6 text-[#0a3d62]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -148,7 +148,7 @@ export default function ImageSlider({ lang = 'ar' }) {
               <button
                 key={index}
                 onClick={() => goToSlide(index)}
-                className={`h-2 rounded-full transition-all duration-300 ${
+                className={`h-2 rounded-full transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#8bc34a] ${
                   index === currentIndex
                     ? 'bg-[#0a3d62] w-8'
                     : 'bg-gray-300 hover:bg-gray-400 w-2'

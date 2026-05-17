@@ -34,7 +34,7 @@ const nav = isEn ? {
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex items-center justify-between h-16 md:h-20">
       <!-- Logo / Brand -->
-      <a href={isEn ? '/en/' : '/'} class="flex items-center gap-2 hover:opacity-90 transition-opacity">
+      <a href={isEn ? '/en/' : '/'} class="flex items-center gap-2 hover:opacity-90 transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8bc34a] rounded-md">
         <div class="bg-white rounded-md px-2 py-1.5 shadow-sm">
           <img src="/logo.png" alt="Itkan" class="h-10 w-auto" width="190" height="102" />
         </div>
@@ -42,19 +42,19 @@ const nav = isEn ? {
       
       <!-- Navigation -->
       <nav class="hidden md:flex items-center gap-6">
-        <a href="#about" class="text-white/80 hover:text-[#8bc34a] text-sm font-medium transition-colors">{nav.about}</a>
-        <a href="#projects" class="text-white/80 hover:text-[#8bc34a] text-sm font-medium transition-colors">{nav.projects}</a>
-        <a href="#areas" class="text-white/80 hover:text-[#8bc34a] text-sm font-medium transition-colors">{nav.areas}</a>
-        <a href="#contact" class="text-white/80 hover:text-[#8bc34a] text-sm font-medium transition-colors">{nav.contact}</a>
+        <a href="#about" class="text-white/80 hover:text-[#8bc34a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8bc34a] active:scale-95 text-sm font-medium transition-all duration-200 rounded-sm">{nav.about}</a>
+        <a href="#projects" class="text-white/80 hover:text-[#8bc34a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8bc34a] active:scale-95 text-sm font-medium transition-all duration-200 rounded-sm">{nav.projects}</a>
+        <a href="#areas" class="text-white/80 hover:text-[#8bc34a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8bc34a] active:scale-95 text-sm font-medium transition-all duration-200 rounded-sm">{nav.areas}</a>
+        <a href="#contact" class="text-white/80 hover:text-[#8bc34a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8bc34a] active:scale-95 text-sm font-medium transition-all duration-200 rounded-sm">{nav.contact}</a>
         <a
           href={nav.switchHref}
-          class="text-white/80 hover:text-[#8bc34a] text-sm font-medium transition-colors border border-white/20 rounded-md px-3 py-1.5 hover:border-[#8bc34a]"
+          class="text-white/80 hover:text-[#8bc34a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8bc34a] active:scale-95 text-sm font-medium transition-all duration-200 border border-white/20 rounded-md px-3 py-1.5 hover:border-[#8bc34a]"
         >
           {nav.switchLang}
         </a>
         <button
           id="donation-widget-1778468326670-yz11h-header"
-          class="donation-widget donation-widget-button inline-flex items-center px-5 py-2.5 bg-[#8bc34a] text-[#0a3d62] font-bold text-sm rounded-md hover:bg-[#7cb342] transition-colors duration-300 shadow-sm cursor-pointer"
+          class="donation-widget donation-widget-button inline-flex items-center px-5 py-2.5 bg-[#8bc34a] text-[#0a3d62] font-bold text-sm rounded-md hover:bg-[#7cb342] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#8bc34a] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-sm cursor-pointer"
           data-template-id="rcm86pmBCrlDhTbuU3tt"
           data-template-name="Itqaan Foundation for Qur'an Memorization"
           data-tenant-id="bonyan-ngo"
@@ -71,11 +71,11 @@ const nav = isEn ? {
       <div class="flex items-center gap-3 md:hidden">
         <a
           href={nav.switchHref}
-          class="text-white/80 hover:text-[#8bc34a] text-sm font-medium transition-colors border border-white/20 rounded-md px-3 py-1.5"
+          class="text-white/80 hover:text-[#8bc34a] text-sm font-medium transition-all duration-200 border border-white/20 rounded-md px-3 py-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8bc34a] active:scale-95"
         >
           {nav.switchLang}
         </a>
-        <button id="mobile-menu-btn" class="text-white p-2" aria-label={nav.menuAria}>
+        <button id="mobile-menu-btn" class="text-white p-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8bc34a] active:scale-95 rounded-md" aria-label={nav.menuAria}>
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
           </svg>
@@ -87,13 +87,13 @@ const nav = isEn ? {
   <!-- Mobile Menu -->
   <div id="mobile-menu" class="hidden md:hidden bg-[#072a40] border-t border-[#1a9a98]/30">
     <div class="px-4 py-3 space-y-1">
-      <a href="#about" class="block text-white/80 hover:text-white hover:bg-[#1a9a98]/20 py-3 px-4 rounded-md text-sm transition-colors">{nav.about}</a>
-      <a href="#projects" class="block text-white/80 hover:text-white hover:bg-[#1a9a98]/20 py-3 px-4 rounded-md text-sm transition-colors">{nav.projects}</a>
-      <a href="#areas" class="block text-white/80 hover:text-white hover:bg-[#1a9a98]/20 py-3 px-4 rounded-md text-sm transition-colors">{nav.areas}</a>
-      <a href="#contact" class="block text-white/80 hover:text-white hover:bg-[#1a9a98]/20 py-3 px-4 rounded-md text-sm transition-colors">{nav.contact}</a>
+      <a href="#about" class="block text-white/80 hover:text-white hover:bg-[#1a9a98]/20 focus-visible:outline-none focus-visible:bg-[#1a9a98]/20 active:bg-[#1a9a98]/40 py-3 px-4 rounded-md text-sm transition-all duration-200">{nav.about}</a>
+      <a href="#projects" class="block text-white/80 hover:text-white hover:bg-[#1a9a98]/20 focus-visible:outline-none focus-visible:bg-[#1a9a98]/20 active:bg-[#1a9a98]/40 py-3 px-4 rounded-md text-sm transition-all duration-200">{nav.projects}</a>
+      <a href="#areas" class="block text-white/80 hover:text-white hover:bg-[#1a9a98]/20 focus-visible:outline-none focus-visible:bg-[#1a9a98]/20 active:bg-[#1a9a98]/40 py-3 px-4 rounded-md text-sm transition-all duration-200">{nav.areas}</a>
+      <a href="#contact" class="block text-white/80 hover:text-white hover:bg-[#1a9a98]/20 focus-visible:outline-none focus-visible:bg-[#1a9a98]/20 active:bg-[#1a9a98]/40 py-3 px-4 rounded-md text-sm transition-all duration-200">{nav.contact}</a>
       <button
         id="donation-widget-1778468326670-yz11h-mobile"
-        class="donation-widget donation-widget-button w-full inline-flex items-center justify-center px-5 py-3 bg-[#8bc34a] text-[#0a3d62] font-bold text-sm rounded-md hover:bg-[#7cb342] transition-colors duration-300 cursor-pointer mt-2"
+        class="donation-widget donation-widget-button w-full inline-flex items-center justify-center px-5 py-3 bg-[#8bc34a] text-[#0a3d62] font-bold text-sm rounded-md hover:bg-[#7cb342] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#8bc34a] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 cursor-pointer mt-2"
         data-template-id="rcm86pmBCrlDhTbuU3tt"
         data-template-name="Itqaan Foundation for Qur'an Memorization"
         data-tenant-id="bonyan-ngo"

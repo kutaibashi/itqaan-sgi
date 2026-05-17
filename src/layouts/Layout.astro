@@ -7,14 +7,45 @@ interface Props {
   lang?: 'ar' | 'en';
 }
 
+const { lang = 'ar' } = Astro.props;
+const isEn = lang === 'en';
+
+const defaultTitle = isEn 
+  ? "Itkan Foundation for Education and Development" 
+  : "مؤسسة إتقان للتعليم والتنمية";
+
+const defaultDesc = isEn
+  ? "Itkan is an educational foundation dedicated to teaching proper Arabic, Qur'an recitation, memorization, and nurturing values derived from the Qur'an."
+  : "مؤسسة إتقان للتعليم والتنمية - مؤسسة تعليمية تهتم بتعليم العربية السليمة، وضبط القرآن الكريم وحفظه، والتربية على قيمه ومبادئه.";
+
 const {
-  title = "مؤسسة إتقان للتعليم والتنمية",
-  description = "مؤسسة إتقان للتعليم والتنمية - مؤسسة تعليمية تهتم بتعليم العربية السليمة، وضبط القرآن الكريم وحفظه، والتربية على قيمه ومبادئه.",
-  lang = 'ar'
+  title = defaultTitle,
+  description = defaultDesc,
 } = Astro.props;
 
 const siteUrl = "https://itqaan.sgi.ngo";
-const isEn = lang === 'en';
+const siteName = isEn ? "Itkan Foundation" : "مؤسسة إتقان";
+
+const schemaOrg = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": defaultTitle,
+  "url": siteUrl,
+  "description": defaultDesc,
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "telephone": "+905378980555",
+    "email": "info@itkan.info",
+    "contactType": isEn ? "Information" : "معلومات",
+    "availableLanguage": isEn ? ["English", "Arabic"] : ["Arabic", "English"]
+  },
+  "address": {
+    "@type": "PostalAddress",
+    "addressCountry": "TR",
+    "addressLocality": isEn ? "Gaziantep" : "غازي عنتاب",
+    "streetAddress": isEn ? "Kartaş, next to Aminah Mosque" : "كرتاش جانب جامع آمنة"
+  }
+};
 ---
 
 <!DOCTYPE html>
@@ -30,7 +61,7 @@ const isEn = lang === 'en';
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={siteUrl} />
-    <meta property="og:site_name" content="مؤسسة إتقان" />
+    <meta property="og:site_name" content={siteName} />
     
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
@@ -50,28 +81,7 @@ const isEn = lang === 'en';
     )}
     
     <!-- JSON-LD Schema Markup -->
-    <script type="application/ld+json" is:inline>
-      {
-        "@context": "https://schema.org",
-        "@type": "Organization",
-        "name": "مؤسسة إتقان للتعليم والتنمية",
-        "url": "https://itqaan.sgi.ngo",
-        "description": "مؤسسة تعليمية تهتم بتعليم العربية السليمة، وضبط القرآن الكريم وحفظه، والتربية على قيمه ومبادئه.",
-        "contactPoint": {
-          "@type": "ContactPoint",
-          "telephone": "+905378980555",
-          "email": "info@itkan.info",
-          "contactType": "معلومات",
-          "availableLanguage": "Arabic"
-        },
-        "address": {
-          "@type": "PostalAddress",
-          "addressCountry": "TR",
-          "addressLocality": "غازي عنتاب",
-          "streetAddress": "كرتاش جانب جامع آمنة"
-        }
-      }
-    </script>
+    <script type="application/ld+json" set:html={JSON.stringify(schemaOrg)}></script>
 
     <!-- Infaque Donation Widget -->
     <script src="https://infaque-cdn.web.app/main.js" async is:inline></script>

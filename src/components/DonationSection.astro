@@ -1,5 +1,29 @@
 ---
 // Donation Section — Infaque Inline Widget
+interface Props {
+  lang?: 'ar' | 'en';
+}
+
+const { lang = 'ar' } = Astro.props;
+const isEn = lang === 'en';
+
+const t = isEn ? {
+  title1: "Donate to ",
+  title2: "Itkan Foundation",
+  desc: "Your donation enables us to teach more students and graduate memorizers of the Book of Allah. Every contribution makes a real difference in a child's life.",
+  cardTitle: "Itkan Foundation for Education and Development",
+  cardDesc: "Support our educational programs and be the reason a hafiz of the Book of Allah graduates",
+  donateBtn: "Donate Now",
+  secureText: "Click the button to open the secure donation window"
+} : {
+  title1: "تبرع لـ ",
+  title2: "مؤسسة إتقان",
+  desc: "تبرعك يُمكننا من تعليم المزيد من الطلاب وحفظة كتاب الله. كل مساهمة تصنع فرقاً حقيقياً في حياة طفل أو طفلة.",
+  cardTitle: "مؤسسة إتقان لتحفيظ القرآن الكريم",
+  cardDesc: "ساهم في دعم برامجنا التعليمية وكن سبباً في تخريج حفظة كتاب الله",
+  donateBtn: "تبرع الآن",
+  secureText: "اضغط على الزر لفتح نافذة التبرع بشكل آمن"
+};
 ---
 
 <section id="donate" class="py-20 md:py-28 bg-[#f9fbfb] border-y border-[#1a9a98]/20">
@@ -8,10 +32,10 @@
     <!-- Section Header -->
     <div class="text-center max-w-3xl mx-auto mb-14">
       <h2 class="text-4xl md:text-5xl font-bold text-[#0a3d62] mb-5 font-heading">
-        تبرع لـ <span class="text-[#1a9a98]">مؤسسة إتقان</span>
+        {t.title1}<span class="text-[#1a9a98]">{t.title2}</span>
       </h2>
       <p class="text-lg md:text-xl text-gray-600 leading-relaxed max-w-2xl mx-auto">
-        تبرعك يُمكننا من تعليم المزيد من الطلاب وحفظة كتاب الله. كل مساهمة تصنع فرقاً حقيقياً في حياة طفل أو طفلة.
+        {t.desc}
       </p>
     </div>
 
@@ -27,10 +51,10 @@
             </svg>
           </div>
           <h3 class="text-2xl md:text-3xl font-bold mb-3 font-heading">
-            مؤسسة إتقان لتحفيظ القرآن الكريم
+            {t.cardTitle}
           </h3>
           <p class="text-white/80 text-lg max-w-xl mx-auto">
-            ساهم في دعم برامجنا التعليمية وكن سبباً في تخريج حفظة كتاب الله
+            {t.cardDesc}
           </p>
         </div>
       </div>
@@ -38,20 +62,20 @@
       <!-- Donation Button -->
       <div class="px-6 py-10 md:px-12 md:py-12 text-center bg-[#f9fbfb]">
         <button
-          id="donation-widget-1778468326670-yz11h-section"
-          class="donation-widget donation-widget-button inline-flex items-center justify-center px-12 py-5 bg-[#8bc34a] text-[#0a3d62] font-black text-xl rounded-md hover:bg-[#7cb342] transition-colors duration-300 shadow-md cursor-pointer"
+          id={`donation-widget-1778468326670-yz11h-section${isEn ? '-en' : ''}`}
+          class="donation-widget donation-widget-button inline-flex items-center justify-center px-12 py-5 bg-[#8bc34a] text-[#0a3d62] font-black text-xl rounded-md hover:bg-[#7cb342] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#8bc34a] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-300 shadow-md cursor-pointer"
           data-template-id="rcm86pmBCrlDhTbuU3tt"
           data-template-name="Itqaan Foundation for Qur'an Memorization"
           data-tenant-id="bonyan-ngo"
           data-base-url="https://donate.sgi.ngo/donate-directly/contribution?cause=false&value=rcm86pmBCrlDhTbuU3tt&hideOtherCausesCampaigns=yes&header=no-header"
         >
-          <svg class="w-6 h-6 ml-3" fill="currentColor" viewBox="0 0 20 20">
+          <svg class={`w-6 h-6 ${isEn ? 'mr-3' : 'ml-3'}`} fill="currentColor" viewBox="0 0 20 20">
             <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"/>
           </svg>
-          تبرع الآن
+          {t.donateBtn}
         </button>
         <p class="text-gray-500 text-sm mt-5">
-          اضغط على الزر لفتح نافذة التبرع بشكل آمن
+          {t.secureText}
         </p>
       </div>
     </div>

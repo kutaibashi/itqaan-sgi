@@ -1,10 +1,25 @@
 ---
 // Stats Section (Static)
-const stats = [
+interface Props {
+  lang?: 'ar' | 'en';
+}
+
+const { lang = 'ar' } = Astro.props;
+const isEn = lang === 'en';
+
+const statsAr = [
   { value: "١٥٠٠٠", suffix: "+", label: "طالب وطالبة", color: "text-[#8bc34a]" },
   { value: "٤٠", suffix: "+", label: "مركز تعليمي", color: "text-[#8bc34a]" },
   { value: "٣٠", suffix: "+", label: "مدينة ومنطقة", color: "text-[#8bc34a]" },
 ];
+
+const statsEn = [
+  { value: "15000", suffix: "+", label: "Students", color: "text-[#8bc34a]" },
+  { value: "40", suffix: "+", label: "Educational Centers", color: "text-[#8bc34a]" },
+  { value: "30", suffix: "+", label: "Cities & Regions", color: "text-[#8bc34a]" },
+];
+
+const stats = isEn ? statsEn : statsAr;
 ---
 
 <section class="py-12 bg-white">

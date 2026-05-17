@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const testimonials = [
+const testimonialsAr = [
   {
     quote: "إتقان الجميلة إسم على مسمىٰ",
     name: "يمنى شحيبر",
@@ -38,7 +38,47 @@ const testimonials = [
   },
 ];
 
-export default function Testimonials() {
+const testimonialsEn = [
+  {
+    quote: "The beautiful Itkan truly lives up to its name.",
+    name: "Yumna Shehaiber",
+    image: "/avatar-ymn.png",
+    duration: "28 months",
+    role: "Student",
+  },
+  {
+    quote: "Thank you for this circle, and thanks to my dear teacher Huda Al-Masri 🌷",
+    name: "Rafeef Othman",
+    image: "/avatar-rf.png",
+    duration: "22 months",
+    role: "Student",
+  },
+  {
+    quote: "The circle is beautiful, and the teacher is wonderful.",
+    name: "Ali Al-Balkhi",
+    image: "/avatar-ali.png",
+    duration: "51 months",
+    role: "Student",
+  },
+  {
+    quote: "An excellent institute for teaching the Holy Qur'an.",
+    name: "Hussein Mohammed",
+    image: "/avatar-hsn.png",
+    duration: "8 months",
+    role: "Student",
+  },
+  {
+    quote: "Mashallah, may Allah bless you and benefit us and our children from your knowledge.",
+    name: "Ahmed Rawas",
+    image: "/avatar-ahm.png",
+    duration: "48 months",
+    role: "Student",
+  },
+];
+
+export default function Testimonials({ lang = 'ar' }) {
+  const isEn = lang === 'en';
+  const testimonials = isEn ? testimonialsEn : testimonialsAr;
   const [active, setActive] = useState(0);
   const [mounted, setMounted] = useState(false);
 
@@ -52,28 +92,44 @@ export default function Testimonials() {
       setActive((prev) => (prev + 1) % testimonials.length);
     }, 6000);
     return () => clearInterval(interval);
-  }, [mounted]);
+  }, [mounted, testimonials.length]);
 
   const current = mounted ? testimonials[active] : testimonials[0];
+
+  const t = isEn ? {
+    badge: "Our Students",
+    title1: "What ",
+    title2: "Students",
+    title3: " Say",
+    subtitle: "These are real testimonials from our students, their parents, and our teachers.",
+    ariaLabel: (i) => `Testimonial ${i + 1}`
+  } : {
+    badge: "طلابنا",
+    title1: "ماذا يقول ",
+    title2: "الطلاب",
+    title3: "",
+    subtitle: "هذه شهادات حقيقية من طلابنا وأولياء أمورهم ومعلمينا.",
+    ariaLabel: (i) => `شهادة ${i + 1}`
+  };
 
   return (
     <section className="py-20 md:py-28 bg-[#f9fbfb] relative overflow-hidden border-y border-[#1a9a98]/20">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div className="text-center mb-14">
           <span className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-[#1a9a98]/20 text-[#0a3d62] text-sm font-bold rounded-md mb-4 shadow-sm">
-            طلابنا
+            {t.badge}
           </span>
           <h2 className="text-3xl md:text-4xl font-bold text-[#0a3d62] mb-3 font-heading">
-            ماذا يقول <span className="text-[#1a9a98]">الطلاب</span>
+            {t.title1}<span className="text-[#1a9a98]">{t.title2}</span>{t.title3}
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            هذه شهادات حقيقية من طلابنا وأولياء أمورهم ومعلمينا.
+            {t.subtitle}
           </p>
         </div>
 
         {/* Main testimonial card */}
         <div className="relative bg-white rounded-lg p-8 md:p-12 border border-[#1a9a98]/20 shadow-md">
-          <div className="absolute -top-5 right-8 w-10 h-10 bg-[#0a3d62] rounded-md flex items-center justify-center border border-[#1a9a98]/30">
+          <div className={`absolute -top-5 ${isEn ? 'left-8' : 'right-8'} w-10 h-10 bg-[#0a3d62] rounded-md flex items-center justify-center border border-[#1a9a98]/30`}>
             <svg className="w-5 h-5 text-[#8bc34a]" fill="currentColor" viewBox="0 0 24 24">
               <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
             </svg>
@@ -119,10 +175,10 @@ export default function Testimonials() {
               <button
                 key={i}
                 onClick={() => setActive(i)}
-                className={`h-2.5 rounded-full transition-all duration-300 ${
+                className={`h-2.5 rounded-full transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#8bc34a] ${
                   i === active ? 'bg-[#0a3d62] w-8' : 'bg-gray-300 hover:bg-gray-400 w-2.5'
                 }`}
-                aria-label={`شهادة ${i + 1}`}
+                aria-label={t.ariaLabel(i)}
               />
             ))}
           </div>
