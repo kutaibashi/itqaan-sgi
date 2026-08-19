@@ -63,13 +63,31 @@ const plainUrl = donateUrl(lang);
 
     <p class="itq-modal__status" data-donate-status aria-live="polite">{t.loading}</p>
 
+    {/*
+      NO loading="lazy" HERE, EVER. It deadlocks this modal.
+
+      The frame starts `hidden` and is only revealed once sgi.ngo posts 'ready'. A
+      lazy iframe is fetched on viewport intersection, and an element with
+      display:none has no box to intersect — so the browser never requests it. That
+      is a cycle: hidden until ready, ready needs the load, the load waits for
+      visible.
+
+      Measured on the live site 2026-08-19: src set, loading="lazy", display:none,
+      0x0, and contentDocument still at about:blank — the request was never made.
+      No 'load' fired, no 'ready' arrived, and every donor got the fallback after
+      the backstop. The modal had never once shown the form.
+
+      The laziness it was reaching for is already there and better implemented:
+      `src` is not set until the first open, so nothing is fetched on page load.
+      An eager iframe loads even while display:none, which is exactly what is
+      wanted here.
+    */}
     <iframe
       class="itq-modal__frame"
       data-donate-frame
       title={t.frameTitle}
       allow="payment"
       referrerpolicy="strict-origin"
-      loading="lazy"
       hidden
     ></iframe>
 
