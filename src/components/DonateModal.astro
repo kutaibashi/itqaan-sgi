@@ -35,7 +35,7 @@ const t = isEn
       fallbackLead: 'The donation form could not load here.',
       fallbackLink: 'Open the donation page',
       processedBy:
-        'Smile Givers International (SGI) receives donations to this campaign and issues the receipt, on behalf of Itkan Foundation. SGI is a registered US 501(c)(3).',
+        'Smile Givers International (SGI) receives donations to this campaign and issues the receipt, on behalf of Itqaan Foundation. SGI is a registered US 501(c)(3).',
     }
   : {
       dialogLabel: 'نافذة التبرع',
@@ -45,7 +45,7 @@ const t = isEn
       fallbackLead: 'تعذّر تحميل نموذج التبرع هنا.',
       fallbackLink: 'افتح صفحة التبرع',
       processedBy:
-        'تستقبل مؤسسة سمايل جيفرز إنترناشيونال (SGI) تبرعات هذه الحملة وتُصدر إيصالها، بالنيابة عن مؤسسة إتقان. وهي مؤسسة خيرية أمريكية مسجّلة بموجب البند 501(c)(3).',
+        'تستقبل مؤسسة سمايل جيفرز إنترناشيونال (SGI) تبرعات هذه الحملة وتُصدر إيصالها، بالنيابة عن مؤسسة إتقان. وهي مؤسسة خيرية مسجّلة في أمريكا بموجب البند 501(c)(3).',
     };
 
 // The un-framed URL, for the fallback link inside the modal.
@@ -123,6 +123,15 @@ const plainUrl = donateUrl(lang);
     background: transparent;
     max-width: min(40rem, 96vw);
     width: 100%;
+
+    /* Centring, and NOT redundant with the UA stylesheet.
+       A modal <dialog> is centred by the UA giving it `margin: auto` against
+       `inset: 0`. Tailwind's preflight zeroes margin on `*`, which beats the UA
+       sheet, so the dialog collapsed onto its inline-start edge — measured on the
+       live site at 1400px: Arabic sat 8px off the RIGHT edge, English flush LEFT.
+       Mirrored, because inline-start follows direction, which is also why it read
+       as "opens on the right" in Arabic rather than as broken in both. */
+    margin: auto;
   }
 
   .itq-modal::backdrop {

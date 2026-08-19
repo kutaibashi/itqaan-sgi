@@ -40,7 +40,7 @@ const testimonialsAr = [
 
 const testimonialsEn = [
   {
-    quote: "The beautiful Itkan truly lives up to its name.",
+    quote: "The beautiful Itqaan truly lives up to its name.",
     name: "Yumna Shehaiber",
     image: "/avatar-ymn.png",
     duration: "28 months",

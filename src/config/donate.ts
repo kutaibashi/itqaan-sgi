@@ -28,13 +28,19 @@ export const DONATE_ORIGIN = 'https://sgi.ngo';
  * If it does not, donations still complete; they land as unrestricted income with
  * no Itqaan attribution, and nothing in the donor's experience says so.
  *
- * The campaign is post 1048536, "Itkan Foundation for Education and Development".
- * Note the slug's missing space in "foundationfor" — it comes from a typo in the
- * campaign TITLE (which also carries a non-breaking space after "Itkan"). Fixing
- * that title is worth doing, but WordPress does not re-derive an existing post's
- * slug from its title, so the slug survives a title fix. If anyone changes the
- * slug itself, this constant has to change in the same breath — an unresolvable
- * slug does not break giving, it silently stops attributing it.
+ * The campaign is post 1048536, "Itqaan Foundation for Education and Development".
+ *
+ * The slug still reads "itkan-foundationfor-...", and that is correct — do not
+ * "tidy" it. It was minted from a title that carried two faults: a missing space in
+ * "Foundationfor", and a U+00A0 no-break space after "Itkan" that looked like an
+ * ordinary one. Both were fixed in the database on 2026-08-19, and the name was
+ * changed to the Itqaan spelling on 2026-08-20, but WordPress does not re-derive an
+ * existing post's slug from its title, so the slug outlived all three edits.
+ *
+ * That is the desirable outcome: the slug is an identifier, not a label, and every
+ * link on this site is built from this constant. If anyone ever does change the
+ * slug, this constant has to change in the same breath — an unresolvable slug does
+ * not break giving, it silently stops attributing it.
  */
 export const CAMPAIGN_SLUG = 'itkan-foundationfor-education-and-development';
 

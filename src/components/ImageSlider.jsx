@@ -11,13 +11,13 @@ const sliderImagesAr = [
 ];
 
 const sliderImagesEn = [
-  { src: "/slider-1.jpg", alt: "Itkan Foundation activities" },
+  { src: "/slider-1.jpg", alt: "Itqaan Foundation activities" },
   { src: "/slider-2.jpg", alt: "Students in memorization circles" },
-  { src: "/slider-3.jpg", alt: "Educational programs at Itkan" },
-  { src: "/slider-4.jpg", alt: "Qur'an memorizers at Itkan" },
-  { src: "/slider-5.jpg", alt: "Events and activities at Itkan Foundation" },
-  { src: "/slider-6.jpg", alt: "Daily life at Itkan Foundation" },
-  { src: "/slider-7.jpg", alt: "Itkan students on an educational trip" },
+  { src: "/slider-3.jpg", alt: "Educational programs at Itqaan" },
+  { src: "/slider-4.jpg", alt: "Qur'an memorizers at Itqaan" },
+  { src: "/slider-5.jpg", alt: "Events and activities at Itqaan Foundation" },
+  { src: "/slider-6.jpg", alt: "Daily life at Itqaan Foundation" },
+  { src: "/slider-7.jpg", alt: "Itqaan students on an educational trip" },
 ];
 
 export default function ImageSlider({ lang = 'ar' }) {
@@ -55,7 +55,7 @@ export default function ImageSlider({ lang = 'ar' }) {
   }, [isPaused, nextSlide]);
 
   const t = isEn ? {
-    badge: 'Moments from Itkan',
+    badge: 'Moments from Itqaan',
     title1: 'Glimpses of ',
     title2: 'Our Foundation',
     subtitle: 'Moments from our events and educational activities on the ground.',
