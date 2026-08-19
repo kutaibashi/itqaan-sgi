@@ -84,29 +84,21 @@ const schemaOrg = {
     <script type="application/ld+json" set:html={JSON.stringify(schemaOrg)}></script>
 
     {/*
-      Infaque donation widget — self-hosted on purpose. Do not point this back at
-      the infaque-cdn.web.app main.js entry point without checking it first.
+      Donations are SGI's own checkout, opened in a modal iframe by
+      components/DonateModal.astro. There is no third-party donation script here any
+      more, and nothing to bootstrap from <head>.
 
-      2026-08-17: Infaque deleted their entire legacy widget file set. main.js and the three
-      files it bootstrapped (donation-widget.js, parent-page-info.js, event-widget.js) all
-      now return their SPA shell as text/html, so Chrome refuses the response outright
-      (net::ERR_BLOCKED_BY_ORB) and every .donation-widget button on this site was inert.
-      Firebase Hosting's catch-all rewrite answers 200 for any missing path, which is why
-      this failed silently rather than 404ing.
+      What was here until 2026-08-19: four Infaque widget files, self-hosted from
+      /public/infaque/ because on 2026-08-17 Infaque deleted them from their CDN.
+      Firebase Hosting's catch-all rewrite answered 200 with their SPA shell as
+      text/html, Chrome refused it (net::ERR_BLOCKED_BY_ORB), and every donate button
+      on this site went dead — silently, because a 200 is not an error. The pinned
+      Wayback copies were always a bridge, not a fix.
 
-      The Wayback Machine has main.js as text/javascript on all 31 captures from 2025-02-26
-      to 2026-07-11, so this broke on their side. The three files below are the last working
-      copies (snapshot 2026-04-30). They already speak the current contract, reading
-      data-template-id / data-tenant-id / data-base-url off each .donation-widget element,
-      which is exactly how this site's buttons are marked up.
-
-      This is a pinned copy of a vendor's deprecated client, so treat it as a bridge: ask
-      Infaque for their current supported embed URL and swap these three lines back.
+      The replacement is documented on the SGI side, in the theme at
+      docs/itqaan-embed.md, which also owns the URL contract these buttons rely on.
+      Config lives in src/config/donate.ts — not in per-button data attributes.
     */}
-    <script is:inline>window.mainReceiverUrl = "https://donate.sgi.ngo/donate-directly/contribution?header=no-header";</script>
-    <script src="/infaque/donation-widget.js" async is:inline></script>
-    <script src="/infaque/parent-page-info.js" async is:inline></script>
-    <script src="/infaque/event-widget.js" async is:inline></script>
   </head>
   <body class="bg-white">
     <slot />

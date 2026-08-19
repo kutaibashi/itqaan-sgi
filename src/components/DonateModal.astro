@@ -1,0 +1,267 @@
+---
+/**
+ * Donation modal — SGI's real checkout, in an iframe, without leaving this page.
+ *
+ * Replaces the Infaque widget. That widget did the same thing (an overlay holding
+ * an iframe with allow="payment", auto-sized over postMessage), but it was 51 KB of
+ * a vendor's deprecated client pinned from a Wayback snapshot after they deleted it
+ * from their CDN. This is about a hundred lines and it is ours.
+ *
+ * Accessibility comes from native <dialog>.showModal(): focus trap, Esc to close,
+ * and focus returned to the trigger are all free and all correct. If <dialog> is
+ * unsupported the script does nothing at all and every donate button behaves as the
+ * plain link it already is — the donor lands on sgi.ngo/donate/ and finishes there.
+ * The button is a real anchor first; the modal is an enhancement on top.
+ *
+ * Deliberately NOT eager: the iframe has no src until the first open. The framed
+ * URL is a live payment page — loading it on every visit would pull Square's SDK
+ * and start an abandoned-gift beacon for every reader of the homepage.
+ */
+import { DONATE_ORIGIN, donateUrl } from '../config/donate';
+
+interface Props {
+  lang?: 'ar' | 'en';
+}
+
+const { lang = 'ar' } = Astro.props;
+const isEn = lang === 'en';
+
+const t = isEn
+  ? {
+      dialogLabel: 'Donation window',
+      frameTitle: 'Secure donation form',
+      close: 'Close',
+      loading: 'Loading the donation form…',
+      fallbackLead: 'The donation form could not load here.',
+      fallbackLink: 'Open the donation page',
+    }
+  : {
+      dialogLabel: 'نافذة التبرع',
+      frameTitle: 'نموذج التبرع الآمن',
+      close: 'إغلاق',
+      loading: 'جارٍ تحميل نموذج التبرع…',
+      fallbackLead: 'تعذّر تحميل نموذج التبرع هنا.',
+      fallbackLink: 'افتح صفحة التبرع',
+    };
+
+// The un-framed URL, for the fallback link inside the modal.
+const plainUrl = donateUrl(lang);
+---
+
+<dialog
+  id="itq-donate-modal"
+  class="itq-modal"
+  aria-label={t.dialogLabel}
+  data-donate-origin={DONATE_ORIGIN}
+>
+  <div class="itq-modal__panel">
+    <button type="button" class="itq-modal__close" data-donate-close aria-label={t.close}>
+      <svg class="w-5 h-5" viewBox="0 0 14 14" aria-hidden="true" focusable="false">
+        <path d="M1 1l12 12M13 1L1 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none" />
+      </svg>
+    </button>
+
+    <p class="itq-modal__status" data-donate-status aria-live="polite">{t.loading}</p>
+
+    <iframe
+      class="itq-modal__frame"
+      data-donate-frame
+      title={t.frameTitle}
+      allow="payment"
+      referrerpolicy="strict-origin"
+      loading="lazy"
+      hidden
+    ></iframe>
+
+    <p class="itq-modal__fallback" data-donate-fallback hidden>
+      {t.fallbackLead}
+      <a href={plainUrl} target="_top" rel="noopener">{t.fallbackLink}</a>
+    </p>
+  </div>
+</dialog>
+
+<style>
+  .itq-modal {
+    /* A <dialog> is display:none until opened; ::backdrop only exists for
+       showModal(). Both are why this uses the native element rather than a div. */
+    padding: 0;
+    border: 0;
+    background: transparent;
+    max-width: min(40rem, 96vw);
+    width: 100%;
+  }
+
+  .itq-modal::backdrop {
+    background: rgb(10 61 98 / 0.75);
+  }
+
+  .itq-modal__panel {
+    position: relative;
+    background: #ffffff;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.35);
+  }
+
+  .itq-modal__close {
+    position: absolute;
+    inset-inline-end: 0.5rem;
+    inset-block-start: 0.5rem;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 0.375rem;
+    color: #0a3d62;
+    background: rgb(255 255 255 / 0.9);
+    cursor: pointer;
+  }
+
+  .itq-modal__close:hover {
+    background: #f1f5f5;
+  }
+
+  .itq-modal__close:focus-visible {
+    outline: 2px solid #8bc34a;
+    outline-offset: 2px;
+  }
+
+  .itq-modal__status,
+  .itq-modal__fallback {
+    margin: 0;
+    padding: 3rem 1.5rem;
+    text-align: center;
+    color: #4a4a4a;
+  }
+
+  .itq-modal__fallback a {
+    color: #1a9a98;
+    font-weight: 700;
+    text-decoration: underline;
+  }
+
+  .itq-modal__frame {
+    display: block;
+    width: 100%;
+    /* Replaced by the height the frame reports. Until then this is tall enough to
+       show the top of the form rather than a sliver. */
+    height: 32rem;
+    /* Never taller than the viewport: the panel scrolls instead, because a modal
+       that overflows the screen has nowhere to scroll from. */
+    max-height: 88vh;
+    border: 0;
+  }
+
+  .itq-modal__frame[hidden] {
+    display: none;
+  }
+</style>
+
+<script>
+  // Opens SGI's checkout in the dialog. Vanilla, no framework, no dependencies.
+  (function () {
+    'use strict';
+
+    var modal = document.getElementById('itq-donate-modal');
+    if (!modal || typeof modal.showModal !== 'function') return; // → links carry the donor
+
+    var origin = modal.dataset.donateOrigin || '';
+    var frame = modal.querySelector('[data-donate-frame]');
+    var status = modal.querySelector('[data-donate-status]');
+    var fallback = modal.querySelector('[data-donate-fallback]');
+    var loaded = false;
+    var settled = false;
+    var timer = null;
+
+    function reveal() {
+      if (settled) return;
+      settled = true;
+      if (timer) window.clearTimeout(timer);
+      if (status) status.hidden = true;
+      if (frame) frame.hidden = false;
+    }
+
+    function giveUp() {
+      if (settled) return;
+      settled = true;
+      if (status) status.hidden = true;
+      if (fallback) fallback.hidden = false;
+    }
+
+    function open(href) {
+      if (!loaded && frame) {
+        loaded = true;
+
+        // The href is the plain donation URL; the frame wants the framed one. Built
+        // here rather than in the markup so the anchor a non-JS donor follows never
+        // carries a flag that would strip the site chrome they still need.
+        var url = href + (href.indexOf('?') === -1 ? '?' : '&') + 'sgi_frame=1';
+
+        // NOT reveal-on-load. A frame refused by frame-ancestors or X-Frame-Options
+        // still fires 'load' in Chrome — it loads an error document — so treating
+        // load as success would replace the status line with an empty white box and
+        // tell the donor nothing. That is exactly how the Infaque widget failed on
+        // 2026-08-17: a response that looked like success and wasn't.
+        //
+        // The only trustworthy signal is a postMessage from sgi.ngo, which only
+        // sgi.ngo can send. So 'load' merely starts a short grace period for that
+        // message to arrive; silence means the frame is not really there.
+        frame.addEventListener('load', function () {
+          if (settled) return;
+          if (timer) window.clearTimeout(timer);
+          timer = window.setTimeout(giveUp, 2500);
+        });
+
+        // Backstop for a frame that never loads at all (offline, DNS, a 502).
+        timer = window.setTimeout(giveUp, 8000);
+
+        frame.src = url;
+      }
+
+      if (!modal.open) modal.showModal();
+    }
+
+    // Height reported by assets/js/donate-frame.js on the SGI side.
+    window.addEventListener('message', function (event) {
+      if (event.origin !== origin) return; // only SGI may resize this
+      var data = event.data;
+      if (!data || data.source !== 'sgi-donate-frame') return;
+
+      if (data.type === 'ready') reveal();
+
+      if (data.type === 'height' && frame) {
+        var height = parseInt(data.height, 10);
+        // Sanity-bound it: a bogus value should not produce a 2px frame or a
+        // 400,000px one. 200–20,000 covers the cancelled page to the longest form.
+        if (height >= 200 && height <= 20000) {
+          reveal();
+          frame.style.height = height + 'px';
+        }
+      }
+    });
+
+    document.querySelectorAll('[data-donate-open]').forEach(function (trigger) {
+      trigger.addEventListener('click', function (event) {
+        // Let modified clicks do what the donor asked: open in a new tab.
+        if (event.metaKey || event.ctrlKey || event.shiftKey || event.button !== 0) return;
+
+        event.preventDefault();
+        open(trigger.getAttribute('href') || '');
+      });
+    });
+
+    modal.querySelectorAll('[data-donate-close]').forEach(function (button) {
+      button.addEventListener('click', function () {
+        modal.close();
+      });
+    });
+
+    // Click on the backdrop — which is the dialog element itself, since the panel
+    // covers the whole of its box — closes. Esc is native.
+    modal.addEventListener('click', function (event) {
+      if (event.target === modal) modal.close();
+    });
+  })();
+</script>

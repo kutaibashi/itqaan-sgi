@@ -1,4 +1,6 @@
 ---
+import { donateUrl } from '../config/donate';
+
 // Hero Section
 interface Props {
   lang?: 'ar' | 'en';
@@ -6,6 +8,10 @@ interface Props {
 
 const { lang = 'ar' } = Astro.props;
 const isEn = lang === 'en';
+
+// A real link to SGI's donation page. DonateModal.astro intercepts the click and
+// opens it in a modal; without JS, or without <dialog>, this href still works.
+const donateHref = donateUrl(lang);
 
 const t = isEn ? {
   title1: "Itkan ",
@@ -61,19 +67,16 @@ const t = isEn ? {
 
       <!-- CTA Buttons -->
       <div class=" flex flex-col sm:flex-row items-center justify-center gap-4" style="animation-delay: 0.3s;">
-        <button
-          id={`donation-widget-1778468326670-yz11h-hero${isEn ? '-en' : ''}`}
-          class="donation-widget donation-widget-button inline-flex items-center justify-center w-full sm:w-auto px-10 py-4 bg-[#8bc34a] text-[#0a3d62] font-black text-lg rounded-md hover:bg-[#7cb342] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#8bc34a] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-lg cursor-pointer"
-          data-template-id="rcm86pmBCrlDhTbuU3tt"
-          data-template-name="Itkan Foundation for Education and Development"
-          data-tenant-id="bonyan-ngo"
-          data-base-url="https://donate.sgi.ngo/donate-directly/contribution?cause=false&value=rcm86pmBCrlDhTbuU3tt&hideOtherCausesCampaigns=yes&header=no-header"
+        <a
+          href={donateHref}
+          data-donate-open
+          class="inline-flex items-center justify-center w-full sm:w-auto px-10 py-4 bg-[#8bc34a] text-[#0a3d62] font-black text-lg rounded-md hover:bg-[#7cb342] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#8bc34a] active:scale-95 transition-all duration-300 shadow-lg cursor-pointer"
         >
           <svg class={`w-5 h-5 ${isEn ? 'mr-2' : 'ml-2'}`} fill="currentColor" viewBox="0 0 20 20">
             <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"/>
           </svg>
           {t.donate}
-        </button>
+        </a>
         <a href="#projects" class="inline-flex items-center justify-center w-full sm:w-auto px-10 py-4 bg-transparent text-white border-2 border-[#1a9a98] font-bold text-lg rounded-md hover:bg-[#1a9a98] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-white active:scale-95 transition-all duration-300">
           <svg class={`w-5 h-5 ${isEn ? 'mr-2' : 'ml-2'}`} fill="currentColor" viewBox="0 0 20 20">
             <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0z"/>
