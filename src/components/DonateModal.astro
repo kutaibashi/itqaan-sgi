@@ -172,20 +172,28 @@ const plainUrl = donateUrl(lang);
     var status = modal.querySelector('[data-donate-status]');
     var fallback = modal.querySelector('[data-donate-fallback]');
     var loaded = false;
-    var settled = false;
+    var revealed = false;
+    var gaveUp = false;
     var timer = null;
 
+    // Success WINS, whenever it arrives — including after we have already shown the
+    // fallback. That recovery is what makes the short backstop below safe: on a slow
+    // connection the frame can miss the deadline, show the fallback, and then still
+    // replace it with the real form the moment sgi.ngo says 'ready'. Before this,
+    // giving up was terminal, so shortening the deadline would have meant handing a
+    // donor the fallback link while a perfectly good form finished loading unseen.
     function reveal() {
-      if (settled) return;
-      settled = true;
+      if (revealed) return;
+      revealed = true;
       if (timer) window.clearTimeout(timer);
       if (status) status.hidden = true;
+      if (fallback) fallback.hidden = true;
       if (frame) frame.hidden = false;
     }
 
     function giveUp() {
-      if (settled) return;
-      settled = true;
+      if (revealed || gaveUp) return;
+      gaveUp = true;
       if (status) status.hidden = true;
       if (fallback) fallback.hidden = false;
     }
@@ -199,23 +207,32 @@ const plainUrl = donateUrl(lang);
         // carries a flag that would strip the site chrome they still need.
         var url = href + (href.indexOf('?') === -1 ? '?' : '&') + 'sgi_frame=1';
 
-        // NOT reveal-on-load. A frame refused by frame-ancestors or X-Frame-Options
-        // still fires 'load' in Chrome — it loads an error document — so treating
-        // load as success would replace the status line with an empty white box and
-        // tell the donor nothing. That is exactly how the Infaque widget failed on
-        // 2026-08-17: a response that looked like success and wasn't.
+        // NOT reveal-on-load. 'load' can fire for a frame that is not really there —
+        // an error document counts — so treating it as success would replace the
+        // status line with an empty white box and tell the donor nothing. That is
+        // exactly how the Infaque widget failed on 2026-08-17: a response that looked
+        // like success and wasn't. The only trustworthy signal is a postMessage from
+        // sgi.ngo, which only sgi.ngo can send.
         //
-        // The only trustworthy signal is a postMessage from sgi.ngo, which only
-        // sgi.ngo can send. So 'load' merely starts a short grace period for that
-        // message to arrive; silence means the frame is not really there.
+        // MEASURED 2026-08-19, and not what an earlier version of this comment
+        // claimed: a frame REFUSED by frame-ancestors fires no 'load' at all in
+        // Chrome. Driving the modal from an origin sgi.ngo does not allow, the grace
+        // period below never started and the donor sat on "Loading the donation
+        // form…" for the full backstop — eight seconds, on a donation page, before
+        // being offered the link that works.
+        //
+        // So the backstop is the real deadline for a refusal, not the exception, and
+        // it is set accordingly. reveal() can now undo a fallback, which is what lets
+        // it be this short without punishing a slow-but-working frame.
         frame.addEventListener('load', function () {
-          if (settled) return;
+          if (revealed || gaveUp) return;
           if (timer) window.clearTimeout(timer);
-          timer = window.setTimeout(giveUp, 2500);
+          timer = window.setTimeout(giveUp, 1500);
         });
 
-        // Backstop for a frame that never loads at all (offline, DNS, a 502).
-        timer = window.setTimeout(giveUp, 8000);
+        // Covers both a refused frame (no 'load' ever) and one that never loads at
+        // all — offline, DNS, a 502.
+        timer = window.setTimeout(giveUp, 3500);
 
         frame.src = url;
       }
