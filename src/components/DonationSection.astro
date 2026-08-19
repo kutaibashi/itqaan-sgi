@@ -20,7 +20,8 @@ const t = isEn ? {
   cardTitle: "Itkan Foundation for Education and Development",
   cardDesc: "Support our educational programs and be the reason a hafiz of the Book of Allah graduates",
   donateBtn: "Donate Now",
-  secureText: "Click the button to open the secure donation window"
+  secureText: "Click the button to open the secure donation window",
+  processedBy: "Our partner Smile Givers International (SGI), a registered US 501(c)(3), receives donations to this campaign. Your receipt comes from SGI."
 } : {
   title1: "تبرع لـ ",
   title2: "مؤسسة إتقان",
@@ -28,7 +29,8 @@ const t = isEn ? {
   cardTitle: "مؤسسة إتقان لتحفيظ القرآن الكريم",
   cardDesc: "ساهم في دعم برامجنا التعليمية وكن سبباً في تخريج حفظة كتاب الله",
   donateBtn: "تبرع الآن",
-  secureText: "اضغط على الزر لفتح نافذة التبرع بشكل آمن"
+  secureText: "اضغط على الزر لفتح نافذة التبرع بشكل آمن",
+  processedBy: "تتولّى شريكتنا مؤسسة سمايل جيفرز إنترناشيونال (SGI) استقبال تبرعات هذه الحملة، وهي مؤسسة خيرية أمريكية مسجّلة بموجب البند 501(c)(3). ويصلكم إيصال التبرع منها."
 };
 ---
 
@@ -79,6 +81,12 @@ const t = isEn ? {
         </a>
         <p class="text-gray-500 text-sm mt-5">
           {t.secureText}
+        </p>
+        <!-- The donation is taken by SGI, not by Itkan. Said here as well as inside
+             the modal, because the header and hero buttons open the modal directly
+             and never bring the donor past this section. -->
+        <p class="text-gray-500 text-sm mt-4 max-w-xl mx-auto leading-relaxed border-t border-[#1a9a98]/15 pt-4">
+          {t.processedBy}
         </p>
       </div>
     </div>

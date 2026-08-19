@@ -34,6 +34,8 @@ const t = isEn
       loading: 'Loading the donation form…',
       fallbackLead: 'The donation form could not load here.',
       fallbackLink: 'Open the donation page',
+      processedBy:
+        'Smile Givers International (SGI) receives donations to this campaign and issues the receipt, on behalf of Itkan Foundation. SGI is a registered US 501(c)(3).',
     }
   : {
       dialogLabel: 'نافذة التبرع',
@@ -42,6 +44,8 @@ const t = isEn
       loading: 'جارٍ تحميل نموذج التبرع…',
       fallbackLead: 'تعذّر تحميل نموذج التبرع هنا.',
       fallbackLink: 'افتح صفحة التبرع',
+      processedBy:
+        'تستقبل مؤسسة سمايل جيفرز إنترناشيونال (SGI) تبرعات هذه الحملة وتُصدر إيصالها، بالنيابة عن مؤسسة إتقان. وهي مؤسسة خيرية أمريكية مسجّلة بموجب البند 501(c)(3).',
     };
 
 // The un-framed URL, for the fallback link inside the modal.
@@ -60,6 +64,18 @@ const plainUrl = donateUrl(lang);
         <path d="M1 1l12 12M13 1L1 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none" />
       </svg>
     </button>
+
+    {/*
+      Who actually takes the money. The donor clicked "Donate" on itqaan.sgi.ngo and
+      the form they are about to fill in belongs to sgi.ngo — a different
+      organisation, whose name is what will appear on their card statement and on
+      their receipt. Saying so before they type a card number is the honest order.
+
+      OUTSIDE the status/frame/fallback swap, and never hidden: this is true in all
+      three states, including the fallback where the donor is about to be sent to
+      sgi.ngo in a new tab and would otherwise meet the name cold.
+    */}
+    <p class="itq-modal__processor">{t.processedBy}</p>
 
     <p class="itq-modal__status" data-donate-status aria-live="polite">{t.loading}</p>
 
@@ -144,6 +160,21 @@ const plainUrl = donateUrl(lang);
   .itq-modal__close:focus-visible {
     outline: 2px solid #8bc34a;
     outline-offset: 2px;
+  }
+
+  .itq-modal__processor {
+    margin: 0;
+    /* Logical, not a physical shorthand. The close button sits at
+       inset-inline-end — the LEFT in Arabic, the right in English — so a
+       `padding: … 3.25rem … 1rem` would clear it in one language and let the text
+       run under it in the other. 2.25rem of button at a 0.5rem offset, plus air. */
+    padding-block: 0.75rem;
+    padding-inline: 1rem 3.25rem;
+    border-bottom: 1px solid #e6edee;
+    background: #f9fbfb;
+    color: #4a4a4a;
+    font-size: 0.8125rem;
+    line-height: 1.5;
   }
 
   .itq-modal__status,
@@ -232,16 +263,21 @@ const plainUrl = donateUrl(lang);
         // like success and wasn't. The only trustworthy signal is a postMessage from
         // sgi.ngo, which only sgi.ngo can send.
         //
-        // MEASURED 2026-08-19, and not what an earlier version of this comment
-        // claimed: a frame REFUSED by frame-ancestors fires no 'load' at all in
-        // Chrome. Driving the modal from an origin sgi.ngo does not allow, the grace
-        // period below never started and the donor sat on "Loading the donation
-        // form…" for the full backstop — eight seconds, on a donation page, before
-        // being offered the link that works.
+        // Chrome DOES fire 'load' for a frame refused by frame-ancestors. Measured
+        // 2026-08-19 from 127.0.0.1, an origin sgi.ngo does not allow: 'load' at
+        // 1108ms, no 'ready' ever, fallback at 2657ms via the grace period below.
         //
-        // So the backstop is the real deadline for a refusal, not the exception, and
-        // it is set accordingly. reveal() can now undo a fallback, which is what lets
-        // it be this short without punishing a slow-but-working frame.
+        // An earlier version of this comment claimed the opposite — that a refusal
+        // fires no 'load' at all — on the strength of a run where no 'load' arrived.
+        // It hadn't: that run was the loading="lazy" deadlock (see the note above the
+        // iframe), where the request was never made in the first place. Nothing was
+        // being refused, so of course nothing loaded. A missing event was read as a
+        // fact about refusals when it was a fact about a frame nobody had fetched.
+        //
+        // So the grace period is the normal path for a refusal, and the backstop
+        // exists for the case where no 'load' ever comes — offline, DNS, a hung
+        // origin. reveal() can undo a fallback, which is what lets both be this short
+        // without punishing a slow-but-working frame.
         frame.addEventListener('load', function () {
           if (revealed || gaveUp) return;
           if (timer) window.clearTimeout(timer);
