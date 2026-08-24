@@ -53,6 +53,50 @@ export const CAMPAIGN_SLUG = 'itkan-foundationfor-education-and-development';
  */
 export const FRAME_FLAG = 'sgi_frame';
 
+/**
+ * Marketing parameters forwarded from THIS page's URL into the checkout.
+ *
+ * A donor who arrives here from an ad and then opens the modal would otherwise
+ * reach a checkout that knows nothing about how they got here.
+ */
+export const FORWARD_PARAMS = [
+  'utm_source',
+  'utm_medium',
+  'utm_campaign',
+  'utm_content',
+  'utm_term',
+  'gclid',
+  'fbclid',
+  'msclkid',
+  'ttclid',
+  'twclid',
+  'li_fat_id',
+] as const;
+
+/**
+ * The two parameters that hand SGI *this page's* context, because inside the
+ * iframe nothing else can.
+ *
+ * The framed checkout has its own `sessionStorage`, so SGI's site-wide
+ * attribution script starts from nothing in there. And the frame carries
+ * `referrerpolicy="strict-origin"`, so its `document.referrer` is only
+ * `https://itqaan.sgi.ngo/` — which SGI correctly reads as internal navigation
+ * rather than a marketing touch.
+ *
+ * The result, until 2026-08-24, was that every gift made through this modal was
+ * recorded as `direct` with a landing page of `/donate/`. Two real gifts went
+ * that way before anyone noticed, because nothing about it looks broken.
+ *
+ * `sgi_ref` is a REFERRER HOSTNAME ONLY — never a full URL, so no path or query
+ * string from another site is handed on. `sgi_land` is this page's own path.
+ *
+ * SGI honours these only when `sgi_frame=1` is also present, validates both to a
+ * shape, and treats them as marketing data carrying no authority — the same
+ * standing as `utm_source`, which any visitor can already type for themselves.
+ */
+export const REF_PARAM = 'sgi_ref';
+export const LAND_PARAM = 'sgi_land';
+
 export type Lang = 'ar' | 'en';
 
 /**

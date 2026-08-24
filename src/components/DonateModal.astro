@@ -17,7 +17,13 @@
  * URL is a live payment page — loading it on every visit would pull Square's SDK
  * and start an abandoned-gift beacon for every reader of the homepage.
  */
-import { DONATE_ORIGIN, donateUrl } from '../config/donate';
+import {
+  DONATE_ORIGIN,
+  donateUrl,
+  FORWARD_PARAMS,
+  LAND_PARAM,
+  REF_PARAM,
+} from '../config/donate';
 
 interface Props {
   lang?: 'ar' | 'en';
@@ -57,6 +63,9 @@ const plainUrl = donateUrl(lang);
   class="itq-modal"
   aria-label={t.dialogLabel}
   data-donate-origin={DONATE_ORIGIN}
+  data-donate-forward={FORWARD_PARAMS.join(',')}
+  data-donate-ref-param={REF_PARAM}
+  data-donate-land-param={LAND_PARAM}
 >
   <div class="itq-modal__panel">
     <button type="button" class="itq-modal__close" data-donate-close aria-label={t.close}>
@@ -226,6 +235,11 @@ const plainUrl = donateUrl(lang);
     if (!modal || typeof modal.showModal !== 'function') return; // → links carry the donor
 
     var origin = modal.dataset.donateOrigin || '';
+    // Read once here, alongside origin, rather than inside attribution(): the
+    // null guard above narrows `modal` in this scope but not inside a closure.
+    var forwardKeys = (modal.dataset.donateForward || '').split(',');
+    var refParam = modal.dataset.donateRefParam || '';
+    var landParam = modal.dataset.donateLandParam || '';
     var frame = modal.querySelector('[data-donate-frame]');
     var status = modal.querySelector('[data-donate-status]');
     var fallback = modal.querySelector('[data-donate-fallback]');
@@ -256,6 +270,48 @@ const plainUrl = donateUrl(lang);
       if (fallback) fallback.hidden = false;
     }
 
+    /**
+     * This page's marketing context, as query string to append to the frame URL.
+     *
+     * WHY THE PARENT HAS TO TELL SGI THIS. The framed checkout has its own
+     * sessionStorage, so SGI's site-wide attribution script starts from nothing
+     * inside it — and the frame's referrerpolicy is strict-origin, so its
+     * document.referrer is just this origin, which SGI rightly reads as internal
+     * navigation. Until this existed, every gift made in this modal was recorded
+     * as `direct` from a landing page of `/donate/`.
+     *
+     * Never throws: an attribution failure must not stop a donation. The names
+     * live in src/config/donate.ts and arrive here as data attributes, so that
+     * file stays the whole of the integration surface.
+     */
+    function attribution() {
+      try {
+        var out = new URLSearchParams();
+        var here = new URLSearchParams(window.location.search);
+
+        forwardKeys.forEach(function (k) {
+          var v = k && here.get(k);
+          if (v) out.set(k, v);
+        });
+
+        // HOSTNAME ONLY, never the full referring URL — no other site's path or
+        // query is handed on. Our own properties are navigation, not a touch.
+        if (refParam && document.referrer) {
+          var h = '';
+          try { h = new URL(document.referrer).hostname; } catch (e) { h = ''; }
+          if (h && !/(^|\.)sgi\.ngo$/i.test(h)) out.set(refParam, h);
+        }
+
+        // The page they were actually reading when they decided to give.
+        if (landParam) out.set(landParam, window.location.pathname);
+
+        var qs = out.toString();
+        return qs ? '&' + qs : '';
+      } catch (e) {
+        return '';
+      }
+    }
+
     function open(href) {
       if (!loaded && frame) {
         loaded = true;
@@ -263,7 +319,7 @@ const plainUrl = donateUrl(lang);
         // The href is the plain donation URL; the frame wants the framed one. Built
         // here rather than in the markup so the anchor a non-JS donor follows never
         // carries a flag that would strip the site chrome they still need.
-        var url = href + (href.indexOf('?') === -1 ? '?' : '&') + 'sgi_frame=1';
+        var url = href + (href.indexOf('?') === -1 ? '?' : '&') + 'sgi_frame=1' + attribution();
 
         // NOT reveal-on-load. 'load' can fire for a frame that is not really there —
         // an error document counts — so treating it as success would replace the
