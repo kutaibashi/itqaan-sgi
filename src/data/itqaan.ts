@@ -22,14 +22,16 @@ export function roundDown(n: number): number {
 }
 
 /**
- * A number in the page's digits. 'ar-SY', NOT 'ar': in Node's ICU plain 'ar'
- * formats with Latin digits, which would mix numeral systems on the page.
+ * A number as the page shows it. Western digits in BOTH languages: that is the
+ * practice of Arabic charity sites (Qatar Charity, UNHCR Arabic, Islamic Relief
+ * Arabic) and of Itqaan's own site. Formatted with en-US so the output does not
+ * depend on how a given ICU build treats plain 'ar'.
  */
-export function num(n: number, lang: Lang): string {
-  return new Intl.NumberFormat(lang === 'ar' ? 'ar-SY' : 'en-US').format(n);
+export function num(n: number, _lang: Lang): string {
+  return new Intl.NumberFormat('en-US').format(n);
 }
 
-/** "أكثر من ١٠٦٬٠٠٠" / "More than 106,000". Written out, never as "+106K". */
+/** "أكثر من 106,000" / "More than 106,000". Written out, never as "+106K". */
 export function formatCount(n: number, lang: Lang): string {
   return `${lang === 'ar' ? 'أكثر من' : 'More than'} ${num(roundDown(n), lang)}`;
 }
@@ -54,7 +56,7 @@ export const programmes: Programme[] = [
       ar: 'القراءة والكتابة العربية السليمة، مع برنامج تربوي مصاحب',
       en: 'Correct Arabic reading and writing, with a character-education programme',
     },
-    meta: { ar: 'من عمر ٥ سنوات، من ٤ إلى ٦ أشهر', en: 'From age 5 · 4–6 months' },
+    meta: { ar: 'من عمر 5 سنوات، من 4 إلى 6 أشهر', en: 'From age 5 · 4–6 months' },
   },
   {
     id: 'safra',
@@ -63,7 +65,7 @@ export const programmes: Programme[] = [
     name: { ar: 'السفرة', en: 'Al-Safarah' },
     teaches: {
       ar: 'تلاوة القرآن الكريم كاملًا نظرًا مع أحكام التجويد',
-      en: 'Reading the whole Qur’an from the page, with tajweed',
+      en: 'Reading the whole Qur’an from the page, with tajweed (the rules of recitation)',
     },
     meta: { ar: 'خمس مراحل، من سنتين إلى ثلاث سنوات', en: 'Five stages · 2–3 years' },
   },
@@ -76,7 +78,7 @@ export const programmes: Programme[] = [
       ar: 'حفظ القرآن الكريم كاملًا غيبًا، مع برنامج شرعي وتربوي',
       en: 'Memorising the whole Qur’an, with Islamic studies',
     },
-    meta: { ar: 'من عمر ١١ سنة، من سنة ونصف إلى سنتين', en: 'From age 11 · 18 months to 2 years' },
+    meta: { ar: 'من عمر 11 سنة، من سنة ونصف إلى سنتين', en: 'From age 11 · 18 months to 2 years' },
   },
   {
     id: 'maqari',
@@ -94,7 +96,7 @@ export const programmes: Programme[] = [
 /** The chain's last link. */
 export const ijazaLine: L10n = {
   ar: 'إجازةٌ بالسند المتصل إلى رسول الله ﷺ',
-  en: 'An ijaza, with a chain of teachers unbroken back to the Prophet ﷺ',
+  en: 'An ijaza, with a chain of teachers unbroken back to the Prophet (peace be upon him)',
 };
 
 /** Places taken in teacher-training courses — a parallel track, not a step. */
@@ -121,19 +123,19 @@ export const areas: { syria: L10n[]; turkey: L10n[] } = {
 
 /**
  * Students' own words, from Itqaan's site. Months are Itqaan's current figures.
- * No photos: these are named young people, and a fundraising page does not
- * need their faces.
+ * First names only and no photos: their ages are unknown, and a fundraising
+ * page treats every student as a possible minor.
  */
 export const voices: { quote: L10n; name: L10n; role: L10n; months: number }[] = [
   {
     quote: { ar: 'إتقان الجميلة اسمٌ على مسمّى', en: 'The beautiful Itqaan truly lives up to its name.' },
-    name: { ar: 'يمنى شحيبر', en: 'Yumna Shehaiber' },
+    name: { ar: 'يمنى', en: 'Yumna' },
     role: { ar: 'طالبة', en: 'Student' },
     months: 32,
   },
   {
     quote: { ar: 'الحلقة جميلة، والأستاذ رائع', en: 'The circle is beautiful, and the teacher is wonderful.' },
-    name: { ar: 'علي البلخي', en: 'Ali Al-Balkhi' },
+    name: { ar: 'علي', en: 'Ali' },
     role: { ar: 'طالب', en: 'Student' },
     months: 55,
   },
@@ -142,7 +144,7 @@ export const voices: { quote: L10n; name: L10n; role: L10n; months: number }[] =
       ar: 'ما شاء الله عليكم، وبارك الله بكم، ونفعنا ونفع أولادنا من علمكم',
       en: 'Masha’Allah. May Allah bless you, and benefit us and our children through your knowledge.',
     },
-    name: { ar: 'أحمد رواس', en: 'Ahmed Rawas' },
+    name: { ar: 'أحمد', en: 'Ahmed' },
     role: { ar: 'طالب', en: 'Student' },
     months: 52,
   },

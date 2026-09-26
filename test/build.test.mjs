@@ -101,7 +101,7 @@ for (const { lang, dir, file } of pages) {
     const items = path.match(/<li\b/g) ?? [];
     assert.equal(items.length, 5, 'four programmes plus the ijaza line');
     const expected = lang === 'ar'
-      ? ['أكثر من ١٠٦٬٠٠٠', 'أكثر من ١١٬٠٠٠', 'أكثر من ٢٬٠٠٠', 'أكثر من ١٬٣٠٠']
+      ? ['أكثر من 106,000', 'أكثر من 11,000', 'أكثر من 2,000', 'أكثر من 1,300']
       // English sets "More than" on its own line above each number.
       : ['106,000', '11,000', '2,000', '1,300'];
     if (lang === 'en') assert.ok((path.match(/More than/g) ?? []).length >= 4, 'each count says "More than"');
@@ -168,6 +168,18 @@ for (const { lang, dir, file } of pages) {
       .replace(/<bdi\b[^>]*>[\s\S]*?<\/bdi>/g, '')
       .replace(/<[^>]+>/g, ' ');
     assert.doesNotMatch(bare, /\bSGI\b|501\(c\)\(3\)/);
+  });
+
+  test(`${file}: one digit system: no Arabic-Indic digits`, () => {
+    const text = html.slice(html.indexOf('<body')).replace(/<script\b[\s\S]*?<\/script>/g, '').replace(/<[^>]+>/g, ' ');
+    assert.doesNotMatch(text, /[٠-٩]/);
+  });
+
+  test(`${file}: English spells out the honorific`, () => {
+    if (lang !== 'en') return;
+    const text = html.slice(html.indexOf('<body')).replace(/<script\b[\s\S]*?<\/script>/g, '');
+    assert.doesNotMatch(text, /ﷺ/);
+    assert.match(text, /peace be upon him/);
   });
 
   test(`${file}: the give band keeps the SGI disclosure`, () => {

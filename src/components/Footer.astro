@@ -2,11 +2,11 @@
 interface Props { lang?: 'ar' | 'en'; }
 const { lang = 'ar' } = Astro.props;
 const isEn = lang === 'en';
-const year = new Intl.NumberFormat(isEn ? 'en-US' : 'ar-SY', { useGrouping: false }).format(new Date().getFullYear());
+const year = new Date().getFullYear();
 
 const t = isEn
   ? { rights: `© ${year} Itqaan Foundation for Education and Development`, circles: 'Questions about the circles:', giving: 'Questions about your donation or receipt:' }
-  : { rights: `© ${year} مؤسسة إتقان للتعليم والتنمية`, circles: 'أسئلة عن الحلقات:', giving: 'أسئلة عن تبرعك أو إيصالك:' };
+  : { rights: `© ${year} مؤسسة إتقان للتعليم والتنمية`, circles: 'أسئلة عن الحلقات:', giving: 'أسئلة عن تبرعكم أو إيصالكم:' };
 ---
 <footer class="on-dark bg-ink-deep text-step--1 text-white/85">
   <div class="mx-auto flex max-w-6xl flex-col gap-3 px-4 py-8 sm:px-6 md:flex-row md:flex-wrap md:items-center md:justify-between">

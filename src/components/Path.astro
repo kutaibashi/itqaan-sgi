@@ -10,21 +10,21 @@ import { programmes, ijazaLine, teacherTraining, formatCount, num, roundDown, DA
 interface Props { lang?: 'ar' | 'en'; }
 const { lang = 'ar' } = Astro.props;
 const isEn = lang === 'en';
-const digit = (i: number) => new Intl.NumberFormat(isEn ? 'en-US' : 'ar-SY').format(i);
+const digit = (i: number) => num(i, lang);
 
 const t = isEn
   ? {
       h2: 'A long road, walked with each student one step at a time',
-      intro: 'A child starts with the alphabet at five. Some continue for years, until they receive an ijaza in the Qur’an. Each stage is longer and deeper than the one before, and each has its own students.',
-      source: `Graduates since each programme began, as published by Itqaan (${DATA_SOURCE.url}), rounded down.`,
+      intro: 'A child starts with the alphabet at five. Some continue for years, until they receive an ijaza: a teacher’s certification to recite and teach the Qur’an. Each stage is longer and deeper than the one before, and each has its own students.',
+      source: 'Graduates since each programme began, as published by Itqaan, rounded down.',
       track: 'places taken in teacher-training courses, by men and women aged 18 and over who teach the next circles.',
       give: 'Help keep this road open',
     }
   : {
       h2: 'طريقٌ طويل، نقطعه مع الطالب خطوةً خطوة',
-      intro: 'يبدأ الطفل بالحروف في الخامسة من عمره، ويواصل بعضهم سنواتٍ حتى يُجاز في القرآن الكريم. كل مرحلةٍ أطول وأعمق من التي قبلها، ولكلٍّ منها طلابها.',
-      source: `أعداد الخرّيجين منذ انطلاق كل برنامج، كما تنشرها مؤسسة إتقان (${DATA_SOURCE.url})، مقرّبةً إلى الأدنى.`,
-      track: 'مشاركة في دورات تأهيل الكوادر التعليمية، لمعلّمين ومعلّمات من عمر ١٨ سنة فما فوق، يدرّسون الحلقات القادمة.',
+      intro: 'يبدأ الأطفال بالحروف في الخامسة، ويواصل بعضهم سنواتٍ حتى ينالوا إجازةً في القرآن الكريم. كل مرحلةٍ أطول وأعمق من التي قبلها، ولكلٍّ منها طلابها.',
+      source: 'أعداد الخرّيجين منذ انطلاق كل برنامج، كما تنشرها مؤسسة إتقان، مقرّبةً إلى الأقلّ لا إلى الأكثر.',
+      track: 'مشاركة في دورات تأهيل الكوادر التعليمية، لمعلّمين ومعلّمات من عمر 18 سنة فما فوق، سيعلّمون في الحلقات القادمة.',
       give: 'ساهم في إبقاء هذا الطريق مفتوحًا',
     };
 ---
@@ -33,7 +33,7 @@ const t = isEn
     <div>
       <h2 id="path-title" class="text-step-3">{t.h2}</h2>
       <p class="mt-4 max-w-[42ch] text-muted">{t.intro}</p>
-      <p class="mt-4 text-step--1 text-muted">{t.source}</p>
+      <p class="mt-4 text-step--1 text-muted">{t.source} (<bdi>{DATA_SOURCE.url}</bdi>)</p>
     </div>
 
     <div>
@@ -64,9 +64,9 @@ const t = isEn
           <span class="chain-dot" aria-hidden="true">
             <svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true"><path d="M3 8.5l3 3 7-7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" /></svg>
           </span>
-          {/* Amiri for the Arabic line; in English only the ﷺ ligature needs it. */}
+          {/* Amiri for the Arabic line only; English spells the honorific out. */}
           <p class:list={['chain-ijaza', !isEn && 'font-quran']}>
-            {isEn ? <>{ijazaLine.en.replace(' ﷺ', '')}{'\u00a0'}<span class="font-quran">ﷺ</span></> : ijazaLine.ar}
+            {ijazaLine[lang]}
           </p>
         </li>
       </ol>

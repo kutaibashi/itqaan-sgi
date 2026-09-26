@@ -15,15 +15,14 @@ test('roundDown never overstates', () => {
   for (const n of [106473, 11161, 2083, 1325, 14309, 5088]) assert.ok(roundDown(n) <= n);
 });
 
-test('Arabic numbers use Arabic-Indic digits', () => {
-  // Plain 'ar' gives Latin digits in Node; the module must pin ar-SY.
-  assert.equal(num(106000, 'ar'), '١٠٦٬٠٠٠');
-  assert.equal(num(4, 'ar'), '٤');
+test('Arabic web copy uses Western digits (charity-web practice, and Itqaan’s own site)', () => {
+  assert.equal(num(106000, 'ar'), '106,000');
+  assert.equal(num(4, 'ar'), '4');
   assert.equal(num(106000, 'en'), '106,000');
 });
 
 test('formatCount says "more than" and rounds down', () => {
-  assert.equal(formatCount(106473, 'ar'), 'أكثر من ١٠٦٬٠٠٠');
+  assert.equal(formatCount(106473, 'ar'), 'أكثر من 106,000');
   assert.equal(formatCount(106473, 'en'), 'More than 106,000');
 });
 
@@ -32,6 +31,15 @@ test('the path is in climbing order with real counts', () => {
   assert.deepEqual(programmes.map((p) => p.count), [106473, 11161, 2083, 1325]);
   assert.equal(teacherTraining.count, 14309);
   assert.equal(onlineReadingGraduates, 5088);
+});
+
+test('no Arabic-Indic digits anywhere in the copy', () => {
+  const all = JSON.stringify({ programmes, areas, voices, ijazaLine });
+  assert.doesNotMatch(all, /[٠-٩]/);
+});
+
+test('students are named by first name only', () => {
+  for (const v of voices) for (const n of [v.name.ar, v.name.en]) assert.doesNotMatch(n.trim(), /\s/, n);
 });
 
 test('every string exists in both languages', () => {
