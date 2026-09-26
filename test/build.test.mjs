@@ -278,6 +278,13 @@ for (const { lang, dir, file } of pages) {
     const give = html.match(/<section[^>]*id="donate"[\s\S]*?<\/section>/)?.[0] ?? '';
     assert.match(give, /donate-icon--mark/);
   });
+
+  test(`${file}: voices lead with one quote, show durations as figures, and name their source`, () => {
+    const v = html.match(/<section[^>]*id="voices"[\s\S]*?<\/section>/)?.[0] ?? '';
+    assert.equal((v.match(/class="[^"]*\bvoice--lead\b/g) ?? []).length, 1);
+    assert.equal((v.match(/class="voice-months"/g) ?? []).length, 3);
+    assert.match(v, lang === 'ar' ? /من شهادات الطلاب على موقع مؤسسة إتقان/ : /From student reviews on Itqaan/);
+  });
 }
 
 test('built CSS keeps anchors clear of the sticky header', () => {

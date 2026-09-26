@@ -1,29 +1,63 @@
 ---
+/**
+ * Students' own words (from Itqaan's site). Yumna's line plays on the
+ * foundation's name, so it leads, large; the other two sit beside it. Each
+ * student's time at Itqaan is shown as a figure: years in the circles are the
+ * strongest proof in this section. Months are Itqaan's live counters, so the
+ * source line dates them.
+ */
 import { voices, num } from '../data/itqaan';
 
 interface Props { lang?: 'ar' | 'en'; }
 const { lang = 'ar' } = Astro.props;
 const isEn = lang === 'en';
-const h2 = isEn ? 'In their students’ words' : 'بكلمات طلابها';
-// Arabic separates with a comma: Readex draws '·' like the digit ٠.
-const sep = isEn ? ' · ' : '، ';
-const months = (m: number) => (isEn ? `${m} months at Itqaan` : `${num(m, lang)} شهرًا في إتقان`);
+
+const t = isEn
+  ? { h2: 'In their students’ words', months: 'months at Itqaan', source: 'From student reviews on Itqaan’s website, September 2026.' }
+  : { h2: 'بكلمات طلابها', months: 'شهرًا في إتقان', source: 'من شهادات الطلاب على موقع مؤسسة إتقان، أيلول (سبتمبر) 2026.' };
+
+const [lead, ...rest] = voices;
+const sep = isEn ? ', ' : '، ';
+const q = (v: (typeof voices)[number]) => (isEn ? `“${v.quote.en}”` : `«${v.quote.ar}»`);
 ---
 <section id="voices" class="section border-y border-line bg-white" aria-labelledby="voices-title">
   <div class="frame">
-    <h2 id="voices-title" class="section-head reveal text-step-3">{h2}</h2>
-    <div class="grid gap-10 md:grid-cols-3 md:gap-12">
-      {voices.map((v, i) => (
-        <figure class="reveal m-0" style={`--i:${i}`}>
-          <span class="sq-mark" aria-hidden="true"><i></i><i></i><i></i></span>
-          <blockquote class="m-0 mt-3 text-step-1 font-medium leading-relaxed">
-            <p>{isEn ? `“${v.quote.en}”` : `«${v.quote.ar}»`}</p>
-          </blockquote>
-          <figcaption class="mt-4 border-t border-line pt-3 text-step--1 text-muted">
-            <span class="font-semibold text-ink">{v.name[lang]}</span>{sep}{v.role[lang]}{sep}{months(v.months)}
-          </figcaption>
-        </figure>
-      ))}
+    <h2 id="voices-title" class="section-head reveal text-step-3">{t.h2}</h2>
+
+    <div class="grid gap-8 lg:grid-cols-[1.35fr_1fr] lg:gap-14">
+      <figure class="voice voice--lead reveal m-0 flex flex-col justify-between rounded-lg bg-paper p-6 sm:p-9">
+        <span class="sq-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+        <blockquote class="m-0 mt-5">
+          <p class:list={['text-ink', isEn ? 'text-step-4 font-semibold leading-snug' : 'font-quran text-step-5 font-bold leading-snug']}>{q(lead)}</p>
+        </blockquote>
+        <figcaption class="mt-8 flex flex-wrap items-end justify-between gap-4 border-t border-line pt-5">
+          <span><span class="font-semibold">{lead.name[lang]}</span><span class="text-muted">{sep}{lead.role[lang]}</span></span>
+          <span class="voice-months"><strong>{num(lead.months, lang)}</strong> {t.months}</span>
+        </figcaption>
+      </figure>
+
+      <div class="grid content-start gap-8">
+        {rest.map((v, i) => (
+          <figure class="voice reveal m-0 border-b border-line pb-8 last:border-b-0 last:pb-0" style={`--i:${i + 1}`}>
+            <span class="sq-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+            <blockquote class="m-0 mt-3">
+              <p class="text-step-1 font-medium leading-relaxed">{q(v)}</p>
+            </blockquote>
+            <figcaption class="mt-4 flex flex-wrap items-end justify-between gap-3">
+              <span><span class="font-semibold">{v.name[lang]}</span><span class="text-muted">{sep}{v.role[lang]}</span></span>
+              <span class="voice-months"><strong>{num(v.months, lang)}</strong> {t.months}</span>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
     </div>
+
+    <p class="reveal mt-8 text-step--1 text-muted">{t.source}</p>
   </div>
 </section>
+
+<style>
+  .voice-months { display: inline-flex; align-items: baseline; gap: 0.35em; color: var(--color-muted); font-size: var(--text-step--1); }
+  .voice-months strong { color: var(--color-teal-text); font-size: var(--text-step-3); font-weight: 600; line-height: 1; font-variant-numeric: tabular-nums; }
+  .voice--lead .voice-months strong { font-size: var(--text-step-4); }
+</style>
