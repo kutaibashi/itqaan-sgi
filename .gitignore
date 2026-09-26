@@ -33,3 +33,7 @@ Thumbs.db
 
 # Wrangler
 .wrangler/
+
+# Brainstorming companion
+.superpowers/
+.playwright-mcp/
