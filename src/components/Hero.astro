@@ -8,7 +8,7 @@ const isEn = lang === 'en';
 
 const t = isEn
   ? {
-      kicker: 'Itqaan Foundation for Education and Development · Syria and Türkiye',
+      kicker: 'Itqaan Foundation · Syria and Türkiye',
       h1a: 'We teach reading first,',
       h1b: 'then walk with each student to memorising the Qur’an',
       lead: 'Circles in mosques, centres and online, teaching correct Arabic and the reading and memorisation of the Qur’an.',
@@ -28,11 +28,12 @@ const t = isEn
       caption: 'حلقة في أحد مراكز إتقان',
     };
 ---
-<section class="grid bg-paper lg:min-h-[34rem] lg:grid-cols-[1fr_1.15fr]" aria-labelledby="hero-title">
-  <div class="flex flex-col justify-center gap-5 px-4 py-10 sm:px-8 lg:px-12 lg:py-16">
+<section class="grid bg-paper lg:min-h-[34rem] lg:grid-cols-[1.1fr_1fr]" aria-labelledby="hero-title">
+  <div class="flex flex-col justify-center gap-5 px-4 py-10 sm:px-8 lg:px-12 lg:py-12">
     <p class="text-step--1 font-semibold text-teal-text">{t.kicker}</p>
     <h1 id="hero-title" class:list={[isEn ? "text-step-4" : "text-step-5", "text-ink"]}>
-      {t.h1a}<br class="hidden sm:inline" /> {t.h1b}
+      <span class="block">{t.h1a}</span>
+      <span class="block">{t.h1b}</span>
     </h1>
     <p class="max-w-[38ch] text-step-1 text-muted">{t.lead}</p>
     <div class="flex flex-wrap items-center gap-x-6 gap-y-3">

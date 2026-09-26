@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 
 import {
-  roundDown, num, formatCount, programmes, teacherTraining,
+  roundDown, num, formatCount, countPrefix, programmes, teacherTraining,
   onlineReadingGraduates, areas, voices, ijazaLine,
 } from '../src/data/itqaan.ts';
 
@@ -24,6 +24,13 @@ test('Arabic web copy uses Western digits (charity-web practice, and Itqaan’s 
 test('formatCount says "more than" and rounds down', () => {
   assert.equal(formatCount(106473, 'ar'), 'أكثر من 106,000');
   assert.equal(formatCount(106473, 'en'), 'More than 106,000');
+});
+
+test('an exact round figure says "at least", never "more than"', () => {
+  assert.equal(formatCount(1300, 'ar'), 'لا يقل عن 1,300');
+  assert.equal(formatCount(1300, 'en'), 'At least 1,300');
+  assert.equal(countPrefix(1300, 'en'), 'At least');
+  assert.equal(countPrefix(1325, 'en'), 'More than');
 });
 
 test('the path is in climbing order with real counts', () => {

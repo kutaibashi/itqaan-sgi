@@ -198,6 +198,24 @@ for (const { lang, dir, file } of pages) {
     assert.ok(footer, 'footer missing');
     assert.doesNotMatch(footer, /sgi\.ngo|أسئلة عن تبرعكم|Questions about your donation/);
   });
+
+  test(`${file}: film poster draws its focus ring inside the clipped box`, () => {
+    const link = html.match(/<a\b[^>]*\bdata-film=[^>]*>/)?.[0] ?? '';
+    assert.match(link, /focus-visible:outline-offset-\[-/, 'ring must be inset: the container clips outside it');
+  });
+
+  test(`${file}: hero headline clauses are separate blocks, not a <br>`, () => {
+    const h1 = html.match(/<h1\b[\s\S]*?<\/h1>/)?.[0] ?? '';
+    assert.doesNotMatch(h1, /<br\b/);
+    assert.equal((h1.match(/<span class="block/g) ?? []).length, 2);
+  });
+
+  test(`${file}: each chain step names the programme before its count (screen-reader order)`, () => {
+    const path = html.match(/<section[^>]*id="path"[\s\S]*?<\/section>/)?.[0] ?? '';
+    const steps = path.split(/<li\b/).slice(1, 5);
+    assert.equal(steps.length, 4);
+    for (const s of steps) assert.ok(s.indexOf('<h3') < s.indexOf('chain-count'), 'h3 must precede the count');
+  });
 }
 
 test('built CSS keeps anchors clear of the sticky header', () => {

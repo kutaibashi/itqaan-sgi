@@ -5,7 +5,7 @@
  * bars: each stage is its own longer programme with its own students, and bars
  * would read as dropout.
  */
-import { programmes, ijazaLine, teacherTraining, formatCount, num, roundDown, DATA_SOURCE } from '../data/itqaan';
+import { programmes, ijazaLine, teacherTraining, formatCount, countPrefix, num, roundDown, DATA_SOURCE } from '../data/itqaan';
 
 interface Props { lang?: 'ar' | 'en'; }
 const { lang = 'ar' } = Astro.props;
@@ -41,9 +41,16 @@ const t = isEn
         {programmes.map((p, i) => (
           <li class="chain-step">
             <span class="chain-dot" aria-hidden="true">{digit(i + 1)}</span>
+            {/* Heading first in source, so a screen reader moving by headings hears
+                each count after its programme name; CSS places the count first. */}
+            <div class="chain-body">
+              <h3 class="text-step-1">{p.name[lang]}</h3>
+              <p class="text-step--1 text-muted">{p.teaches[lang]}</p>
+              <p class="text-step--1 text-teal-text">{p.meta[lang]}</p>
+            </div>
             {isEn ? (
               <p class="chain-count">
-                <span class="block text-step--2 font-normal text-muted">More than</span>
+                <span class="block text-step--2 font-normal text-muted">{countPrefix(p.count, lang)}</span>
                 {num(roundDown(p.count), lang)}
                 <span class="block text-step--2 font-normal text-muted">{p.countLabel.en}</span>
               </p>
@@ -53,11 +60,6 @@ const t = isEn
                 {formatCount(p.count, lang)}
               </p>
             )}
-            <div>
-              <h3 class="text-step-1">{p.name[lang]}</h3>
-              <p class="text-step--1 text-muted">{p.teaches[lang]}</p>
-              <p class="text-step--1 text-teal-text">{p.meta[lang]}</p>
-            </div>
           </li>
         ))}
         <li class="chain-step chain-end">
@@ -101,7 +103,9 @@ const t = isEn
     padding-block: 1rem;
     border-block-end: 1px dashed var(--color-line);
   }
-  .chain-step > div { grid-column: 2; }
+  .chain-dot { grid-column: 1; grid-row: 1; }
+  .chain-count { grid-column: 2; grid-row: 1; }
+  .chain-body { grid-column: 2; grid-row: 2; }
   .chain-dot {
     position: relative; z-index: 1;
     display: grid; place-items: center;
@@ -127,7 +131,7 @@ const t = isEn
   /* From 40rem the count gets its own column: dot · count · programme. */
   @media (min-width: 40rem) {
     .chain-step { grid-template-columns: 1.75rem 11rem 1fr; align-items: baseline; }
-    .chain-step > div { grid-column: 3; }
+    .chain-body { grid-column: 3; grid-row: 1; }
     .chain-dot { align-self: center; }
     .chain-end .chain-ijaza { grid-column: 2 / -1; }
   }

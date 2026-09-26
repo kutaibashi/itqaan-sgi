@@ -31,9 +31,19 @@ export function num(n: number, _lang: Lang): string {
   return new Intl.NumberFormat('en-US').format(n);
 }
 
+/**
+ * "More than" only when rounding actually dropped something; an exact round
+ * figure (1,300) is "at least", or the page would overstate it.
+ */
+export function countPrefix(n: number, lang: Lang): string {
+  const exact = roundDown(n) === n;
+  if (lang === 'ar') return exact ? 'لا يقل عن' : 'أكثر من';
+  return exact ? 'At least' : 'More than';
+}
+
 /** "أكثر من 106,000" / "More than 106,000". Written out, never as "+106K". */
 export function formatCount(n: number, lang: Lang): string {
-  return `${lang === 'ar' ? 'أكثر من' : 'More than'} ${num(roundDown(n), lang)}`;
+  return `${countPrefix(n, lang)} ${num(roundDown(n), lang)}`;
 }
 
 export interface Programme {
