@@ -1,0 +1,16 @@
+// Cloudflare Workers Builds config. The site is fully static, so the Worker is
+// assets-only: no adapter, no server code — Cloudflare serves dist/ as files.
+//
+// Without this file `wrangler deploy` on main fell back to autoconfig on every
+// build (installing @astrojs/cloudflare in CI and switching Astro to server
+// mode), and `wrangler versions upload` on every other branch failed outright
+// with "Missing entry-point to Worker script or to assets directory".
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  // Must match the Worker's name in the Cloudflare dashboard, or builds fail.
+  "name": "itqaan-sgi",
+  "compatibility_date": "2026-09-25",
+  "assets": {
+    "directory": "./dist"
+  }
+}
