@@ -54,7 +54,7 @@ export const programmes: Programme[] = [
       ar: 'القراءة والكتابة العربية السليمة، مع برنامج تربوي مصاحب',
       en: 'Correct Arabic reading and writing, with a character-education programme',
     },
-    meta: { ar: 'من عمر ٥ سنوات · ٤–٦ أشهر', en: 'From age 5 · 4–6 months' },
+    meta: { ar: 'من عمر ٥ سنوات، من ٤ إلى ٦ أشهر', en: 'From age 5 · 4–6 months' },
   },
   {
     id: 'safra',
@@ -65,7 +65,7 @@ export const programmes: Programme[] = [
       ar: 'تلاوة القرآن الكريم كاملًا نظرًا مع أحكام التجويد',
       en: 'Reading the whole Qur’an from the page, with tajweed',
     },
-    meta: { ar: 'خمس مراحل · سنتان إلى ثلاث سنوات', en: 'Five stages · 2–3 years' },
+    meta: { ar: 'خمس مراحل، من سنتين إلى ثلاث سنوات', en: 'Five stages · 2–3 years' },
   },
   {
     id: 'mahir',
@@ -76,7 +76,7 @@ export const programmes: Programme[] = [
       ar: 'حفظ القرآن الكريم كاملًا غيبًا، مع برنامج شرعي وتربوي',
       en: 'Memorising the whole Qur’an, with Islamic studies',
     },
-    meta: { ar: 'من عمر ١١ سنة · سنة ونصف إلى سنتين', en: 'From age 11 · 18 months to 2 years' },
+    meta: { ar: 'من عمر ١١ سنة، من سنة ونصف إلى سنتين', en: 'From age 11 · 18 months to 2 years' },
   },
   {
     id: 'maqari',
@@ -87,7 +87,7 @@ export const programmes: Programme[] = [
       ar: 'إقراء القرآن بالقراءات المتواترة للحفّاظ والحافظات',
       en: 'Teaching the canonical readings to those who have memorised the Qur’an',
     },
-    meta: { ar: 'سنة إلى سنة ونصف', en: '1 to 1½ years' },
+    meta: { ar: 'من سنة إلى سنة ونصف', en: '1 to 1½ years' },
   },
 ];
 
@@ -111,7 +111,7 @@ export const areas: { syria: L10n[]; turkey: L10n[] } = {
     { ar: 'مدينة حماة', en: 'Hama' },
   ],
   turkey: [
-    { ar: 'غازي عنتاب · المركز الرئيسي', en: 'Gaziantep · headquarters' },
+    { ar: 'غازي عنتاب (المركز الرئيسي)', en: 'Gaziantep · headquarters' },
     { ar: 'إسطنبول', en: 'Istanbul' },
     { ar: 'كهرمان مرعش', en: 'Kahramanmaraş' },
     { ar: 'نزيب', en: 'Nizip' },

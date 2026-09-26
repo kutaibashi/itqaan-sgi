@@ -1,0 +1,134 @@
+---
+/**
+ * The signature: a student's path through Itqaan, drawn as a chain (سند) —
+ * one line, one node per programme, ending at the ijaza. Nodes, not shrinking
+ * bars: each stage is its own longer programme with its own students, and bars
+ * would read as dropout.
+ */
+import { programmes, ijazaLine, teacherTraining, formatCount, num, roundDown, DATA_SOURCE } from '../data/itqaan';
+
+interface Props { lang?: 'ar' | 'en'; }
+const { lang = 'ar' } = Astro.props;
+const isEn = lang === 'en';
+const digit = (i: number) => new Intl.NumberFormat(isEn ? 'en-US' : 'ar-SY').format(i);
+
+const t = isEn
+  ? {
+      h2: 'A long road, walked with each student one step at a time',
+      intro: 'A child starts with the alphabet at five. Some continue for years, until they receive an ijaza in the Qur’an. Each stage is longer and deeper than the one before, and each has its own students.',
+      source: `Graduates since each programme began, as published by Itqaan (${DATA_SOURCE.url}), rounded down.`,
+      track: 'places taken in teacher-training courses, by men and women aged 18 and over who teach the next circles.',
+      give: 'Help keep this road open',
+    }
+  : {
+      h2: 'طريقٌ طويل، نقطعه مع الطالب خطوةً خطوة',
+      intro: 'يبدأ الطفل بالحروف في الخامسة من عمره، ويواصل بعضهم سنواتٍ حتى يُجاز في القرآن الكريم. كل مرحلةٍ أطول وأعمق من التي قبلها، ولكلٍّ منها طلابها.',
+      source: `أعداد الخرّيجين منذ انطلاق كل برنامج، كما تنشرها مؤسسة إتقان (${DATA_SOURCE.url})، مقرّبةً إلى الأدنى.`,
+      track: 'مشاركة في دورات تأهيل الكوادر التعليمية، لمعلّمين ومعلّمات من عمر ١٨ سنة فما فوق، يدرّسون الحلقات القادمة.',
+      give: 'ساهم في إبقاء هذا الطريق مفتوحًا',
+    };
+---
+<section id="path" class="border-y border-line bg-white" aria-labelledby="path-title">
+  <div class="mx-auto grid max-w-6xl gap-10 px-4 py-14 sm:px-6 lg:grid-cols-[1fr_2fr] lg:gap-14 lg:py-20">
+    <div>
+      <h2 id="path-title" class="text-step-3">{t.h2}</h2>
+      <p class="mt-4 max-w-[42ch] text-muted">{t.intro}</p>
+      <p class="mt-4 text-step--1 text-muted">{t.source}</p>
+    </div>
+
+    <div>
+      <ol class="chain">
+        {programmes.map((p, i) => (
+          <li class="chain-step">
+            <span class="chain-dot" aria-hidden="true">{digit(i + 1)}</span>
+            {isEn ? (
+              <p class="chain-count">
+                <span class="block text-step--2 font-normal text-muted">More than</span>
+                {num(roundDown(p.count), lang)}
+                <span class="block text-step--2 font-normal text-muted">{p.countLabel.en}</span>
+              </p>
+            ) : (
+              <p class="chain-count">
+                <span class="block text-step--2 font-normal text-muted">{p.countLabel.ar}</span>
+                {formatCount(p.count, lang)}
+              </p>
+            )}
+            <div>
+              <h3 class="text-step-1">{p.name[lang]}</h3>
+              <p class="text-step--1 text-muted">{p.teaches[lang]}</p>
+              <p class="text-step--1 text-teal-text">{p.meta[lang]}</p>
+            </div>
+          </li>
+        ))}
+        <li class="chain-step chain-end">
+          <span class="chain-dot" aria-hidden="true">
+            <svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true"><path d="M3 8.5l3 3 7-7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" /></svg>
+          </span>
+          {/* Amiri for the Arabic line; in English only the ﷺ ligature needs it. */}
+          <p class:list={['chain-ijaza', !isEn && 'font-quran']}>
+            {isEn ? <>{ijazaLine.en.replace(' ﷺ', '')}{'\u00a0'}<span class="font-quran">ﷺ</span></> : ijazaLine.ar}
+          </p>
+        </li>
+      </ol>
+
+      <p class="mt-8 flex flex-wrap items-baseline gap-x-3 gap-y-1 rounded-md bg-paper px-4 py-3 text-step--1">
+        <strong class="text-step-2 font-semibold tabular-nums">{formatCount(teacherTraining.count, lang)}</strong>
+        <span>{t.track}</span>
+      </p>
+
+      <p class="mt-6"><a href="#donate" class="link-quiet">{t.give}</a></p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .chain { list-style: none; margin: 0; padding: 0; position: relative; }
+  /* The سند itself: one continuous line through every node. */
+  .chain::before {
+    content: '';
+    position: absolute;
+    inset-inline-start: calc(0.875rem - 1px);
+    inset-block: 1.5rem 1.75rem;
+    inline-size: 2px;
+    background: var(--color-teal);
+  }
+  .chain-step {
+    display: grid;
+    grid-template-columns: 1.75rem 1fr;
+    column-gap: 1rem;
+    row-gap: 0.25rem;
+    align-items: start;
+    padding-block: 1rem;
+    border-block-end: 1px dashed var(--color-line);
+  }
+  .chain-step > div { grid-column: 2; }
+  .chain-dot {
+    position: relative; z-index: 1;
+    display: grid; place-items: center;
+    inline-size: 1.75rem; block-size: 1.75rem;
+    border-radius: 50%;
+    border: 2px solid var(--color-teal);
+    background: #fff;
+    color: var(--color-teal-text);
+    font-size: var(--text-step--2);
+    font-weight: 700;
+  }
+  .chain-count {
+    margin: 0;
+    font-size: var(--text-step-2);
+    font-weight: 600;
+    line-height: 1.2;
+    font-variant-numeric: tabular-nums;
+  }
+  .chain-end { border-block-end: 0; align-items: center; }
+  .chain-end .chain-dot { background: var(--color-lime); border-color: var(--color-lime); color: var(--color-ink-deep); }
+  .chain-ijaza { margin: 0; font-size: var(--text-step-2); font-weight: 700; line-height: 1.5; }
+
+  /* From 40rem the count gets its own column: dot · count · programme. */
+  @media (min-width: 40rem) {
+    .chain-step { grid-template-columns: 1.75rem 11rem 1fr; align-items: baseline; }
+    .chain-step > div { grid-column: 3; }
+    .chain-dot { align-self: center; }
+    .chain-end .chain-ijaza { grid-column: 2 / -1; }
+  }
+</style>

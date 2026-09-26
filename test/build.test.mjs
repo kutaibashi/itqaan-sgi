@@ -94,6 +94,32 @@ for (const { lang, dir, file } of pages) {
     assert.match(html, /<a[^>]*class="skip-link"[^>]*href="#main"|<a[^>]*href="#main"[^>]*class="skip-link"/);
     assert.match(html, /<main[^>]*id="main"/);
   });
+
+  test(`${file}: the path shows the four programmes in order, rounded down`, () => {
+    const path = html.match(/<section[^>]*id="path"[\s\S]*?<\/section>/)?.[0];
+    assert.ok(path, 'section#path missing');
+    const items = path.match(/<li\b/g) ?? [];
+    assert.equal(items.length, 5, 'four programmes plus the ijaza line');
+    const expected = lang === 'ar'
+      ? ['أكثر من ١٠٦٬٠٠٠', 'أكثر من ١١٬٠٠٠', 'أكثر من ٢٬٠٠٠', 'أكثر من ١٬٣٠٠']
+      // English sets "More than" on its own line above each number.
+      : ['106,000', '11,000', '2,000', '1,300'];
+    if (lang === 'en') assert.ok((path.match(/More than/g) ?? []).length >= 4, 'each count says "More than"');
+    let at = -1;
+    for (const e of expected) {
+      const i = path.indexOf(e);
+      assert.ok(i > at, `${e} missing or out of order`);
+      at = i;
+    }
+  });
+
+  test(`${file}: no middle dot in Arabic text (Readex draws it like the digit ٠)`, () => {
+    if (lang !== 'ar') return;
+    const text = html.slice(html.indexOf('<body'))
+      .replace(/<script\b[\s\S]*?<\/script>/g, '')
+      .replace(/<[^>]+>/g, ' ');
+    assert.doesNotMatch(text, /·/);
+  });
 }
 
 test('built CSS keeps anchors clear of the sticky header', () => {
