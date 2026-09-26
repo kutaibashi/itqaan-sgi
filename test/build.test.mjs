@@ -285,6 +285,21 @@ for (const { lang, dir, file } of pages) {
     assert.equal((v.match(/class="voice-months"/g) ?? []).length, 3);
     assert.match(v, lang === 'ar' ? /من شهادات الطلاب على موقع مؤسسة إتقان/ : /From student reviews on Itqaan/);
   });
+
+  test(`${file}: gallery photos open full size: plain links without JS, a labelled viewer with it`, () => {
+    const g = html.match(/<section[^>]*id="photos"[\s\S]*?<\/section>/)?.[0] ?? '';
+    const links = g.match(/<a\b[^>]*data-lightbox[^>]*>/g) ?? [];
+    assert.equal(links.length, 4);
+    for (const a of links) assert.match(a, /href="\/photos\/[a-z]+-1600\.webp"/, a);
+    const dlg = g.match(/<dialog\b[^>]*class="[^"]*lightbox[\s\S]*?<\/dialog>/)?.[0] ?? '';
+    assert.ok(dlg, 'viewer dialog missing');
+    assert.match(dlg.match(/<dialog[^>]*>/)[0], /aria-label="[^"]+"/);
+    for (const k of ['data-lb-close', 'data-lb-prev', 'data-lb-next']) {
+      assert.match(dlg, new RegExp(`<button[^>]*${k}[^>]*aria-label="[^"]+"|<button[^>]*aria-label="[^"]+"[^>]*${k}`), k);
+    }
+    assert.equal((g.match(/<figcaption\b/g) ?? []).length, 0, 'no visible captions (alt text still describes each photo)');
+    for (const img of g.match(/<img\b[^>]*class="[^"]*gallery-img[^>]*>/g) ?? []) assert.match(img, /alt="[^"]+"/);
+  });
 }
 
 test('built CSS keeps anchors clear of the sticky header', () => {
