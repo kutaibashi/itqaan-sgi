@@ -54,7 +54,7 @@ Brand colours are locked to the logo. Only functional shades are derived.
 | `--ink-deep` | `#072a40` | footer, text on lime |
 | `--teal` | `#1a9a98` (logo) | chain line, rules, focus ring. Not used for small text (3.4:1 on white) |
 | `--teal-text` | `#127a78` | small teal text (≥ 4.5:1 on white and paper) |
-| `--lime` | `#8bc34a` (logo) | donate buttons only (navy on lime is 6.9:1) |
+| `--lime` | `#8bc34a` (logo) | donate buttons only, with `--ink-deep` text (7.1:1; plain navy on lime is only 5.4:1) |
 | `--paper` | cool off-white `#f5f8f8` | page background (deliberately not warm cream) |
 | `--line` | `#d7e3e3` | hairlines |
 | `--muted` | `#46606f` | secondary text (≥ 4.5:1 on paper) |
@@ -97,7 +97,8 @@ from scratch.
    Gaziantep marked as headquarters), and Online. Plain lists, with one real figure for online
    (more than 5,000 online graduates in بالقراءة نحيا: 4,996 + 92). No emoji, no orbs.
 5. **Voices\*.** Three real student quotes, static, set in a row on desktop and stacked on mobile.
-   Months of study are updated to Itqaan's current figures. Replaces the auto-rotating React
+   Months of study are updated to Itqaan's current figures. No avatar photos: these are named young
+   people, and a fundraising page doesn't need their faces. Replaces the auto-rotating React
    testimonial.
 6. **Photos\*.** Four cropped photos in a fixed asymmetric grid with real `alt` text and lazy
    loading. Replaces the auto-advancing React slider.
@@ -169,8 +170,8 @@ programme pages, read 2026-09-26.
 - **Accessibility (WCAG 2.2 AA):** skip link, one H1, `:focus-visible` rings in teal, targets
   ≥ 44px, `prefers-reduced-motion` honoured (the only motion is hover and focus transitions),
   `color-scheme: light` on `<html>`, logical properties only.
-- **Sharing and SEO:** a 1200×630 `og:image` per language (cropped photo plus logo and headline,
-  generated at build time into `public/og/`), `twitter:image`, per-language `og:url` and
+- **Sharing and SEO:** one 1200×630 `og:image` (the cropped hall photo with the logo on a white tile, no text, so
+  it serves both languages; the title comes from `og:title`), generated into `public/og/`, `twitter:image`, per-language `og:url` and
   `<link rel=canonical>`, and `hreflang` alternates (ar, en, x-default=ar). WhatsApp previews are
   the main way this page will be shared.
 - **Performance:** one LCP image with `fetchpriority="high"`, self-hosted fonts with

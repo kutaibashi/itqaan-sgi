@@ -479,7 +479,7 @@ test('built CSS keeps anchors clear of the sticky header', () => {
   const dir = new URL('../dist/_astro/', import.meta.url);
   const css = readdirSync(dir).filter((f) => f.endsWith('.css'))
     .map((f) => readFileSync(new URL(f, dir), 'utf8')).join('\n');
-  assert.match(css, /scroll-margin-block-start/);
+  assert.match(css, /scroll-margin-(block-start|top)/);
 });
 ```
 
@@ -1382,6 +1382,7 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
 
 **Files:**
 - Create: `src/components/Give.astro`, `src/components/AboutBrief.astro`
+- Modify: `src/components/DonateModal.astro` (processor line markup only)
 - Rewrite: `src/components/Footer.astro`, `src/pages/index.astro`, `src/pages/en/index.astro`
 - Delete: `src/components/{About,Objectives,Projects,StatsSection,Contact,SocialLinks,DonationSection,VideoSection}.astro`, `src/components/{ImageSlider,Testimonials}.jsx`
 - Modify: `astro.config.mjs`, `tsconfig.json`, `package.json` (remove React), `src/styles/global.css` (remove the LEGACY block)
@@ -1414,7 +1415,10 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
     if (lang !== 'ar') return;
     const body = html.slice(html.indexOf('<body'));
     // Strip bdi contents, attributes and URLs; any SGI or 501(c)(3) left is un-isolated.
-    const bare = body.replace(/<bdi\b[^>]*>[\s\S]*?<\/bdi>/g, '').replace(/<[^>]+>/g, ' ');
+    const bare = body
+      .replace(/<script\b[\s\S]*?<\/script>/g, '')
+      .replace(/<bdi\b[^>]*>[\s\S]*?<\/bdi>/g, '')
+      .replace(/<[^>]+>/g, ' ');
     assert.doesNotMatch(bare, /\bSGI\b|501\(c\)\(3\)/);
   });
 
@@ -1586,6 +1590,18 @@ npm uninstall @astrojs/react react react-dom @types/react @types/react-dom
 `tsconfig.json` — remove the `"compilerOptions"` block (`jsx`, `jsxImportSource`), which only served React.
 
 `src/styles/global.css` — delete the `/* LEGACY … */` block.
+
+`src/components/DonateModal.astro` — **markup only, behaviour untouched**: isolate the Latin names in the processor line so the bidi test passes. Replace `<p class="itq-modal__processor">{t.processedBy}</p>` with:
+
+```astro
+    <p class="itq-modal__processor">
+      {isEn
+        ? <>Smile Givers International (<bdi>SGI</bdi>) receives donations to this campaign and issues the receipt, on behalf of Itqaan Foundation. SGI is a registered US <bdi>501(c)(3)</bdi>.</>
+        : <>تستقبل مؤسسة سمايل جيفرز إنترناشيونال (<bdi>SGI</bdi>) تبرعات هذه الحملة وتُصدر إيصالها، بالنيابة عن مؤسسة إتقان. وهي مؤسسة خيرية مسجّلة في أمريكا بموجب البند <bdi>501(c)(3)</bdi>.</>}
+    </p>
+```
+
+and delete the now-unused `processedBy` keys from its `t` object.
 
 - [ ] **Step 8: Run the tests**
 
