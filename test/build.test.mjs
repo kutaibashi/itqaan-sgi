@@ -187,6 +187,11 @@ for (const { lang, dir, file } of pages) {
     assert.match(give, /data-donate-open/);
     assert.match(give, /501\(c\)\(3\)/);
   });
+
+  test(`${file}: About states Itqaan's licensing in Syria and Türkiye`, () => {
+    const about = html.match(/<section[^>]*id="about"[\s\S]*?<\/section>/)?.[0] ?? '';
+    assert.match(about, lang === 'ar' ? /مرخّصة في سوريا وتركيا/ : /licensed foundation in Syria and Türkiye/);
+  });
 }
 
 test('built CSS keeps anchors clear of the sticky header', () => {
