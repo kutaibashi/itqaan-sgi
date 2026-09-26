@@ -81,5 +81,21 @@ const schemaOrg = {
   </head>
   <body>
     <slot />
+    <script>
+      // Reveal-on-scroll. This script adds .js itself, and CSS hides .reveal
+      // only under .js, so if the script never runs nothing is hidden.
+      const targets = document.querySelectorAll('.reveal');
+      if ('IntersectionObserver' in window && targets.length) {
+        document.documentElement.classList.add('js');
+        const io = new IntersectionObserver((entries) => {
+          for (const entry of entries) {
+            if (!entry.isIntersecting) continue;
+            entry.target.classList.add('is-in');
+            io.unobserve(entry.target);
+          }
+        }, { rootMargin: '0px 0px -8% 0px' });
+        targets.forEach((el) => io.observe(el));
+      }
+    </script>
   </body>
 </html>

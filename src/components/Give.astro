@@ -19,13 +19,13 @@ const t = isEn
       whoTitle: 'مَن يتسلّم تبرعكم',
     };
 ---
-<section id="donate" class="on-dark bg-ink text-white" aria-labelledby="donate-title">
-  <div class="mx-auto grid max-w-6xl items-center gap-8 px-4 py-14 sm:px-6 lg:grid-cols-[1.4fr_1fr] lg:py-20">
-    <div>
+<section id="donate" class="section on-dark relative isolate overflow-hidden bg-ink-deep text-white" aria-labelledby="donate-title">
+  <div class="frame grid items-center gap-10 lg:grid-cols-[1.4fr_1fr] lg:gap-16">
+    <div class="reveal">
       <h2 id="donate-title" class="text-step-4">{t.h2}</h2>
       <p class="mt-4 max-w-[46ch] text-step-1 text-white/85">{t.p}</p>
     </div>
-    <div class="rounded-md border border-white/20 bg-white/5 p-5">
+    <div class="reveal rounded-lg border border-white/15 bg-white/[0.06] p-6" style="--i:1">
       <a href={donateUrl(lang)} data-donate-open class="btn-give btn-give--lg w-full">{t.donate}</a>
       <h3 class="mt-5 text-step-0">{t.whoTitle}</h3>
       <p class="mt-1 text-step--1 text-white/85">

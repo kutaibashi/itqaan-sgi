@@ -12,8 +12,8 @@ const t = isEn
   : { home: '/', logoAlt: 'مؤسسة إتقان', switchHref: '/en/', switchLang: 'en', switchLabel: 'English', donate: 'تبرّع', skip: 'تخطَّ إلى المحتوى' };
 ---
 <a class="skip-link" href="#main">{t.skip}</a>
-<header class="sticky top-0 z-40 border-b border-line bg-white">
-  <div class="flex h-(--header-h) items-center gap-3 px-4 sm:px-8 lg:px-12">
+<header class="sticky top-0 z-40 border-b border-line bg-white/92 backdrop-blur-md">
+  <div class="frame flex h-(--header-h) items-center gap-3">
     <a href={t.home} class="shrink-0 rounded-sm">
       <img src="/logo.png" alt={t.logoAlt} width="190" height="102" class="h-11 w-auto" />
     </a>

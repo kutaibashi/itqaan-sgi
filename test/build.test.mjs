@@ -101,10 +101,12 @@ for (const { lang, dir, file } of pages) {
     const items = path.match(/<li\b/g) ?? [];
     assert.equal(items.length, 5, 'four programmes plus the ijaza line');
     const expected = lang === 'ar'
-      ? ['أكثر من 106,000', 'أكثر من 11,000', 'أكثر من 2,000', 'أكثر من 1,300']
-      // English sets "More than" on its own line above each number.
+      ? ['106,000', '11,000', '2,000', '1,300']
       : ['106,000', '11,000', '2,000', '1,300'];
-    if (lang === 'en') assert.ok((path.match(/More than/g) ?? []).length >= 4, 'each count says "More than"');
+    // Both languages set the prefix on its own line above each number.
+    const prefix = lang === 'ar' ? /أكثر من/g : /More than/g;
+    assert.ok((path.match(prefix) ?? []).length >= 4, 'each count says "more than"');
+    if (lang === 'ar') assert.match(path, /خرّيج وخرّيجة/, 'Arabic names the counted noun after the number');
     let at = -1;
     for (const e of expected) {
       const i = path.indexOf(e);
@@ -182,6 +184,23 @@ for (const { lang, dir, file } of pages) {
     assert.match(text, /peace be upon him/);
   });
 
+  test(`${file}: Itqaan's own motto and values, and no words put in its mouth`, () => {
+    const body = html.slice(html.indexOf('<body'));
+    assert.doesNotMatch(body, /يحبّ إذا عمل|يحب إذا عمل/, 'the hadith linkage is not on Itqaan’s site');
+    if (lang === 'ar') {
+      assert.match(body, /جيلٌ يُسهم في نهضة المجتمع/);
+      for (const v of ['الإتقان', 'القدوة', 'الإسناد', 'الأمان']) assert.match(body, new RegExp(v));
+    } else {
+      assert.match(body, /A generation that helps its community rise/);
+    }
+  });
+
+  test(`${file}: every section's content sits in the one page frame`, () => {
+    const sections = html.match(/<section\b[\s\S]*?<\/section>/g) ?? [];
+    assert.ok(sections.length >= 8);
+    for (const sec of sections) assert.match(sec, /class="[^"]*\bframe\b/, sec.slice(0, 80));
+  });
+
   test(`${file}: the give band keeps the SGI disclosure`, () => {
     const give = html.match(/<section[^>]*id="donate"[\s\S]*?<\/section>/)?.[0] ?? '';
     assert.match(give, /data-donate-open/);
@@ -207,7 +226,7 @@ for (const { lang, dir, file } of pages) {
   test(`${file}: hero headline clauses are separate blocks, not a <br>`, () => {
     const h1 = html.match(/<h1\b[\s\S]*?<\/h1>/)?.[0] ?? '';
     assert.doesNotMatch(h1, /<br\b/);
-    assert.equal((h1.match(/<span class="block/g) ?? []).length, 2);
+    assert.equal((h1.match(/<span class="[^"]*\bblock\b/g) ?? []).length, 2);
   });
 
   test(`${file}: each chain step names the programme before its count (screen-reader order)`, () => {
@@ -223,4 +242,15 @@ test('built CSS keeps anchors clear of the sticky header', () => {
   const css = readdirSync(dir).filter((f) => f.endsWith('.css'))
     .map((f) => readFileSync(new URL(f, dir), 'utf8')).join('\n');
   assert.match(css, /scroll-margin-(block-start|top)/);
+});
+
+test('motion never hides content without JavaScript, and honours reduced motion', () => {
+  const dir = new URL('../dist/_astro/', import.meta.url);
+  const css = readdirSync(dir).filter((f) => f.endsWith('.css'))
+    .map((f) => readFileSync(new URL(f, dir), 'utf8')).join('\n');
+  // Any rule that starts .reveal invisible must be scoped under .js (set by the script itself).
+  for (const m of css.matchAll(/([^{}]*\.reveal[^{}]*)\{([^}]*)\}/g)) {
+    if (/opacity:\s*0(?![.\d])/.test(m[2])) assert.match(m[1], /\.js\b/, `unscoped hidden reveal: ${m[1].trim()}`);
+  }
+  assert.match(css, /prefers-reduced-motion:\s*reduce/);
 });

@@ -27,17 +27,17 @@ const columns = [
   { title: t.online, count: t.onlineCount, items: t.onlineItems },
 ];
 ---
-<section id="areas" aria-labelledby="areas-title">
-  <div class="mx-auto max-w-6xl px-4 py-14 sm:px-6 lg:py-20">
-    <h2 id="areas-title" class="text-step-3">{t.h2}</h2>
-    <div class="mt-8 grid gap-8 md:grid-cols-3">
-      {columns.map((c) => (
-        <div>
+<section id="areas" class="section" aria-labelledby="areas-title">
+  <div class="frame">
+    <h2 id="areas-title" class="section-head reveal text-step-3">{t.h2}</h2>
+    <div class="grid gap-10 md:grid-cols-3 md:gap-12">
+      {columns.map((c, i) => (
+        <div class="reveal" style={`--i:${i}`}>
           <h3 class="flex items-baseline justify-between border-b-2 border-ink pb-2 text-step-1">
-            {c.title}<span class="text-step--1 font-normal text-muted">{c.count}</span>
+            {c.title}<span class="text-step--1 font-semibold text-teal-text">{c.count}</span>
           </h3>
           <ul class="m-0 list-none p-0">
-            {c.items.map((item) => <li class="border-b border-line py-2">{item}</li>)}
+            {c.items.map((item) => <li class="border-b border-line py-2.5">{item}</li>)}
           </ul>
         </div>
       ))}

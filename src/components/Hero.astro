@@ -27,27 +27,51 @@ const t = isEn
       alt: 'فتيان يقرؤون القرآن في صفوف على سجاد مسجد',
       caption: 'حلقة في أحد مراكز إتقان',
     };
+
+// The logo's scattered squares, flying back onto the mark on load.
+// Offsets are logical (inline-end/block-start) so they mirror with the page.
+const squares = [
+  { s: 1.1, top: 0.6, end: 1.2, c: 'bg-ink', r: 18, dx: '-3.5rem', dy: '2.5rem' },
+  { s: 0.75, top: 2.4, end: 3.8, c: 'bg-teal', r: -12, dx: '-2.5rem', dy: '4rem' },
+  { s: 0.6, top: 0, end: 4.9, c: 'bg-lime', r: 30, dx: '-5rem', dy: '2rem' },
+  { s: 1.35, top: 3.5, end: 0.4, c: 'bg-teal', r: 8, dx: '-2rem', dy: '5rem' },
+  { s: 0.5, top: 1.4, end: 6.5, c: 'bg-ink', r: -20, dx: '-4.5rem', dy: '3.5rem' },
+  { s: 0.85, top: 4.9, end: 5.8, c: 'bg-lime', r: 14, dx: '-3rem', dy: '1.5rem' },
+];
 ---
-<section class="grid bg-paper lg:min-h-[34rem] lg:grid-cols-[1.1fr_1fr]" aria-labelledby="hero-title">
-  <div class="flex flex-col justify-center gap-5 px-4 py-10 sm:px-8 lg:px-12 lg:py-12">
-    <p class="text-step--1 font-semibold text-teal-text">{t.kicker}</p>
-    <h1 id="hero-title" class:list={[isEn ? "text-step-4" : "text-step-5", "text-ink"]}>
-      <span class="block">{t.h1a}</span>
-      <span class="block">{t.h1b}</span>
-    </h1>
-    <p class="max-w-[38ch] text-step-1 text-muted">{t.lead}</p>
-    <div class="flex flex-wrap items-center gap-x-6 gap-y-3">
-      <a href={donateUrl(lang)} data-donate-open class="btn-give btn-give--lg">{t.donate}</a>
-      <a href="#path" class="link-quiet">{t.toPath}</a>
+<section class="section overflow-x-clip !pb-[calc(var(--space-section)*0.75)] !pt-[clamp(2rem,1rem+3vw,4rem)]" aria-labelledby="hero-title">
+  <div class="frame grid items-center gap-10 lg:grid-cols-[1fr_1.05fr] lg:gap-14">
+    <div class="flex flex-col gap-5">
+      <p class="rise text-step--1 font-semibold text-teal-text" style="--i:0">{t.kicker}</p>
+      <h1 id="hero-title" class:list={[isEn ? 'text-step-4' : 'text-step-5', 'text-ink']}>
+        <span class="rise block" style="--i:1">{t.h1a}</span>
+        <span class="rise block text-teal-text" style="--i:2">{t.h1b}</span>
+      </h1>
+      <p class="rise max-w-[38ch] text-step-1 text-muted" style="--i:3">{t.lead}</p>
+      <div class="rise flex flex-wrap items-center gap-x-6 gap-y-3" style="--i:4">
+        <a href={donateUrl(lang)} data-donate-open class="btn-give btn-give--lg">{t.donate}</a>
+        <a href="#path" class="link-quiet">{t.toPath}</a>
+      </div>
+      <p class="rise max-w-[54ch] border-t border-line pt-4 text-step--1 text-muted" style="--i:5">
+        {isEn
+          ? <>Smile Givers International (<bdi>SGI</bdi>) receives donations to this campaign and issues the receipt, on behalf of Itqaan.</>
+          : <>تستقبل مؤسسة سمايل جيفرز إنترناشيونال (<bdi>SGI</bdi>) تبرعات هذه الحملة وتُصدر الإيصال، بالنيابة عن مؤسسة إتقان.</>}
+      </p>
     </div>
-    <p class="max-w-[54ch] border-t border-line pt-3 text-step--1 text-muted">
-      {isEn
-        ? <>Smile Givers International (<bdi>SGI</bdi>) receives donations to this campaign and issues the receipt, on behalf of Itqaan.</>
-        : <>تستقبل مؤسسة سمايل جيفرز إنترناشيونال (<bdi>SGI</bdi>) تبرعات هذه الحملة وتُصدر الإيصال، بالنيابة عن مؤسسة إتقان.</>}
-    </p>
+
+    <figure class="relative order-first m-0 lg:order-none">
+      <div class="frame-photo">
+        <Picture name="hall" alt={t.alt} sizes="(min-width: 1024px) 38rem, 100vw" eager class="settle aspect-[4/3.3] w-full object-cover" />
+      </div>
+      <figcaption class="absolute bottom-3 start-3 rounded-sm bg-ink-deep/85 px-2.5 py-1 text-step--2 text-white">{t.caption}</figcaption>
+      <div class="gather pointer-events-none absolute -top-8 -end-6 size-36 max-sm:hidden" aria-hidden="true">
+        {squares.map((q, i) => (
+          <i
+            class:list={['absolute block rounded-[2px]', q.c]}
+            style={`--i:${i};--dx:${q.dx};--dy:${q.dy};--dr:${q.r * 4}deg;inline-size:${q.s}rem;block-size:${q.s}rem;inset-block-start:${q.top}rem;inset-inline-end:${q.end}rem;rotate:${q.r}deg`}
+          ></i>
+        ))}
+      </div>
+    </figure>
   </div>
-  <figure class="relative order-first m-0 aspect-[4/3] lg:order-none lg:aspect-auto">
-    <Picture name="hall" alt={t.alt} sizes="(min-width: 1024px) 55vw, 100vw" eager class="size-full object-cover" />
-    <figcaption class="absolute bottom-3 start-3 rounded-sm bg-ink-deep/85 px-2.5 py-1 text-step--2 text-white">{t.caption}</figcaption>
-  </figure>
 </section>

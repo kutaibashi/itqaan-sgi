@@ -1,0 +1,20 @@
+---
+// Itqaan's own words, and nothing attributed to it that it didn't say: the
+// slogan printed on its stats banner and the values listed on app.itkan.info.
+import { motto, values } from '../data/itqaan';
+
+interface Props { lang?: 'ar' | 'en'; }
+const { lang = 'ar' } = Astro.props;
+const isEn = lang === 'en';
+const label = isEn ? 'Itqaan’s motto and values' : 'شعار مؤسسة إتقان وقيمها';
+---
+<section class="border-y border-line bg-white py-[clamp(2.5rem,1.75rem+3vw,4.5rem)]" aria-label={label}>
+  <div class="frame reveal flex flex-col gap-5 md:flex-row md:items-center md:justify-between md:gap-10">
+    <p class:list={['text-teal', isEn ? 'text-step-3 font-semibold' : 'font-quran text-step-4 font-bold leading-snug']}>
+      {isEn ? `“${motto.en}”` : `«${motto.ar}»`}
+    </p>
+    <ul class="sq-list text-step-1 font-semibold text-ink" aria-label={isEn ? 'Values' : 'القيم'}>
+      {values.map((v) => <li>{v[lang]}</li>)}
+    </ul>
+  </div>
+</section>

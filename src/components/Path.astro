@@ -4,13 +4,16 @@
  * one line, one node per programme, ending at the ijaza. Nodes, not shrinking
  * bars: each stage is its own longer programme with its own students, and bars
  * would read as dropout.
+ *
+ * Set on a navy band over faint rows of prayer-carpet arches — the rows the
+ * students sit in. The line draws itself with scroll where the browser has
+ * scroll-driven animations; everywhere else it is simply there.
  */
 import { programmes, ijazaLine, teacherTraining, formatCount, countPrefix, num, roundDown, DATA_SOURCE } from '../data/itqaan';
 
 interface Props { lang?: 'ar' | 'en'; }
 const { lang = 'ar' } = Astro.props;
 const isEn = lang === 'en';
-const digit = (i: number) => num(i, lang);
 
 const t = isEn
   ? {
@@ -28,111 +31,117 @@ const t = isEn
       give: 'ساهم في إبقاء هذا الطريق مفتوحًا',
     };
 ---
-<section id="path" class="border-y border-line bg-white" aria-labelledby="path-title">
-  <div class="mx-auto grid max-w-6xl gap-10 px-4 py-14 sm:px-6 lg:grid-cols-[1fr_2fr] lg:gap-14 lg:py-20">
-    <div>
+<section id="path" class="path on-dark section relative isolate overflow-hidden bg-ink text-white" aria-labelledby="path-title">
+  <div class="frame grid gap-12 lg:grid-cols-[5fr_7fr] lg:gap-16">
+    <div class="reveal lg:sticky lg:top-[calc(var(--header-h)+2rem)] lg:self-start">
       <h2 id="path-title" class="text-step-3">{t.h2}</h2>
-      <p class="mt-4 max-w-[42ch] text-muted">{t.intro}</p>
-      <p class="mt-4 text-step--1 text-muted">{t.source} (<bdi>{DATA_SOURCE.url}</bdi>)</p>
+      <p class="mt-5 max-w-[46ch] text-white/85">{t.intro}</p>
+      <p class="mt-5 text-step--1 text-white/70">{t.source} (<bdi>{DATA_SOURCE.url}</bdi>)</p>
     </div>
 
     <div>
       <ol class="chain">
         {programmes.map((p, i) => (
-          <li class="chain-step">
-            <span class="chain-dot" aria-hidden="true">{digit(i + 1)}</span>
+          <li class="chain-step reveal" style={`--i:${i}`}>
+            <span class="chain-dot" aria-hidden="true">{num(i + 1, lang)}</span>
             {/* Heading first in source, so a screen reader moving by headings hears
                 each count after its programme name; CSS places the count first. */}
             <div class="chain-body">
               <h3 class="text-step-1">{p.name[lang]}</h3>
-              <p class="text-step--1 text-muted">{p.teaches[lang]}</p>
-              <p class="text-step--1 text-teal-text">{p.meta[lang]}</p>
+              <p class="mt-1 text-step--1 text-white/80">{p.teaches[lang]}</p>
+              <p class="mt-1 text-step--1 text-white/65">{p.meta[lang]}</p>
             </div>
-            {isEn ? (
-              <p class="chain-count">
-                <span class="block text-step--2 font-normal text-muted">{countPrefix(p.count, lang)}</span>
-                {num(roundDown(p.count), lang)}
-                <span class="block text-step--2 font-normal text-muted">{p.countLabel.en}</span>
-              </p>
-            ) : (
-              <p class="chain-count">
-                <span class="block text-step--2 font-normal text-muted">{p.countLabel.ar}</span>
-                {formatCount(p.count, lang)}
-              </p>
-            )}
+            <p class="chain-count">
+              <span class="chain-count-note">{countPrefix(p.count, lang)}</span>
+              <span class="chain-count-num">{num(roundDown(p.count), lang)}</span>
+              <span class="chain-count-note">{p.countLabel[lang]}</span>
+            </p>
           </li>
         ))}
-        <li class="chain-step chain-end">
+        <li class="chain-step chain-end reveal" style="--i:4">
           <span class="chain-dot" aria-hidden="true">
             <svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true"><path d="M3 8.5l3 3 7-7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" /></svg>
           </span>
           {/* Amiri for the Arabic line only; English spells the honorific out. */}
-          <p class:list={['chain-ijaza', !isEn && 'font-quran']}>
-            {ijazaLine[lang]}
-          </p>
+          <p class:list={['chain-ijaza', !isEn && 'font-quran']}>{ijazaLine[lang]}</p>
         </li>
       </ol>
 
-      <p class="mt-8 flex flex-wrap items-baseline gap-x-3 gap-y-1 rounded-md bg-paper px-4 py-3 text-step--1">
-        <strong class="text-step-2 font-semibold tabular-nums">{formatCount(teacherTraining.count, lang)}</strong>
+      <p class="reveal mt-10 flex flex-wrap items-baseline gap-x-3 gap-y-1 rounded-md border border-white/15 bg-white/[0.06] px-5 py-4 text-step--1 text-white/85">
+        <strong class="text-step-2 font-semibold text-white tabular-nums">{formatCount(teacherTraining.count, lang)}</strong>
         <span>{t.track}</span>
       </p>
 
-      <p class="mt-6"><a href="#donate" class="link-quiet">{t.give}</a></p>
+      <p class="reveal mt-8"><a href="#donate" class="link-quiet text-white">{t.give}</a></p>
     </div>
   </div>
 </section>
 
 <style>
+  /* Rows of prayer-carpet arches, faded out toward the text so they frame the
+     band rather than sit behind the words. */
+  .path::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    opacity: 0.07;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='64' viewBox='0 0 36 64'%3E%3Cpath d='M4 64V30Q4 12 18 4Q32 12 32 30V64' fill='none' stroke='white' stroke-width='1.5'/%3E%3C/svg%3E");
+    background-size: 2.25rem 4rem;
+    mask-image: linear-gradient(to bottom, #000 0, transparent 30%, transparent 70%, #000 100%);
+  }
+
   .chain { list-style: none; margin: 0; padding: 0; position: relative; }
   /* The سند itself: one continuous line through every node. */
   .chain::before {
     content: '';
     position: absolute;
-    inset-inline-start: calc(0.875rem - 1px);
-    inset-block: 1.5rem 1.75rem;
+    inset-inline-start: calc(1rem - 1px);
+    inset-block: 1.75rem 2rem;
     inline-size: 2px;
-    background: var(--color-teal);
+    background: linear-gradient(var(--color-teal), var(--color-lime));
+    transform-origin: top;
   }
   .chain-step {
     display: grid;
-    grid-template-columns: 1.75rem 1fr;
-    column-gap: 1rem;
-    row-gap: 0.25rem;
+    grid-template-columns: 2rem 1fr;
+    column-gap: 1.25rem;
+    row-gap: 0.5rem;
     align-items: start;
-    padding-block: 1rem;
-    border-block-end: 1px dashed var(--color-line);
+    padding-block: 1.5rem;
+    border-block-end: 1px solid color-mix(in oklch, white 12%, transparent);
   }
-  .chain-dot { grid-column: 1; grid-row: 1; }
-  .chain-count { grid-column: 2; grid-row: 1; }
-  .chain-body { grid-column: 2; grid-row: 2; }
   .chain-dot {
+    grid-column: 1; grid-row: 1;
     position: relative; z-index: 1;
     display: grid; place-items: center;
-    inline-size: 1.75rem; block-size: 1.75rem;
+    inline-size: 2rem; block-size: 2rem;
     border-radius: 50%;
     border: 2px solid var(--color-teal);
-    background: #fff;
-    color: var(--color-teal-text);
+    background: var(--color-ink);
+    color: var(--color-lime);
     font-size: var(--text-step--2);
     font-weight: 700;
   }
-  .chain-count {
-    margin: 0;
-    font-size: var(--text-step-2);
-    font-weight: 600;
-    line-height: 1.2;
-    font-variant-numeric: tabular-nums;
-  }
-  .chain-end { border-block-end: 0; align-items: center; }
+  .chain-count { grid-column: 2; grid-row: 1; margin: 0; display: flex; flex-direction: column; line-height: 1.15; }
+  .chain-count-num { font-size: var(--text-step-4); font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .chain-count-note { font-size: var(--text-step--1); color: color-mix(in oklch, white 72%, transparent); }
+  .chain-body { grid-column: 2; grid-row: 2; }
+  .chain-end { border-block-end: 0; align-items: center; padding-block-end: 0; }
   .chain-end .chain-dot { background: var(--color-lime); border-color: var(--color-lime); color: var(--color-ink-deep); }
-  .chain-ijaza { margin: 0; font-size: var(--text-step-2); font-weight: 700; line-height: 1.5; }
+  .chain-ijaza { grid-column: 2; margin: 0; font-size: var(--text-step-2); font-weight: 700; line-height: 1.5; }
 
   /* From 40rem the count gets its own column: dot · count · programme. */
   @media (min-width: 40rem) {
-    .chain-step { grid-template-columns: 1.75rem 11rem 1fr; align-items: baseline; }
+    .chain-step { grid-template-columns: 2rem 12.5rem 1fr; column-gap: 1.75rem; align-items: center; }
     .chain-body { grid-column: 3; grid-row: 1; }
-    .chain-dot { align-self: center; }
     .chain-end .chain-ijaza { grid-column: 2 / -1; }
+  }
+
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      @keyframes chain-draw { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+      .chain::before { animation: chain-draw linear both; animation-timeline: view(); animation-range: entry 15% cover 55%; }
+    }
   }
 </style>

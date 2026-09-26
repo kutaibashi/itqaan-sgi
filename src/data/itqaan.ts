@@ -46,9 +46,19 @@ export function formatCount(n: number, lang: Lang): string {
   return `${countPrefix(n, lang)} ${num(roundDown(n), lang)}`;
 }
 
+/** Itqaan's own words: the slogan on its stats banner and the values on app.itkan.info. */
+export const motto: L10n = { ar: 'جيلٌ يُسهم في نهضة المجتمع', en: 'A generation that helps its community rise' };
+export const values: L10n[] = [
+  { ar: 'الإتقان', en: 'Mastery' },
+  { ar: 'القدوة', en: 'Example' },
+  { ar: 'الإسناد', en: 'Support' },
+  { ar: 'الأمان', en: 'Safety' },
+];
+
 export interface Programme {
   id: 'reading' | 'safra' | 'mahir' | 'maqari';
   count: number;
+  /** The counted noun, set after the number. */
   countLabel: L10n;
   name: L10n;
   teaches: L10n;
@@ -60,7 +70,7 @@ export const programmes: Programme[] = [
   {
     id: 'reading',
     count: 106473,
-    countLabel: { ar: 'عدد الخرّيجين', en: 'graduates' },
+    countLabel: { ar: 'خرّيج وخرّيجة', en: 'graduates' },
     name: { ar: 'بالقراءة نحيا', en: 'Bil-Qira’ah Nahya' },
     teaches: {
       ar: 'القراءة والكتابة العربية السليمة، مع برنامج تربوي مصاحب',
@@ -71,7 +81,7 @@ export const programmes: Programme[] = [
   {
     id: 'safra',
     count: 11161,
-    countLabel: { ar: 'عدد الخرّيجين', en: 'graduates' },
+    countLabel: { ar: 'خرّيج وخرّيجة', en: 'graduates' },
     name: { ar: 'السفرة', en: 'Al-Safarah' },
     teaches: {
       ar: 'تلاوة القرآن الكريم كاملًا نظرًا مع أحكام التجويد',
@@ -82,7 +92,7 @@ export const programmes: Programme[] = [
   {
     id: 'mahir',
     count: 2083,
-    countLabel: { ar: 'عدد الحفّاظ والحافظات', en: 'have memorised the Qur’an' },
+    countLabel: { ar: 'حافظ وحافظة', en: 'have memorised the Qur’an' },
     name: { ar: 'الماهر بالقرآن', en: 'Al-Mahir bil-Qur’an' },
     teaches: {
       ar: 'حفظ القرآن الكريم كاملًا غيبًا، مع برنامج شرعي وتربوي',
@@ -93,7 +103,7 @@ export const programmes: Programme[] = [
   {
     id: 'maqari',
     count: 1325,
-    countLabel: { ar: 'عدد المُجازين والمُجازات', en: 'ijaza holders' },
+    countLabel: { ar: 'مُجاز ومُجازة', en: 'ijaza holders' },
     name: { ar: 'المقارئ القرآنية', en: 'Al-Maqari’ al-Qur’aniyyah' },
     teaches: {
       ar: 'إقراء القرآن بالقراءات المتواترة للحفّاظ والحافظات',

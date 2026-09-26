@@ -11,10 +11,10 @@ const t = isEn
   ? { h2: 'Itqaan’s introductory film', play: 'Play Itqaan’s introductory film', frame: 'Itqaan introductory film' }
   : { h2: 'فيلم تعريفي بمؤسسة إتقان', play: 'شغّل الفيلم التعريفي بمؤسسة إتقان', frame: 'الفيلم التعريفي بمؤسسة إتقان' };
 ---
-<section id="film" class="bg-white" aria-labelledby="film-title">
-  <div class="mx-auto max-w-4xl px-4 py-14 sm:px-6 lg:py-16">
-    <h2 id="film-title" class="text-step-3">{t.h2}</h2>
-    <div class="mt-8 aspect-video overflow-hidden rounded-md bg-ink-deep" data-film-box>
+<section id="film" class="section bg-white" aria-labelledby="film-title">
+  <div class="frame grid items-center gap-8 lg:grid-cols-[1fr_2.4fr] lg:gap-14">
+    <h2 id="film-title" class="reveal text-step-3">{t.h2}</h2>
+    <div class="frame-photo reveal aspect-video bg-ink-deep" style="--i:1" data-film-box>
       <a
         href={`https://www.youtube.com/watch?v=${id}`}
         class="group relative block size-full focus-visible:outline-offset-[-6px] focus-visible:outline-white"
@@ -24,7 +24,7 @@ const t = isEn
       >
         <img src="/video/intro.webp" alt="" width="1280" height="720" loading="lazy" decoding="async" class="size-full object-cover" />
         <span class="absolute inset-0 grid place-items-center" aria-hidden="true">
-          <span class="grid size-18 place-items-center rounded-full bg-white/95 text-ink shadow-lg transition-transform duration-150 group-hover:scale-105">
+          <span class="grid size-18 place-items-center rounded-full bg-white/95 text-ink shadow-lg ring-0 ring-white/40 transition-[transform,box-shadow] duration-300 ease-out group-hover:scale-110 group-hover:ring-[0.75rem]">
             <svg viewBox="0 0 24 24" width="28" height="28"><path d="M8 5v14l11-7z" fill="currentColor" /></svg>
           </span>
         </span>

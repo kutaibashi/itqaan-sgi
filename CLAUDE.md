@@ -15,6 +15,16 @@ Cloudflare Workers Builds from `main` (every branch also gets a build check on G
 - Arabic copy: Western digits, donors addressed as أنتم, no "·" separator (Readex draws it like
   the digit ٠; a test enforces this). Latin runs inside Arabic go in `<bdi>`.
 
+## Layout and motion
+
+- Every section's content sits in `.frame` (72rem); only colour bands run edge to edge. Section
+  padding comes from `--space-section`, heading gaps from `.section-head`. Don't hand-roll widths.
+- Motion is transform/opacity only. `.reveal` is hidden **only under `.js`**, which the reveal
+  script in `Layout.astro` adds itself; without JavaScript nothing is hidden (a test enforces it).
+- Reduced motion turns movement into crossfades. Never count numbers up: mid-animation they'd
+  show figures that aren't true.
+- Don't attribute words to Itqaan that it hasn't published (the hadith band was dropped for that).
+
 ## Verify changes
 
 `npm test` builds the site and runs `test/*.test.mjs` (plain `node:test`, Node 24

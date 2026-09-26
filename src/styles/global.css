@@ -1,7 +1,9 @@
-/* FDE · shape: long document + one signature (the path as a سند chain)
- * palette: cool paper / Itqaan navy ink / lime reserved for giving
- * type: Readex Pro (Arabic expansion of Lexend, built for reading) + Amiri for Qur'an
- * critique P4 H4 E4 S5 R4 V5 (2026-09-26, screenshots at 320/390/1280, ar+en) */
+/* FDE · v2 · shape: long document in one 72rem frame + one signature (the path as a سند chain on navy)
+ * palette: cool paper / Itqaan navy ink / teal accents / lime reserved for giving
+ * type: Readex Pro (Arabic expansion of Lexend, built for reading) + Amiri for Qur'an and the motto
+ * motifs from Itqaan's world: the logo's scattered squares, prayer-carpet arch rows
+ * motion: hero rises on load, sections reveal once, the sanad line draws with scroll; reduced motion = crossfades
+ * critique v2 P5 H4 E4 S5 R4 V4 (2026-09-26, screenshots 320–1440, ar+en) */
 @import "tailwindcss";
 
 /* ── Tier 1: primitives. Itqaan's logo colours; only functional shades derived. */
@@ -52,6 +54,17 @@
   --radius-control: 0.375rem;
   --focus-ring: var(--color-teal);
   --header-h: 4.25rem;
+
+  /* Layout: one frame for every section; only colour bands run edge to edge. */
+  --frame: 72rem;
+  --frame-gutter: clamp(1rem, 0.5rem + 2.5vw, 2rem);
+  --space-section: clamp(3.5rem, 2.5rem + 3.5vw, 5.5rem); /* each side of a section */
+  --space-head: clamp(1.75rem, 1.25rem + 1.5vw, 2.75rem); /* section heading → content */
+
+  /* Motion: reveals are the only long durations; UI feedback stays ≤150ms. */
+  --dur-ui: 150ms;
+  --dur-reveal: 700ms;
+  --stagger: 90ms;
 }
 
 @layer base {
@@ -74,9 +87,6 @@
   [id] { scroll-margin-block-start: calc(var(--header-h) + 1rem); }
   :focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 3px; border-radius: 2px; }
   .on-dark { --focus-ring: var(--color-lime); }
-  @media (prefers-reduced-motion: reduce) {
-    *, ::before, ::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
-  }
 }
 
 @layer components {
@@ -107,3 +117,50 @@
   .skip-link:focus { inset-block-start: 1rem; }
 }
 
+@layer components {
+  .frame { inline-size: 100%; max-inline-size: calc(var(--frame) + 2 * var(--frame-gutter)); margin-inline: auto; padding-inline: var(--frame-gutter); }
+  .section { padding-block: var(--space-section); }
+  .section-head { margin-block-end: var(--space-head); }
+  .frame-photo { overflow: hidden; border-radius: 0.5rem; box-shadow: 0 1.9rem 3.75rem -1.9rem color-mix(in oklch, var(--color-ink-deep) 55%, transparent); }
+
+  /* The logo's scattered squares, used as small separators (never "·": Readex
+     draws it like the Arabic-Indic zero). */
+  .sq-list { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 1.25rem; list-style: none; margin: 0; padding: 0; }
+  /* Three of the logo's squares, marking a quotation (a big «/“ glyph mirrors badly in RTL). */
+  .sq-mark { display: flex; gap: 0.3rem; align-items: flex-end; block-size: 1.1rem; }
+  .sq-mark i { display: block; inline-size: 0.6rem; block-size: 0.6rem; border-radius: 1px; }
+  .sq-mark i:nth-child(1) { background: var(--color-ink); rotate: 14deg; }
+  .sq-mark i:nth-child(2) { background: var(--color-teal); inline-size: 0.8rem; block-size: 0.8rem; rotate: -10deg; }
+  .sq-mark i:nth-child(3) { background: var(--color-lime); inline-size: 0.45rem; block-size: 0.45rem; rotate: 24deg; align-self: flex-start; }
+
+  .sq-list > li + li::before {
+    content: ''; display: inline-block; inline-size: 0.45rem; block-size: 0.45rem;
+    margin-inline-end: 1.25rem; background: var(--color-teal); transform: rotate(18deg) translateY(-0.1em);
+  }
+}
+
+/* ── Motion ────────────────────────────────────────────────────────────────
+   1. Load: the hero rises in (CSS only, no JS needed).
+   2. Scroll: .reveal elements fade up once. Hidden ONLY under .js, which the
+      reveal script sets itself, so with no JavaScript everything is visible.
+   3. The sanad line draws with scroll where scroll-driven animations exist.
+   Reduced motion: movement becomes a plain crossfade. */
+@keyframes itq-rise { from { opacity: 0; transform: translateY(1.1rem); } }
+@keyframes itq-settle { from { opacity: 0; transform: scale(1.04); } }
+@keyframes itq-gather { from { opacity: 0; transform: translate(var(--dx, -3rem), var(--dy, 2rem)) rotate(var(--dr, 60deg)); } }
+@keyframes itq-fade { from { opacity: 0; } }
+
+.rise { animation: itq-rise var(--dur-reveal) var(--ease-out) both; animation-delay: calc(var(--i, 0) * var(--stagger)); }
+.settle { animation: itq-settle 1100ms var(--ease-out) both; }
+.gather > * { animation: itq-gather 1200ms var(--ease-out) both; animation-delay: calc(450ms + var(--i, 0) * 70ms); }
+
+.js .reveal { opacity: 0; transform: translateY(1.5rem); transition: opacity var(--dur-reveal) var(--ease-out), transform var(--dur-reveal) var(--ease-out); transition-delay: calc(var(--i, 0) * var(--stagger)); }
+.js .reveal.is-in { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .rise, .settle { animation: itq-fade 400ms linear both; }
+  .gather > * { animation: none; }
+  .js .reveal { transform: none; transition: opacity 400ms linear; transition-delay: 0ms; }
+  *, ::before, ::after { transition-property: opacity, color, background-color, border-color, outline-color !important; }
+}
