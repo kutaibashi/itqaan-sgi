@@ -300,6 +300,12 @@ for (const { lang, dir, file } of pages) {
     assert.equal((g.match(/<figcaption\b/g) ?? []).length, 0, 'no visible captions (alt text still describes each photo)');
     for (const img of g.match(/<img\b[^>]*class="[^"]*gallery-img[^>]*>/g) ?? []) assert.match(img, /alt="[^"]+"/);
   });
+
+  test(`${file}: SGI's Arabic name is مانحي الابتسامة الدولية`, () => {
+    if (lang !== 'ar') return;
+    assert.doesNotMatch(html, /سمايل/);
+    assert.match(html, /مانحي الابتسامة الدولية/);
+  });
 }
 
 test('built CSS keeps anchors clear of the sticky header', () => {
