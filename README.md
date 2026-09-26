@@ -1,44 +1,48 @@
-# Astro Starter Kit: Minimal
+# Itqaan Foundation — website
 
-```sh
-npm create astro@latest -- --template minimal
-```
+The bilingual landing page for **Itqaan Foundation for Education and Development**
+(مؤسسة إتقان للتعليم والتنمية), a Qur'an and Arabic teaching foundation in
+Gaziantep, Türkiye. Live at <https://itqaan.sgi.ngo>.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+- Arabic (default, right-to-left): `/`
+- English (left-to-right): `/en/`
 
-## 🚀 Project Structure
+Built with Astro 5 as a static site, styled with Tailwind 4, with two small React
+islands (the image slider and testimonials). Hosted on Cloudflare Pages, which
+builds and deploys every push to `main`.
 
-Inside of your Astro project, you'll see the following folders and files:
+## Commands
+
+| Command           | What it does                                       |
+| :---------------- | :------------------------------------------------- |
+| `npm ci`          | Install dependencies from the lockfile             |
+| `npm run dev`     | Dev server at `http://localhost:4321`              |
+| `npm run build`   | Build the static site into `dist/`                 |
+| `npm run preview` | Serve the built `dist/` locally                    |
+| `npm test`        | Build, then run the tests in `test/` (Node 24+)    |
+
+## Layout
 
 ```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+src/
+  pages/index.astro       Arabic page
+  pages/en/index.astro    English page — same sections, lang="en"
+  layouts/Layout.astro    <head>: meta, Open Graph, JSON-LD, fonts
+  components/             One file per section; copy for both languages inline
+  config/donate.ts        Everything about where donations go
+  styles/global.css       Tailwind import, brand colours, fonts
+public/                   Images served as-is
+brand/                    Source artwork (not deployed)
+test/                     node:test — the donation URL contract and built HTML
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## Donations
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+This site takes no payments. Every donate button is a plain link to Smile Givers
+International's (SGI) checkout at `sgi.ngo/donate/`. SGI is a US 501(c)(3) that
+receives gifts for this campaign and issues the receipts. With JavaScript,
+`DonateModal.astro` opens that checkout in a modal iframe instead of leaving the page.
 
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
-# Deployed on Cloudflare Pages
+`src/config/donate.ts` is the whole integration surface. Read its comments before
+changing it. In particular, the campaign slug's odd spelling is deliberate. The other
+half of the contract is documented in the SGI theme at `docs/itqaan-embed.md`.
