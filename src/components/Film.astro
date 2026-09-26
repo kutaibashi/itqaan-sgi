@@ -1,0 +1,52 @@
+---
+// Itqaan's introductory film. A poster that is a plain link to YouTube; with
+// JavaScript, a click swaps in the player. Nothing is fetched from YouTube
+// before that click.
+interface Props { lang?: 'ar' | 'en'; }
+const { lang = 'ar' } = Astro.props;
+const isEn = lang === 'en';
+const id = '9vrkcedB9LM';
+
+const t = isEn
+  ? { h2: 'Itqaan’s introductory film', play: 'Play Itqaan’s introductory film', frame: 'Itqaan introductory film' }
+  : { h2: 'فيلم تعريفي بمؤسسة إتقان', play: 'شغّل الفيلم التعريفي بمؤسسة إتقان', frame: 'الفيلم التعريفي بمؤسسة إتقان' };
+---
+<section id="film" class="bg-white" aria-labelledby="film-title">
+  <div class="mx-auto max-w-4xl px-4 py-14 sm:px-6 lg:py-16">
+    <h2 id="film-title" class="text-step-3">{t.h2}</h2>
+    <div class="mt-8 aspect-video overflow-hidden rounded-md bg-ink-deep" data-film-box>
+      <a
+        href={`https://www.youtube.com/watch?v=${id}`}
+        class="group relative block size-full"
+        data-film={id}
+        data-film-title={t.frame}
+        aria-label={t.play}
+      >
+        <img src="/video/intro.webp" alt="" width="1280" height="720" loading="lazy" decoding="async" class="size-full object-cover" />
+        <span class="absolute inset-0 grid place-items-center" aria-hidden="true">
+          <span class="grid size-18 place-items-center rounded-full bg-white/95 text-ink shadow-lg transition-transform duration-150 group-hover:scale-105">
+            <svg viewBox="0 0 24 24" width="28" height="28"><path d="M8 5v14l11-7z" fill="currentColor" /></svg>
+          </span>
+        </span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll<HTMLAnchorElement>('[data-film]').forEach((link) => {
+    link.addEventListener('click', (event) => {
+      // Modified clicks keep their meaning: open YouTube in a new tab.
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.button !== 0) return;
+      event.preventDefault();
+      const frame = document.createElement('iframe');
+      frame.src = `https://www.youtube-nocookie.com/embed/${link.dataset.film}?autoplay=1&rel=0`;
+      frame.title = link.dataset.filmTitle ?? '';
+      frame.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+      frame.allowFullscreen = true;
+      frame.className = 'size-full border-0';
+      link.replaceWith(frame);
+      frame.focus();
+    });
+  });
+</script>

@@ -135,6 +135,13 @@ for (const { lang, dir, file } of pages) {
     assert.ok(voices, 'section#voices missing');
     assert.doesNotMatch(voices, /<img\b/);
   });
+
+  test(`${file}: the film is a real link until clicked`, () => {
+    const film = html.match(/<section[^>]*id="film"[\s\S]*?<\/section>/)?.[0];
+    assert.ok(film, 'section#film missing');
+    assert.match(film, /<a[^>]*href="https:\/\/www\.youtube\.com\/watch\?v=9vrkcedB9LM"/);
+    assert.doesNotMatch(film, /<iframe/, 'no YouTube request before a click');
+  });
 }
 
 test('built CSS keeps anchors clear of the sticky header', () => {
