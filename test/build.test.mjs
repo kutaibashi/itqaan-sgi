@@ -155,7 +155,8 @@ for (const { lang, dir, file } of pages) {
   });
 
   test(`${file}: outbound links stay on the allowlist`, () => {
-    const allowed = /^(https:\/\/(sgi\.ngo|itkan\.info|www\.youtube\.com\/watch|wa\.me)\b|mailto:)/;
+    // Anchored on a following "/" or "?", so a lookalike such as sgi.ngo.evil.example fails.
+    const allowed = /^(https:\/\/(sgi\.ngo|itkan\.info|wa\.me)(\/|$)|https:\/\/www\.youtube\.com\/watch\?|mailto:)/;
     const hrefs = [...html.matchAll(/<a\b[^>]*\bhref="([^"]+)"/g)].map((m) => m[1])
       .filter((h) => /^(https?:|mailto:)/.test(h));
     for (const h of hrefs) assert.match(h, allowed, `unexpected outbound link: ${h}`);
@@ -306,6 +307,17 @@ for (const { lang, dir, file } of pages) {
     assert.doesNotMatch(html, /سمايل/);
     assert.match(html, /مانحو الابتسامة الدولية/);
     assert.doesNotMatch(html, /مانحي الابتسامة/);
+  });
+
+  test(`${file}: every Latin run in the Arabic page is isolated (bdi or a lang attribute)`, () => {
+    if (lang !== 'ar') return;
+    const body = html.slice(html.indexOf('<body'))
+      .replace(/<(script|style)\b[\s\S]*?<\/\1>/g, '')
+      .replace(/<bdi\b[^>]*>[\s\S]*?<\/bdi>/g, '')
+      .replace(/<(\w+)\b[^>]*\blang="(en|tr)"[^>]*>[\s\S]*?<\/\1>/g, '')
+      .replace(/<[^>]+>/g, ' ');
+    const latin = body.match(/[A-Za-z][A-Za-z.]+/g) ?? [];
+    assert.deepEqual(latin, [], `un-isolated Latin: ${latin.slice(0, 5).join(', ')}`);
   });
 }
 

@@ -3,7 +3,8 @@
  * type: Readex Pro (Arabic expansion of Lexend, built for reading) + Amiri for Qur'an and the motto
  * motifs from Itqaan's world: the logo's scattered squares, prayer-carpet arch rows
  * motion: hero rises on load, sections reveal once, the sanad line draws with scroll; reduced motion = crossfades
- * critique v2 P5 H4 E4 S5 R4 V4 (2026-09-26, screenshots 320–1440, ar+en) */
+ * motifs also: a real map (Natural Earth) with a border inset; the mark opens in the give band
+ * critique v2.1 P5 H5 E4 S5 R4 V4 (2026-09-26, screenshots 300–1440, ar+en) */
 @import "tailwindcss";
 
 /* ── Tier 1: primitives. Itqaan's logo colours; only functional shades derived. */
@@ -14,6 +15,7 @@
   --teal-600: oklch(52.6% 0.086 192.8);   /* #127a78 — 5.2:1 on white */
   --lime-500: oklch(75.4% 0.163 130.5);   /* logo lime #8bc34a */
   --lime-600: oklch(70.5% 0.155 131.4);   /* #7cb342 */
+  --white:    oklch(100% 0 0);
   --grey-50:  oklch(97.7% 0.003 197.1);   /* cool paper — deliberately not warm cream */
   --grey-200: oklch(90.7% 0.013 196.9);
   --grey-600: oklch(47.4% 0.039 234.0);   /* 6.2:1 on paper */
@@ -28,6 +30,7 @@
   --color-teal-text: var(--teal-600);
   --color-lime: var(--lime-500);
   --color-lime-hover: var(--lime-600);
+  --color-surface: var(--white);   /* cards, map land edges, text on dark */
   --color-paper: var(--grey-50);
   --color-line: var(--grey-200);
   --color-muted: var(--grey-600);

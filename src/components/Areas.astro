@@ -156,7 +156,7 @@ const columns = [
 <style>
   .areas-map { font-family: var(--font-sans); direction: ltr; }
   .map-sea { fill: color-mix(in oklch, var(--color-teal) 7%, var(--color-paper)); }
-  .map-land { stroke: white; stroke-width: 0.8; stroke-linejoin: round; }
+  .map-land { stroke: var(--color-surface); stroke-width: 0.8; stroke-linejoin: round; }
   .map-land--other { fill: var(--color-line); }
   .map-land--tr { fill: color-mix(in oklch, var(--color-teal) 26%, white); }
   .map-land--sy { fill: color-mix(in oklch, var(--color-ink) 20%, white); }
@@ -165,11 +165,11 @@ const columns = [
   .map-sea-label { font-size: 10px; fill: var(--color-muted); }
   .map-inset-frame { fill: none; stroke: var(--color-ink); stroke-width: 1.2; stroke-dasharray: 3 2; }
   .map-inset-edge { fill: none; stroke: var(--color-ink); stroke-width: 1.2; stroke-dasharray: 4 3; }
-  .map-dot circle { stroke: white; stroke-width: 1.5; }
+  .map-dot circle { stroke: var(--color-surface); stroke-width: 1.5; }
   .map-dot--tr circle { fill: var(--color-teal-text); }
   .map-dot--sy circle { fill: var(--color-ink); }
   .map-dot .map-hq-ring { fill: none; stroke: var(--color-lime); stroke-width: 3; }
-  .map-label { font-size: 12px; font-weight: 700; fill: var(--color-ink); paint-order: stroke; stroke: white; stroke-width: 3.5px; stroke-linejoin: round; }
+  .map-label { font-size: 12px; font-weight: 700; fill: var(--color-ink); paint-order: stroke; stroke: var(--color-surface); stroke-width: 3.5px; stroke-linejoin: round; }
   .areas-map--inset .map-label { font-size: 13px; }
   /* The main map renders at ~60% scale on phones: enlarge its type there. */
   @media (max-width: 47.99rem) {
@@ -178,7 +178,7 @@ const columns = [
     .areas-map--main .map-sea-label { font-size: 15px; }
     .areas-map--main .map-dot circle { r: 5.5; }
   }
-  .map-note { font-size: 10.5px; fill: var(--color-muted); paint-order: stroke; stroke: white; stroke-width: 3px; }
+  .map-note { font-size: 10.5px; fill: var(--color-muted); paint-order: stroke; stroke: var(--color-surface); stroke-width: 3px; }
 
   .areas-key { display: inline-block; inline-size: 0.65rem; block-size: 0.65rem; border-radius: 50%; }
   .areas-key--tr { background: var(--color-teal-text); }
