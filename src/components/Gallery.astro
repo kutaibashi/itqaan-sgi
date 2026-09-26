@@ -1,0 +1,32 @@
+---
+import Picture from './Picture.astro';
+
+interface Props { lang?: 'ar' | 'en'; }
+const { lang = 'ar' } = Astro.props;
+const isEn = lang === 'en';
+
+const h2 = isEn ? 'Inside the circles' : 'من داخل الحلقات';
+const photos = [
+  { name: 'lecture', alt: isEn ? 'Young men at a lesson with a projector in a mosque' : 'شباب في درس أمام شاشة عرض داخل مسجد' },
+  { name: 'women', alt: isEn ? 'Women and girls reading the Qur’an on wooden stands in a women’s circle' : 'نساء وفتيات يقرأن القرآن على الرحلات في حلقة نسائية' },
+  { name: 'classroom', alt: isEn ? 'Children writing at desks in a learning centre' : 'أطفال يكتبون على طاولات في مركز تعليمي' },
+  { name: 'teachers', alt: isEn ? 'Adult men in a classroom during a course' : 'رجال في قاعة دراسية خلال دورة' },
+] as const;
+---
+<section id="photos" aria-labelledby="photos-title">
+  <div class="mx-auto max-w-6xl px-4 py-14 sm:px-6 lg:py-16">
+    <h2 id="photos-title" class="text-step-3">{h2}</h2>
+    <div class="mt-8 grid grid-cols-2 gap-2 md:grid-cols-4 md:grid-rows-[repeat(2,14rem)]">
+      {photos.map((p, i) => (
+        <figure class:list={['m-0 overflow-hidden rounded-md', i === 0 && 'col-span-2 md:row-span-2', i === 3 && 'col-span-2']}>
+          <Picture
+            name={p.name}
+            alt={p.alt}
+            sizes={i === 0 || i === 3 ? '(min-width: 768px) 50vw, 100vw' : '(min-width: 768px) 25vw, 50vw'}
+            class="size-full object-cover"
+          />
+        </figure>
+      ))}
+    </div>
+  </div>
+</section>

@@ -120,6 +120,21 @@ for (const { lang, dir, file } of pages) {
       .replace(/<[^>]+>/g, ' ');
     assert.doesNotMatch(text, /·/);
   });
+
+  test(`${file}: every image has alt, width and height`, () => {
+    for (const img of html.match(/<img\b[^>]*>/g) ?? []) {
+      assert.match(img, /\balt="/, img);
+      assert.match(img, /\bwidth="\d+"/, img);
+      assert.match(img, /\bheight="\d+"/, img);
+    }
+  });
+
+  test(`${file}: no photos of named students`, () => {
+    assert.doesNotMatch(html, /avatar-/);
+    const voices = html.match(/<section[^>]*id="voices"[\s\S]*?<\/section>/)?.[0] ?? '';
+    assert.ok(voices, 'section#voices missing');
+    assert.doesNotMatch(voices, /<img\b/);
+  });
 }
 
 test('built CSS keeps anchors clear of the sticky header', () => {

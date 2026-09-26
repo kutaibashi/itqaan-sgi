@@ -1,0 +1,28 @@
+---
+import { voices, num } from '../data/itqaan';
+
+interface Props { lang?: 'ar' | 'en'; }
+const { lang = 'ar' } = Astro.props;
+const isEn = lang === 'en';
+const h2 = isEn ? 'In their students’ words' : 'بكلمات طلابها';
+// Arabic separates with a comma: Readex draws '·' like the digit ٠.
+const sep = isEn ? ' · ' : '، ';
+const months = (m: number) => (isEn ? `${m} months at Itqaan` : `${num(m, lang)} شهرًا في إتقان`);
+---
+<section id="voices" class="border-y border-line bg-white" aria-labelledby="voices-title">
+  <div class="mx-auto max-w-6xl px-4 py-14 sm:px-6 lg:py-16">
+    <h2 id="voices-title" class="text-step-3">{h2}</h2>
+    <div class="mt-8 grid gap-8 md:grid-cols-3">
+      {voices.map((v) => (
+        <figure class="m-0 border-s-2 border-teal ps-5">
+          <blockquote class="m-0 text-step-1 font-medium leading-relaxed">
+            <p>{isEn ? `“${v.quote.en}”` : `«${v.quote.ar}»`}</p>
+          </blockquote>
+          <figcaption class="mt-3 text-step--1 text-muted">
+            <span class="font-semibold text-ink">{v.name[lang]}</span>{sep}{v.role[lang]}{sep}{months(v.months)}
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+  </div>
+</section>

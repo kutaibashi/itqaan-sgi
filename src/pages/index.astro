@@ -6,8 +6,8 @@ import VideoSection from '../components/VideoSection.astro';
 import About from '../components/About.astro';
 import Objectives from '../components/Objectives.astro';
 import Path from '../components/Path.astro';
-import ImageSlider from '../components/ImageSlider.jsx';
-import Testimonials from '../components/Testimonials.jsx';
+import Voices from '../components/Voices.astro';
+import Gallery from '../components/Gallery.astro';
 import Areas from '../components/Areas.astro';
 import Contact from '../components/Contact.astro';
 import DonationSection from '../components/DonationSection.astro';
@@ -20,12 +20,12 @@ import DonateModal from '../components/DonateModal.astro';
   <main id="main">
     <Hero lang="ar" />
     <Path lang="ar" />
+    <Areas lang="ar" />
+    <Voices lang="ar" />
+    <Gallery lang="ar" />
     <About />
     <VideoSection />
     <Objectives />
-    <Areas />
-    <ImageSlider client:visible />
-    <Testimonials client:visible />
     <DonationSection />
     <Contact />
   </main>
