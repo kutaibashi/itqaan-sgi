@@ -89,19 +89,20 @@ from scratch.
    القرآن» (English: "We teach reading first, then walk with each student to memorising the
    Qur'an"). Then one lead sentence, the Donate button (primary, lime), a text link to the path,
    and the SGI disclosure line. The photo is `slider-2` (a wide mosque hall where the children are
-   small), cropped, with a caption, `fetchpriority="high"`, and width and height set.
+   small), cropped, with a generic caption («حلقة في أحد مراكز إتقان»). Centre names are never shown next to photos of children, `fetchpriority="high"`, and width and height set.
 3. **The path\*** (signature, `id="path"`). An intro column plus an `<ol>` chain with 4 stages and
    the ijaza line. A source note: «أعداد الخرّيجين منذ التأسيس، كما تنشرها المؤسسة». Teacher
    training appears as a track beneath it.
 4. **Where we work\*** (`id="areas"`). Three columns: Syria (4 areas), Türkiye (5 cities, with
    Gaziantep marked as headquarters), and Online. Plain lists, with one real figure for online
-   (more than 4,900 online graduates in بالقراءة نحيا). No emoji, no orbs.
+   (more than 5,000 online graduates in بالقراءة نحيا: 4,996 + 92). No emoji, no orbs.
 5. **Voices\*.** Three real student quotes, static, set in a row on desktop and stacked on mobile.
    Months of study are updated to Itqaan's current figures. Replaces the auto-rotating React
    testimonial.
 6. **Photos\*.** Four cropped photos in a fixed asymmetric grid with real `alt` text and lazy
    loading. Replaces the auto-advancing React slider.
-7. **Video\*.** A YouTube facade that shows a thumbnail and play button and loads the iframe only
+7. **Video\*.** A YouTube facade that shows a self-hosted thumbnail (downloaded once into `public/`,
+   so nothing is fetched from YouTube before a click) and play button and loads the iframe only
    on click. It's the introductory film, which is proof of the work, not a channel promotion. The
    "subscribe" button is dropped.
 8. **Give\*** (`id="donate"`). A dark navy band with one sentence on why to give, the Donate
@@ -112,8 +113,9 @@ from scratch.
    one clear link, «موقع مؤسسة إتقان» → itkan.info, for enrolment, courses and everything else.
    The full vision, values and goals stay on Itqaan's site.
 10. **Footer.** SGI and Itqaan names, a question line (WhatsApp and email for Itqaan's programmes;
-    a link to sgi.ngo for donation and receipt questions), the Itqaan site link and
-    social icons. One row, quiet.
+    a link to sgi.ngo for donation and receipt questions) and the Itqaan site link. No social
+    icons: each one is an exit, and fundraising-page research says to remove them (iDonate: 195%
+    more conversions with the site header removed). One row, quiet.
 
 **Removed:** StatsSection (its round numbers are replaced by the path), the header section menu
 and mobile menu, the About and Objectives sections (reduced to section 9), the Contact section
@@ -167,11 +169,20 @@ programme pages, read 2026-09-26.
 - **Accessibility (WCAG 2.2 AA):** skip link, one H1, `:focus-visible` rings in teal, targets
   ≥ 44px, `prefers-reduced-motion` honoured (the only motion is hover and focus transitions),
   `color-scheme: light` on `<html>`, logical properties only.
+- **Sharing and SEO:** a 1200×630 `og:image` per language (cropped photo plus logo and headline,
+  generated at build time into `public/og/`), `twitter:image`, per-language `og:url` and
+  `<link rel=canonical>`, and `hreflang` alternates (ar, en, x-default=ar). WhatsApp previews are
+  the main way this page will be shared.
 - **Performance:** one LCP image with `fetchpriority="high"`, self-hosted fonts with
   `font-display: swap`, lazy images below the fold, no third-party requests until the video is
   clicked.
 - **Stays exactly as it is:** `src/config/donate.ts`, `DonateModal.astro` behaviour, every donate
   button as a real `<a href={donateUrl(lang)} data-donate-open>`.
+
+## Repo notes
+
+- Add to CLAUDE.md: this is SGI's fundraising page for Itqaan, not Itqaan's site. Every section
+  must build trust or ask for the gift. Enrolment and profile content link to itkan.info.
 
 ## Testing
 
