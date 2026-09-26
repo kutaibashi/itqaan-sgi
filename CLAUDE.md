@@ -1,7 +1,7 @@
 # CLAUDE.md
 
 Static Astro 5 + Tailwind 4 landing page for Itqaan Foundation, deployed to
-Cloudflare Pages from `main`. See README.md for layout and commands.
+Cloudflare Workers Builds from `main` (every branch also gets a build check on GitHub). See README.md for layout and commands.
 
 ## Verify changes
 
