@@ -1,117 +1,29 @@
 ---
 import { donateUrl } from '../config/donate';
 
-// Sticky Header Component
-interface Props {
-  lang?: 'ar' | 'en';
-}
-
+// A fundraising page's header: who, which language, give. No section menu —
+// on a donation page every nav link is an exit (see the spec).
+interface Props { lang?: 'ar' | 'en'; }
 const { lang = 'ar' } = Astro.props;
 const isEn = lang === 'en';
 
-// A real link to SGI's donation page. DonateModal.astro intercepts the click and
-// opens it in a modal; without JS, or without <dialog>, this href still works.
-const donateHref = donateUrl(lang);
-
-const nav = isEn ? {
-  about: 'About',
-  projects: 'Programs',
-  areas: 'Locations',
-  contact: 'Contact',
-  donate: 'Donate',
-  donateMobile: 'Donate Now',
-  menuAria: 'Menu',
-  switchLang: 'العربية',
-  switchHref: '/',
-} : {
-  about: 'عن المؤسسة',
-  projects: 'مشاريعنا',
-  areas: 'مناطق التوزع',
-  contact: 'تواصل معنا',
-  donate: 'تبرع',
-  donateMobile: 'تبرع الآن',
-  menuAria: 'القائمة',
-  switchLang: 'English',
-  switchHref: '/en/',
-};
+const t = isEn
+  ? { home: '/en/', logoAlt: 'Itqaan Foundation', switchHref: '/', switchLang: 'ar', switchLabel: 'العربية', donate: 'Donate', skip: 'Skip to content' }
+  : { home: '/', logoAlt: 'مؤسسة إتقان', switchHref: '/en/', switchLang: 'en', switchLabel: 'English', donate: 'تبرّع', skip: 'تخطَّ إلى المحتوى' };
 ---
-
-<header class="sticky top-0 z-50 bg-[#0a3d62] shadow-md border-b-2 border-[#1a9a98]/50">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex items-center justify-between h-16 md:h-20">
-      <!-- Logo / Brand -->
-      <a href={isEn ? '/en/' : '/'} class="flex items-center gap-2 hover:opacity-90 transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8bc34a] rounded-md">
-        <div class="bg-white rounded-md px-2 py-1.5 shadow-sm">
-          <img src="/logo.png" alt="Itqaan" class="h-10 w-auto" width="190" height="102" />
-        </div>
-      </a>
-      
-      <!-- Navigation -->
-      <nav class="hidden md:flex items-center gap-6">
-        <a href="#about" class="text-white/80 hover:text-[#8bc34a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8bc34a] active:scale-95 text-sm font-medium transition-all duration-200 rounded-sm">{nav.about}</a>
-        <a href="#projects" class="text-white/80 hover:text-[#8bc34a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8bc34a] active:scale-95 text-sm font-medium transition-all duration-200 rounded-sm">{nav.projects}</a>
-        <a href="#areas" class="text-white/80 hover:text-[#8bc34a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8bc34a] active:scale-95 text-sm font-medium transition-all duration-200 rounded-sm">{nav.areas}</a>
-        <a href="#contact" class="text-white/80 hover:text-[#8bc34a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8bc34a] active:scale-95 text-sm font-medium transition-all duration-200 rounded-sm">{nav.contact}</a>
-        <a
-          href={nav.switchHref}
-          class="text-white/80 hover:text-[#8bc34a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8bc34a] active:scale-95 text-sm font-medium transition-all duration-200 border border-white/20 rounded-md px-3 py-1.5 hover:border-[#8bc34a]"
-        >
-          {nav.switchLang}
-        </a>
-        <a
-          href={donateHref}
-          data-donate-open
-          class="inline-flex items-center px-5 py-2.5 bg-[#8bc34a] text-[#0a3d62] font-bold text-sm rounded-md hover:bg-[#7cb342] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#8bc34a] active:scale-95 transition-all duration-300 shadow-sm cursor-pointer"
-        >
-          <svg class="w-4 h-4 ml-1.5" fill="currentColor" viewBox="0 0 20 20">
-            <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"/>
-          </svg>
-          {nav.donate}
-        </a>
-      </nav>
-      
-      <!-- Mobile Menu Button -->
-      <div class="flex items-center gap-3 md:hidden">
-        <a
-          href={nav.switchHref}
-          class="text-white/80 hover:text-[#8bc34a] text-sm font-medium transition-all duration-200 border border-white/20 rounded-md px-3 py-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8bc34a] active:scale-95"
-        >
-          {nav.switchLang}
-        </a>
-        <button id="mobile-menu-btn" class="text-white p-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8bc34a] active:scale-95 rounded-md" aria-label={nav.menuAria}>
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-          </svg>
-        </button>
-      </div>
-    </div>
-  </div>
-  
-  <!-- Mobile Menu -->
-  <div id="mobile-menu" class="hidden md:hidden bg-[#072a40] border-t border-[#1a9a98]/30">
-    <div class="px-4 py-3 space-y-1">
-      <a href="#about" class="block text-white/80 hover:text-white hover:bg-[#1a9a98]/20 focus-visible:outline-none focus-visible:bg-[#1a9a98]/20 active:bg-[#1a9a98]/40 py-3 px-4 rounded-md text-sm transition-all duration-200">{nav.about}</a>
-      <a href="#projects" class="block text-white/80 hover:text-white hover:bg-[#1a9a98]/20 focus-visible:outline-none focus-visible:bg-[#1a9a98]/20 active:bg-[#1a9a98]/40 py-3 px-4 rounded-md text-sm transition-all duration-200">{nav.projects}</a>
-      <a href="#areas" class="block text-white/80 hover:text-white hover:bg-[#1a9a98]/20 focus-visible:outline-none focus-visible:bg-[#1a9a98]/20 active:bg-[#1a9a98]/40 py-3 px-4 rounded-md text-sm transition-all duration-200">{nav.areas}</a>
-      <a href="#contact" class="block text-white/80 hover:text-white hover:bg-[#1a9a98]/20 focus-visible:outline-none focus-visible:bg-[#1a9a98]/20 active:bg-[#1a9a98]/40 py-3 px-4 rounded-md text-sm transition-all duration-200">{nav.contact}</a>
-      <a
-        href={donateHref}
-        data-donate-open
-        class="w-full inline-flex items-center justify-center px-5 py-3 bg-[#8bc34a] text-[#0a3d62] font-bold text-sm rounded-md hover:bg-[#7cb342] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#8bc34a] active:scale-95 transition-all duration-300 cursor-pointer mt-2"
-      >
-        <svg class="w-4 h-4 ml-1.5" fill="currentColor" viewBox="0 0 20 20">
-          <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"/>
-        </svg>
-        {nav.donateMobile}
-      </a>
-    </div>
+<a class="skip-link" href="#main">{t.skip}</a>
+<header class="sticky top-0 z-40 border-b border-line bg-white">
+  <div class="flex h-(--header-h) items-center gap-3 px-4 sm:px-8 lg:px-12">
+    <a href={t.home} class="shrink-0 rounded-sm">
+      <img src="/logo.png" alt={t.logoAlt} width="190" height="102" class="h-11 w-auto" />
+    </a>
+    <span class="flex-1"></span>
+    <a
+      href={t.switchHref}
+      hreflang={t.switchLang}
+      lang={t.switchLang}
+      class="inline-flex min-h-11 items-center rounded-sm px-3 text-step--1 font-medium text-ink underline-offset-4 hover:underline"
+    >{t.switchLabel}</a>
+    <a href={donateUrl(lang)} data-donate-open class="btn-give">{t.donate}</a>
   </div>
 </header>
-
-<script>
-  const btn = document.getElementById('mobile-menu-btn');
-  const menu = document.getElementById('mobile-menu');
-  btn?.addEventListener('click', () => {
-    menu?.classList.toggle('hidden');
-  });
-</script>

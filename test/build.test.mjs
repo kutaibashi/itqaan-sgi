@@ -27,8 +27,8 @@ for (const { lang, dir, file } of pages) {
 
   test(`${file}: every donate button is a real link to SGI`, () => {
     const anchors = html.match(/<a\b[^>]*\bdata-donate-open\b[^>]*>/g) ?? [];
-    // Header (desktop + mobile), Hero, DonationSection.
-    assert.ok(anchors.length >= 4, `expected at least 4 donate buttons, found ${anchors.length}`);
+    // Header, hero and give band. The old mobile-menu duplicate is gone with the menu.
+    assert.ok(anchors.length >= 3, `expected at least 3 donate buttons, found ${anchors.length}`);
 
     for (const a of anchors) {
       const href = decode(a.match(/\bhref="([^"]*)"/)?.[1] ?? '');
@@ -83,6 +83,16 @@ for (const { lang, dir, file } of pages) {
   test(`${file}: no Google Fonts, light colour scheme`, () => {
     assert.doesNotMatch(html, /fonts\.googleapis\.com|fonts\.gstatic\.com/);
     assert.match(html.match(/<html[^>]*>/)[0], /style="color-scheme: ?light"|data-color-scheme/);
+  });
+
+  test(`${file}: exactly one h1 and one high-priority image`, () => {
+    assert.equal((html.match(/<h1[\s>]/g) ?? []).length, 1);
+    assert.equal((html.match(/fetchpriority="high"/g) ?? []).length, 1);
+  });
+
+  test(`${file}: skip link targets main`, () => {
+    assert.match(html, /<a[^>]*class="skip-link"[^>]*href="#main"|<a[^>]*href="#main"[^>]*class="skip-link"/);
+    assert.match(html, /<main[^>]*id="main"/);
   });
 }
 

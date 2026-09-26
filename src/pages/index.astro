@@ -3,7 +3,6 @@ import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Hero from '../components/Hero.astro';
 import VideoSection from '../components/VideoSection.astro';
-import StatsSection from '../components/StatsSection.astro';
 import About from '../components/About.astro';
 import Objectives from '../components/Objectives.astro';
 import Projects from '../components/Projects.astro';
@@ -18,10 +17,9 @@ import DonateModal from '../components/DonateModal.astro';
 
 <Layout lang="ar">
   <Header lang="ar" />
-  <main>
-    <Hero />
+  <main id="main">
+    <Hero lang="ar" />
     <About />
-    <StatsSection />
     <VideoSection />
     <Objectives />
     <Projects />

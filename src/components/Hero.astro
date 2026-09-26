@@ -1,96 +1,52 @@
 ---
 import { donateUrl } from '../config/donate';
+import Picture from './Picture.astro';
 
-// Hero Section
-interface Props {
-  lang?: 'ar' | 'en';
-}
-
+interface Props { lang?: 'ar' | 'en'; }
 const { lang = 'ar' } = Astro.props;
 const isEn = lang === 'en';
 
-// A real link to SGI's donation page. DonateModal.astro intercepts the click and
-// opens it in a modal; without JS, or without <dialog>, this href still works.
-const donateHref = donateUrl(lang);
-
-const t = isEn ? {
-  title1: "Itqaan ",
-  title2: "Foundation",
-  title3: "for Education and Development",
-  desc: "An educational foundation dedicated to teaching proper Arabic, Qur'an recitation and memorization, and nurturing the values and principles of the Qur'an to raise a conscious generation that contributes to the advancement of society.",
-  donate: "Donate Now",
-  projects: "Our Programs",
-  contact: "Contact Us"
-} : {
-  title1: "مؤسسة ",
-  title2: "إتقان",
-  title3: "للتعليم والتنمية",
-  desc: "مؤسسة تعليمية تهتم بتعليم العربية السليمة، وضبط القرآن الكريم وحفظه، والتربية على قيمه ومبادئه؛ لإخراج جيل واعٍ يسهم في نهضة المجتمع ورقيه.",
-  donate: "تبرع الآن",
-  projects: "اكتشف مشاريعنا",
-  contact: "تواصل معنا"
-};
+const t = isEn
+  ? {
+      kicker: 'Itqaan Foundation for Education and Development · Syria and Türkiye',
+      h1a: 'We teach reading first,',
+      h1b: 'then walk with each student to memorising the Qur’an',
+      lead: 'Circles in mosques, centres and online, teaching correct Arabic and the reading and memorisation of the Qur’an.',
+      donate: 'Donate to Itqaan’s circles',
+      toPath: 'See the student’s path',
+      alt: 'Boys reading the Qur’an in rows on a mosque carpet',
+      caption: 'A circle at one of Itqaan’s centres',
+    }
+  : {
+      kicker: 'مؤسسة إتقان للتعليم والتنمية · سوريا وتركيا',
+      h1a: 'نعلّم القراءة أولًا،',
+      h1b: 'ثم نرافق الطالب حتى يحفظ القرآن',
+      lead: 'حلقاتٌ في المساجد والمراكز وعلى الإنترنت، لتعليم العربية السليمة، وتلاوة القرآن الكريم وحفظه.',
+      donate: 'تبرّع لحلقات إتقان',
+      toPath: 'اعرف طريق الطالب',
+      alt: 'فتيان يقرؤون القرآن في صفوف على سجاد مسجد',
+      caption: 'حلقة في أحد مراكز إتقان',
+    };
 ---
-
-<section class="relative bg-[#0a3d62] overflow-hidden min-h-[85vh] flex items-center border-b-[8px] border-[#8bc34a]">
-  <!-- Background image with low opacity -->
-  <div class="absolute inset-0">
-    <img
-      src="/slider-1.jpg"
-      alt=""
-      class="w-full h-full object-cover opacity-15"
-      fetchpriority="high"
-      decoding="async"
-    />
-    <div class="absolute inset-0 bg-gradient-to-b from-[#0a3d62]/70 via-[#0a3d62]/85 to-[#0a3d62]/95"></div>
-  </div>
-  
-  <!-- Islamic geometric pattern overlay -->
-  <div class="absolute inset-0 islamic-pattern opacity-30"></div>
-  
-  <!-- Content -->
-  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28 w-full">
-    <div class="max-w-4xl mx-auto text-center">
-      
-      <!-- Headline -->
-      <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-[1.2] mb-8 font-heading drop-shadow-md" style="animation-delay: 0.1s;">
-        {t.title1}<span class="text-[#8bc34a]">{t.title2}</span>
-        <span class="block mt-4 text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-white/90">
-          {t.title3}
-        </span>
-      </h1>
-
-      <!-- Subheadline -->
-      <p class="text-lg md:text-xl lg:text-2xl text-white/80 max-w-3xl mx-auto mb-12 leading-relaxed" style="animation-delay: 0.2s;">
-        {t.desc}
-      </p>
-
-      <!-- CTA Buttons -->
-      <div class=" flex flex-col sm:flex-row items-center justify-center gap-4" style="animation-delay: 0.3s;">
-        <a
-          href={donateHref}
-          data-donate-open
-          class="inline-flex items-center justify-center w-full sm:w-auto px-10 py-4 bg-[#8bc34a] text-[#0a3d62] font-black text-lg rounded-md hover:bg-[#7cb342] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#8bc34a] active:scale-95 transition-all duration-300 shadow-lg cursor-pointer"
-        >
-          <svg class={`w-5 h-5 ${isEn ? 'mr-2' : 'ml-2'}`} fill="currentColor" viewBox="0 0 20 20">
-            <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"/>
-          </svg>
-          {t.donate}
-        </a>
-        <a href="#projects" class="inline-flex items-center justify-center w-full sm:w-auto px-10 py-4 bg-transparent text-white border-2 border-[#1a9a98] font-bold text-lg rounded-md hover:bg-[#1a9a98] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-white active:scale-95 transition-all duration-300">
-          <svg class={`w-5 h-5 ${isEn ? 'mr-2' : 'ml-2'}`} fill="currentColor" viewBox="0 0 20 20">
-            <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0z"/>
-          </svg>
-          {t.projects}
-        </a>
-        <a href="#contact" class="inline-flex items-center justify-center w-full sm:w-auto px-10 py-4 bg-transparent text-white border-2 border-white/20 font-bold text-lg rounded-md hover:bg-white/10 hover:border-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-white active:scale-95 transition-all duration-300">
-          <svg class={`w-5 h-5 ${isEn ? 'mr-2' : 'ml-2'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-          </svg>
-          {t.contact}
-        </a>
-      </div>
-
+<section class="grid bg-paper lg:min-h-[34rem] lg:grid-cols-[1fr_1.15fr]" aria-labelledby="hero-title">
+  <div class="flex flex-col justify-center gap-5 px-4 py-10 sm:px-8 lg:px-12 lg:py-16">
+    <p class="text-step--1 font-semibold text-teal-text">{t.kicker}</p>
+    <h1 id="hero-title" class:list={[isEn ? "text-step-4" : "text-step-5", "text-ink"]}>
+      {t.h1a}<br class="hidden sm:inline" /> {t.h1b}
+    </h1>
+    <p class="max-w-[38ch] text-step-1 text-muted">{t.lead}</p>
+    <div class="flex flex-wrap items-center gap-x-6 gap-y-3">
+      <a href={donateUrl(lang)} data-donate-open class="btn-give btn-give--lg">{t.donate}</a>
+      <a href="#path" class="link-quiet">{t.toPath}</a>
     </div>
+    <p class="max-w-[54ch] border-t border-line pt-3 text-step--1 text-muted">
+      {isEn
+        ? <>Smile Givers International (<bdi>SGI</bdi>) receives donations to this campaign and issues the receipt, on behalf of Itqaan.</>
+        : <>تستقبل مؤسسة سمايل جيفرز إنترناشيونال (<bdi>SGI</bdi>) تبرعات هذه الحملة وتُصدر الإيصال، بالنيابة عن مؤسسة إتقان.</>}
+    </p>
   </div>
+  <figure class="relative order-first m-0 aspect-[4/3] lg:order-none lg:aspect-auto">
+    <Picture name="hall" alt={t.alt} sizes="(min-width: 1024px) 55vw, 100vw" eager class="size-full object-cover" />
+    <figcaption class="absolute bottom-3 start-3 rounded-sm bg-ink-deep/85 px-2.5 py-1 text-step--2 text-white">{t.caption}</figcaption>
+  </figure>
 </section>
