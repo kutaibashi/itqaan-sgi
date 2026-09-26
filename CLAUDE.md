@@ -3,6 +3,18 @@
 Static Astro 5 + Tailwind 4 landing page for Itqaan Foundation, deployed to
 Cloudflare Workers Builds from `main` (every branch also gets a build check on GitHub). See README.md for layout and commands.
 
+## Scope
+
+- This is SGI's **fundraising page** for Itqaan, not Itqaan's website (that is itkan.info).
+  Every section must build donor trust or ask for the gift. Enrolment, courses and the full
+  profile link to itkan.info.
+- Facts and numbers live in `src/data/itqaan.ts`, sourced from app.itkan.info, and are always
+  rounded down. Update them there only.
+- Photos: sources in `brand/photos/`, built by `npm run assets` into `public/photos/`.
+  Never show a centre name next to photos of children. Students are quoted by first name only.
+- Arabic copy: Western digits, donors addressed as أنتم, no "·" separator (Readex draws it like
+  the digit ٠; a test enforces this). Latin runs inside Arabic go in `<bdi>`.
+
 ## Verify changes
 
 `npm test` builds the site and runs `test/*.test.mjs` (plain `node:test`, Node 24

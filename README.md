@@ -1,6 +1,6 @@
 # Itqaan Foundation — website
 
-The bilingual landing page for **Itqaan Foundation for Education and Development**
+SGI's bilingual fundraising page for **Itqaan Foundation for Education and Development**
 (مؤسسة إتقان للتعليم والتنمية), a Qur'an and Arabic teaching foundation in
 Gaziantep, Türkiye. Live at <https://itqaan.sgi.ngo>.
 
@@ -20,6 +20,7 @@ builds and deploys every push to `main`.
 | `npm run build`   | Build the static site into `dist/`                 |
 | `npm run preview` | Serve the built `dist/` locally                    |
 | `npm test`        | Build, then run the tests in `test/` (Node 24+)    |
+| `npm run assets`  | Rebuild cropped photos, share image, video poster  |
 
 ## Layout
 
@@ -30,9 +31,11 @@ src/
   layouts/Layout.astro    <head>: meta, Open Graph, JSON-LD, fonts
   components/             One file per section; copy for both languages inline
   config/donate.ts        Everything about where donations go
+  data/itqaan.ts          Itqaan's published figures and shared copy
   styles/global.css       Tailwind import, brand colours, fonts
 public/                   Images served as-is
-brand/                    Source artwork (not deployed)
+brand/                    Source logo and photos (not deployed)
+scripts/build-assets.mjs  Crops photos into public/photos/
 test/                     node:test — the donation URL contract and built HTML
 ```
 
