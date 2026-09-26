@@ -1,107 +1,85 @@
 ---
+import '@fontsource-variable/readex-pro';
+import '@fontsource/amiri/400.css';
+import '@fontsource/amiri/700.css';
 import '../styles/global.css';
 
 interface Props {
+  lang?: 'ar' | 'en';
   title?: string;
   description?: string;
-  lang?: 'ar' | 'en';
 }
 
 const { lang = 'ar' } = Astro.props;
 const isEn = lang === 'en';
 
-const defaultTitle = isEn 
-  ? "Itqaan Foundation for Education and Development" 
-  : "مؤسسة إتقان للتعليم والتنمية";
+const SITE = 'https://itqaan.sgi.ngo';
+const self = isEn ? `${SITE}/en/` : `${SITE}/`;
 
-const defaultDesc = isEn
-  ? "Itqaan is an educational foundation dedicated to teaching proper Arabic, Qur'an recitation, memorization, and nurturing values derived from the Qur'an."
-  : "مؤسسة إتقان للتعليم والتنمية - مؤسسة تعليمية تهتم بتعليم العربية السليمة، وضبط القرآن الكريم وحفظه، والتربية على قيمه ومبادئه.";
-
+// This is SGI's fundraising page for Itqaan, and the metadata says so.
 const {
-  title = defaultTitle,
-  description = defaultDesc,
+  title = isEn
+    ? 'Support Itqaan’s Qur’an and Arabic circles in Syria and Türkiye'
+    : 'ادعم حلقات مؤسسة إتقان لتعليم القرآن والعربية في سوريا وتركيا',
+  description = isEn
+    ? 'Itqaan teaches children to read Arabic, then walks with them to reading and memorising the Qur’an. Give through Smile Givers International (SGI), a US 501(c)(3).'
+    : 'تعلّم مؤسسة إتقان الأطفال القراءة العربية السليمة، ثم ترافقهم حتى يتلوا القرآن الكريم ويحفظوه. تبرّع عبر مؤسسة سمايل جيفرز إنترناشيونال (SGI).',
 } = Astro.props;
 
-const siteUrl = "https://itqaan.sgi.ngo";
-const siteName = isEn ? "Itqaan Foundation" : "مؤسسة إتقان";
-
+// About Itqaan itself, whose own site is itkan.info.
 const schemaOrg = {
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": defaultTitle,
-  "url": siteUrl,
-  "description": defaultDesc,
-  "contactPoint": {
-    "@type": "ContactPoint",
-    "telephone": "+905378980555",
-    "email": "info@itkan.info",
-    "contactType": isEn ? "Information" : "معلومات",
-    "availableLanguage": isEn ? ["English", "Arabic"] : ["Arabic", "English"]
+  '@context': 'https://schema.org',
+  '@type': 'EducationalOrganization',
+  name: isEn ? 'Itqaan Foundation for Education and Development' : 'مؤسسة إتقان للتعليم والتنمية',
+  alternateName: 'ITKAN Eğitim ve Kalkınma Derneği',
+  url: 'https://itkan.info/',
+  logo: `${SITE}/logo.png`,
+  email: 'info@itkan.info',
+  telephone: '+905378980555',
+  address: {
+    '@type': 'PostalAddress',
+    addressCountry: 'TR',
+    addressLocality: isEn ? 'Gaziantep' : 'غازي عنتاب',
   },
-  "address": {
-    "@type": "PostalAddress",
-    "addressCountry": "TR",
-    "addressLocality": isEn ? "Gaziantep" : "غازي عنتاب",
-    "streetAddress": isEn ? "Kartaş, next to Aminah Mosque" : "كرتاش جانب جامع آمنة"
-  }
+  sameAs: [
+    'https://www.facebook.com/ITKANDERNEGI',
+    'https://www.instagram.com/itkan_tr',
+    'https://www.youtube.com/@ITKANDERNEGI',
+    'https://t.me/s/ITKANDERNEGI',
+  ],
 };
 ---
-
-<!DOCTYPE html>
-<html lang={lang} dir={isEn ? 'ltr' : 'rtl'}>
+<!doctype html>
+<html lang={lang} dir={isEn ? 'ltr' : 'rtl'} style="color-scheme: light">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
     <meta name="description" content={description} />
-    <meta name="keywords" content={isEn ? "Itqaan, Quran teaching, Quran memorization, Arabic teaching, Syria, Turkey, charity" : "إتقان, تعليم القرآن, حفظ القرآن, تعليم العربية, سوريا, تركيا, مؤسسة خيرية"} />
-    
-    <!-- Open Graph -->
+    <link rel="canonical" href={self} />
+    <link rel="alternate" hreflang="ar" href={`${SITE}/`} />
+    <link rel="alternate" hreflang="en" href={`${SITE}/en/`} />
+    <link rel="alternate" hreflang="x-default" href={`${SITE}/`} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={isEn ? 'Itqaan · SGI' : 'إتقان · SGI'} />
+    <meta property="og:locale" content={isEn ? 'en_US' : 'ar_AR'} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content={siteUrl} />
-    <meta property="og:site_name" content={siteName} />
-    
-    <!-- Twitter Card -->
+    <meta property="og:url" content={self} />
+    <meta property="og:image" content={`${SITE}/og/itqaan.jpg`} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={title} />
-    <meta name="twitter:description" content={description} />
-    
+    <meta name="twitter:image" content={`${SITE}/og/itqaan.jpg`} />
+
     <link rel="icon" type="image/png" sizes="96x96" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <title>{title}</title>
-    
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    {isEn ? (
-      <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
-    ) : (
-      <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet" />
-    )}
-    
-    <!-- JSON-LD Schema Markup -->
+    <meta name="theme-color" content="#0a3d62" />
+
     <script type="application/ld+json" set:html={JSON.stringify(schemaOrg)}></script>
-
-    {/*
-      Donations are SGI's own checkout, opened in a modal iframe by
-      components/DonateModal.astro. There is no third-party donation script here any
-      more, and nothing to bootstrap from <head>.
-
-      What was here until 2026-08-19: four Infaque widget files, self-hosted from
-      /public/infaque/ because on 2026-08-17 Infaque deleted them from their CDN.
-      Firebase Hosting's catch-all rewrite answered 200 with their SPA shell as
-      text/html, Chrome refused it (net::ERR_BLOCKED_BY_ORB), and every donate button
-      on this site went dead — silently, because a 200 is not an error. The pinned
-      Wayback copies were always a bridge, not a fix.
-
-      The replacement is documented on the SGI side, in the theme at
-      docs/itqaan-embed.md, which also owns the URL contract these buttons rely on.
-      Config lives in src/config/donate.ts — not in per-button data attributes.
-    */}
   </head>
-  <body class="bg-white">
+  <body>
     <slot />
   </body>
 </html>

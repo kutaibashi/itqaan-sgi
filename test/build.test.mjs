@@ -5,7 +5,7 @@
 // modal iframe that never loaded.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync } from 'node:fs';
 
 import { donateUrl } from '../src/config/donate.ts';
 
@@ -64,4 +64,31 @@ for (const { lang, dir, file } of pages) {
     assert.doesNotMatch(frame, /\bsrc=/);
     assert.match(frame, /allow="payment"/);
   });
+
+  test(`${file}: canonical and hreflang alternates`, () => {
+    const self = lang === 'ar' ? 'https://itqaan.sgi.ngo/' : 'https://itqaan.sgi.ngo/en/';
+    assert.match(html, new RegExp(`<link rel="canonical" href="${self}"`));
+    assert.match(html, /<link rel="alternate" hreflang="ar" href="https:\/\/itqaan\.sgi\.ngo\/"/);
+    assert.match(html, /<link rel="alternate" hreflang="en" href="https:\/\/itqaan\.sgi\.ngo\/en\/"/);
+    assert.match(html, /<link rel="alternate" hreflang="x-default" href="https:\/\/itqaan\.sgi\.ngo\/"/);
+    assert.match(html, new RegExp(`<meta property="og:url" content="${self}"`));
+  });
+
+  test(`${file}: share image points at a built file`, () => {
+    const m = html.match(/<meta property="og:image" content="https:\/\/itqaan\.sgi\.ngo(\/[^"]+)"/);
+    assert.ok(m, 'og:image missing');
+    assert.ok(existsSync(new URL(`../dist${m[1]}`, import.meta.url)), `${m[1]} not in dist/`);
+  });
+
+  test(`${file}: no Google Fonts, light colour scheme`, () => {
+    assert.doesNotMatch(html, /fonts\.googleapis\.com|fonts\.gstatic\.com/);
+    assert.match(html.match(/<html[^>]*>/)[0], /style="color-scheme: ?light"|data-color-scheme/);
+  });
 }
+
+test('built CSS keeps anchors clear of the sticky header', () => {
+  const dir = new URL('../dist/_astro/', import.meta.url);
+  const css = readdirSync(dir).filter((f) => f.endsWith('.css'))
+    .map((f) => readFileSync(new URL(f, dir), 'utf8')).join('\n');
+  assert.match(css, /scroll-margin-(block-start|top)/);
+});

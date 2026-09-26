@@ -1,0 +1,31 @@
+---
+/**
+ * One of the cropped photos built by scripts/build-assets.mjs.
+ * Intrinsic size 1600×1216 (the 2000×1520 crop), so the browser reserves the
+ * right box before the image arrives.
+ */
+interface Props {
+  name: 'hall' | 'lecture' | 'teachers' | 'classroom' | 'women';
+  alt: string;
+  sizes: string;
+  /** Only the hero photo. It is the LCP image: eager + high priority. */
+  eager?: boolean;
+  class?: string;
+}
+const { name, alt, sizes, eager = false, class: cls } = Astro.props;
+const set = (ext: string) => `/photos/${name}-800.${ext} 800w, /photos/${name}-1600.${ext} 1600w`;
+---
+<picture>
+  <source type="image/avif" srcset={set('avif')} sizes={sizes} />
+  <source type="image/webp" srcset={set('webp')} sizes={sizes} />
+  <img
+    src={`/photos/${name}-800.webp`}
+    alt={alt}
+    width="1600"
+    height="1216"
+    loading={eager ? 'eager' : 'lazy'}
+    fetchpriority={eager ? 'high' : undefined}
+    decoding="async"
+    class={cls}
+  />
+</picture>
