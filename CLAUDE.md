@@ -12,7 +12,7 @@ Cloudflare Workers Builds from `main` (every branch also gets a build check on G
   rounded down. Update them there only.
 - Photos: sources in `brand/photos/`, built by `npm run assets` into `public/photos/`.
   Never show a centre name next to photos of children. Students are quoted by first name only.
-- SGI's Arabic name is «مانحي الابتسامة الدولية» (never the transliteration «سمايل جيفرز»); a test enforces it.
+- SGI's Arabic name is «مانحو الابتسامة الدولية» (never the transliteration «سمايل جيفرز»); a test enforces it.
 - Arabic copy: Western digits, donors addressed as أنتم, no "·" separator (Readex draws it like
   the digit ٠; a test enforces this). Latin runs inside Arabic go in `<bdi>`.
 

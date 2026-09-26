@@ -301,10 +301,11 @@ for (const { lang, dir, file } of pages) {
     for (const img of g.match(/<img\b[^>]*class="[^"]*gallery-img[^>]*>/g) ?? []) assert.match(img, /alt="[^"]+"/);
   });
 
-  test(`${file}: SGI's Arabic name is مانحي الابتسامة الدولية`, () => {
+  test(`${file}: SGI's Arabic name is مانحو الابتسامة الدولية`, () => {
     if (lang !== 'ar') return;
     assert.doesNotMatch(html, /سمايل/);
-    assert.match(html, /مانحي الابتسامة الدولية/);
+    assert.match(html, /مانحو الابتسامة الدولية/);
+    assert.doesNotMatch(html, /مانحي الابتسامة/);
   });
 }
 
