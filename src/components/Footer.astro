@@ -5,8 +5,8 @@ const isEn = lang === 'en';
 const year = new Date().getFullYear();
 
 const t = isEn
-  ? { rights: `© ${year} Itqaan Foundation for Education and Development`, circles: 'Questions about the circles:', giving: 'Questions about your donation or receipt:' }
-  : { rights: `© ${year} مؤسسة إتقان للتعليم والتنمية`, circles: 'أسئلة عن الحلقات:', giving: 'أسئلة عن تبرعكم أو إيصالكم:' };
+  ? { rights: `© ${year} Itqaan Foundation for Education and Development`, circles: 'Questions about the circles:' }
+  : { rights: `© ${year} مؤسسة إتقان للتعليم والتنمية`, circles: 'أسئلة عن الحلقات:' };
 ---
 <footer class="on-dark bg-ink-deep text-step--1 text-white/85">
   <div class="mx-auto flex max-w-6xl flex-col gap-3 px-4 py-8 sm:px-6 md:flex-row md:flex-wrap md:items-center md:justify-between">
@@ -16,6 +16,5 @@ const t = isEn
       <a href="https://wa.me/905378980555" class="underline underline-offset-4 hover:text-white"><bdi dir="ltr">+90 537 898 05 55</bdi></a>
       <a href="mailto:info@itkan.info" class="underline underline-offset-4 hover:text-white"><bdi>info@itkan.info</bdi></a>
     </p>
-    <p>{t.giving} <a href="https://sgi.ngo/" class="underline underline-offset-4 hover:text-white"><bdi>sgi.ngo</bdi></a></p>
   </div>
 </footer>

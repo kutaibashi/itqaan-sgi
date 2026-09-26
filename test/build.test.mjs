@@ -192,6 +192,12 @@ for (const { lang, dir, file } of pages) {
     const about = html.match(/<section[^>]*id="about"[\s\S]*?<\/section>/)?.[0] ?? '';
     assert.match(about, lang === 'ar' ? /مرخّصة في سوريا وتركيا/ : /licensed foundation in Syria and Türkiye/);
   });
+
+  test(`${file}: footer has no donation-questions line`, () => {
+    const footer = html.match(/<footer\b[\s\S]*?<\/footer>/)?.[0] ?? '';
+    assert.ok(footer, 'footer missing');
+    assert.doesNotMatch(footer, /sgi\.ngo|أسئلة عن تبرعكم|Questions about your donation/);
+  });
 }
 
 test('built CSS keeps anchors clear of the sticky header', () => {
