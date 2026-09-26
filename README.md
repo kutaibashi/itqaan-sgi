@@ -21,6 +21,7 @@ builds and deploys every push to `main`.
 | `npm run preview` | Serve the built `dist/` locally                    |
 | `npm test`        | Build, then run the tests in `test/` (Node 24+)    |
 | `npm run assets`  | Rebuild cropped photos, share image, video poster  |
+| `npm run map`     | Re-bake the map outlines (Natural Earth 1:50m)     |
 
 ## Layout
 

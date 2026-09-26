@@ -1,15 +1,14 @@
 ---
 /**
- * Where Itqaan teaches: a schematic map beside the lists.
- *
- * The map places each city at its real latitude/longitude (a plain
- * equirectangular projection over the Syria–Türkiye border region), with faint
- * graticule lines and deliberately NO borders — drawing borders would mean
- * taking positions on disputed geography. Istanbul is far off to the west, so
- * it appears as a pointer off the map's edge. Geography is never mirrored for
- * RTL. The lists are the real content; the map is a labelled illustration.
+ * Where Itqaan teaches: a real map of Türkiye and Syria (Natural Earth 1:50m
+ * outlines, baked by `npm run map`), with every place Itqaan teaches, and a
+ * magnified inset of the crowded border region. Geography is never mirrored
+ * for RTL. The lists below are the real content; the main map is a labelled
+ * image, and the inset (which repeats it) is hidden from screen readers.
  */
 import { areas, onlineReadingGraduates, formatCount, num, type Area } from '../data/itqaan';
+import { MAIN, INSET, project, size, inView, type View } from '../data/map';
+import paths from '../data/map-paths.json';
 
 interface Props { lang?: 'ar' | 'en'; }
 const { lang = 'ar' } = Astro.props;
@@ -22,9 +21,9 @@ const t = isEn
       turkey: 'Türkiye', turkeyCount: `${num(areas.turkey.length, lang)} cities`,
       online: 'Online centre', onlineCount: 'worldwide',
       onlineItems: ['Online circles for students anywhere in the world', `${formatCount(onlineReadingGraduates, lang)} online graduates of Bil-Qira’ah Nahya`],
-      mapLabel: 'Schematic map: Itqaan’s centres in northern Syria and southern Türkiye, linked to its headquarters in Gaziantep, with Istanbul off the map to the west',
-      istanbul: 'Istanbul',
-      west: 'to the west',
+      mapLabel: 'Map of Türkiye and Syria showing where Itqaan teaches: Istanbul, Gaziantep (headquarters), Kahramanmaraş, Nizip and Kilis in Türkiye; Aleppo, Idlib, Hama and Rif Dimashq in Syria',
+      tr: 'Türkiye', sy: 'Syria', sea: 'Mediterranean',
+      inset: 'Enlarged: the border region',
       hq: 'Headquarters',
     }
   : {
@@ -33,29 +32,46 @@ const t = isEn
       turkey: 'تركيا', turkeyCount: `${num(areas.turkey.length, lang)} مدن`,
       online: 'المركز الإلكتروني', onlineCount: 'عالميًا',
       onlineItems: ['حلقات عبر الإنترنت لطلاب من أنحاء العالم', `${formatCount(onlineReadingGraduates, lang)} خرّيج في «بالقراءة نحيا» عبر الإنترنت`],
-      mapLabel: 'خريطة تقريبية: مراكز إتقان في شمال سوريا وجنوب تركيا، مرتبطة بمركزها الرئيسي في غازي عنتاب، وإسطنبول غربًا خارج حدود الخريطة',
-      istanbul: 'إسطنبول',
-      west: 'غربًا',
+      mapLabel: 'خريطة تركيا وسوريا تُظهر أماكن حلقات إتقان: إسطنبول وغازي عنتاب (المركز الرئيسي) وكهرمان مرعش ونزيب وكلس في تركيا، وحلب وإدلب وحماة وريف دمشق في سوريا',
+      tr: 'تركيا', sy: 'سوريا', sea: 'البحر المتوسط',
+      inset: 'مكبّرة: منطقة الحدود',
       hq: 'المركز الرئيسي',
     };
 
-// Projection over lon 35.6–38.4, lat 33–37.9 (1° lat = 100 units, 1° lon = 80 ≈ cos 37°).
-const X = (lon: number) => Math.round((lon - 35.6) * 80 + 24);
-const Y = (lat: number) => Math.round((37.9 - lat) * 100 + 28);
-const W = 300, H = 500;
+const short = (a: Area) => (a[lang] as string)
+  .replace(/\s*\((المركز الرئيسي|headquarters)\)/, '')
+  .replace(/ وأريافها| and its countryside|مدينة | \(Damascus countryside\)/g, '');
 
-const onMap = (a: Area) => a.lon > 35;
-const cityName = (a: Area) => (a[lang] as string).replace(/\s*\((المركز الرئيسي|headquarters)\)/, '').replace(/ وأريافها| and its countryside|مدينة /g, '').replace(/ \(Damascus countryside\)/, '');
-// Label side per city, to keep the dense cluster readable.
-const leftLabels = new Set([37.07, 35.93, 36.72]); // Gaziantep, Idlib, Kilis
-
-const hq = areas.turkey.find((a) => a.hq)!;
-const hx = X(hq.lon), hy = Y(hq.lat);
-const cities = [
-  ...areas.turkey.filter(onMap).map((a) => ({ a, country: 'tr' as const })),
-  ...areas.syria.map((a) => ({ a, country: 'sy' as const })),
+const places = [
+  ...areas.turkey.map((a) => ({ a, c: 'tr' as const })),
+  ...areas.syria.map((a) => ({ a, c: 'sy' as const })),
 ];
-const graticule = { lons: [36, 37, 38], lats: [34, 35, 36, 37] };
+
+// Label placement per view, keyed by latitude (unique per place).
+type Spot = { dx: number; dy: number; anchor: 'start' | 'middle' | 'end' };
+const mainLabels: Record<number, Spot> = {
+  41.01: { dx: 9, dy: 4, anchor: 'start' },   // Istanbul
+  35.13: { dx: -9, dy: 4, anchor: 'end' },    // Hama
+  33.51: { dx: -9, dy: 4, anchor: 'end' },    // Rif Dimashq
+};
+const insetLabels: Record<number, Spot> = {
+  37.58: { dx: 10, dy: 4, anchor: 'start' },  // Kahramanmaraş
+  37.07: { dx: -12, dy: -6, anchor: 'end' },  // Gaziantep
+  37.01: { dx: 0, dy: 20, anchor: 'middle' }, // Nizip
+  36.72: { dx: -10, dy: 5, anchor: 'end' },   // Kilis
+  36.2: { dx: 10, dy: 5, anchor: 'start' },   // Aleppo
+  35.93: { dx: 10, dy: 5, anchor: 'start' },  // Idlib
+};
+
+const at = (v: View, a: Area) => project(v, a.lon, a.lat).map((n) => Math.round(n * 10) / 10) as [number, number];
+const [mw, mh] = size(MAIN);
+const [iw, ih] = size(INSET);
+const [ix0, iy0] = project(MAIN, INSET.lon0, INSET.lat1);
+const [ix1, iy1] = project(MAIN, INSET.lon1, INSET.lat0);
+const label = (v: View, lon: number, lat: number) => project(v, lon, lat);
+const [trX, trY] = label(MAIN, 33.2, 39.2);
+const [syX, syY] = label(MAIN, 38.9, 34.6);
+const [seaX, seaY] = label(MAIN, 29.4, 33.5);
 
 const columns = [
   { key: 'sy', title: t.syria, count: t.syriaCount, items: areas.syria.map((a) => a[lang]) },
@@ -66,94 +82,118 @@ const columns = [
   <div class="frame">
     <h2 id="areas-title" class="section-head reveal text-step-3">{t.h2}</h2>
 
-    <div class="grid gap-10 lg:grid-cols-[minmax(0,23rem)_1fr] lg:gap-16">
-      <figure class="reveal m-0 rounded-lg border border-line bg-white p-4 sm:p-5">
-        <svg class="areas-map block h-auto w-full" viewBox={`0 0 ${W} ${H}`} role="img" aria-label={t.mapLabel}>
-          <g class="map-grid">
-            {graticule.lons.map((lon) => <line x1={X(lon)} y1="8" x2={X(lon)} y2={H - 8} />)}
-            {graticule.lats.map((lat) => <line x1="8" y1={Y(lat)} x2={W - 8} y2={Y(lat)} />)}
-            {graticule.lats.map((lat) => <text x={W - 10} y={Y(lat) - 4} text-anchor="end" direction="ltr">{`${lat}°`}</text>)}
-          </g>
+    <figure class="reveal areas-figure m-0 grid gap-4 rounded-lg border border-line bg-white p-3 sm:p-4 md:grid-cols-[1.9fr_1fr] md:items-end">
+      <svg class="areas-map areas-map--main block h-auto w-full" viewBox={`0 0 ${Math.round(mw)} ${Math.round(mh)}`} role="img" aria-label={t.mapLabel}>
+        <rect class="map-sea" width={Math.round(mw)} height={Math.round(mh)} rx="6" />
+        <path class="map-land map-land--other" d={paths.main.other} />
+        <path class="map-land map-land--tr" d={paths.main.tr} />
+        <path class="map-land map-land--sy" d={paths.main.sy} />
+        <text class="map-country" x={trX} y={trY} text-anchor="middle">{t.tr}</text>
+        <text class="map-country" x={syX} y={syY} text-anchor="middle">{t.sy}</text>
+        <text class="map-sea-label" x={seaX} y={seaY} text-anchor="middle">{t.sea}</text>
+        <rect class="map-inset-frame" x={ix0} y={iy0} width={ix1 - ix0} height={iy1 - iy0} rx="2" />
+        {places.map(({ a, c }, i) => {
+          const [x, y] = at(MAIN, a);
+          const l = mainLabels[a.lat];
+          return (
+            <g class:list={['map-dot', `map-dot--${c}`, a.hq && 'map-dot--hq']} style={`--i:${i}`}>
+              <circle cx={x} cy={y} r={a.hq ? 4.5 : 3.6} />
+              {l && <text class="map-label" x={x + l.dx} y={y + l.dy} text-anchor={l.anchor}>{short(a)}</text>}
+            </g>
+          );
+        })}
+      </svg>
 
-          {/* Istanbul: a pointer off the north-west edge, joined to headquarters. */}
-          <g class="map-offmap">
-            <line class="map-link" x1={hx} y1={hy} x2="30" y2="30" style={`transform-origin:${hx}px ${hy}px`} />
-            <path d="M40 22 22 22 22 40M22 22 34 34" />
-            <text x="46" y="26" direction="ltr">{t.istanbul}</text>
-            <text class="map-note" x="46" y="40" direction="ltr">{t.west}</text>
-          </g>
-
-          {cities.filter((c) => !c.a.hq).map((c, i) => (
-            <line class="map-link" x1={hx} y1={hy} x2={X(c.a.lon)} y2={Y(c.a.lat)} style={`transform-origin:${hx}px ${hy}px;--i:${i}`} />
-          ))}
-
-          {cities.map((c, i) => {
-            const x = X(c.a.lon), y = Y(c.a.lat), left = leftLabels.has(c.a.lat);
+      <div class="max-md:mx-auto max-md:w-full max-md:max-w-[17rem]">
+        <svg class="areas-map areas-map--inset block h-auto w-full" viewBox={`0 0 ${Math.round(iw)} ${Math.round(ih)}`} aria-hidden="true">
+          <rect class="map-sea" width={Math.round(iw)} height={Math.round(ih)} rx="6" />
+          <path class="map-land map-land--other" d={paths.inset.other} />
+          <path class="map-land map-land--tr" d={paths.inset.tr} />
+          <path class="map-land map-land--sy" d={paths.inset.sy} />
+          <rect class="map-inset-edge" width={Math.round(iw)} height={Math.round(ih)} rx="6" />
+          {places.filter(({ a }) => inView(INSET, a.lon, a.lat)).map(({ a, c }, i) => {
+            const [x, y] = at(INSET, a);
+            const l = insetLabels[a.lat] ?? { dx: 10, dy: 5, anchor: 'start' as const };
             return (
-              <g class:list={['map-city', `map-city--${c.country}`, c.a.hq && 'map-city--hq']} style={`--i:${i}`}>
-                {c.a.hq && <circle class="map-hq-ring" cx={x} cy={y} r="13" />}
-                <circle cx={x} cy={y} r={c.a.hq ? 7 : 5.5} />
-                <text x={left ? x - 13 : x + 13} y={y + 5} text-anchor={left ? 'end' : 'start'} direction="ltr">{cityName(c.a)}</text>
-                {c.a.hq && <text class="map-note" x={x - 13} y={y + 21} text-anchor="end" direction="ltr">{t.hq}</text>}
+              <g class:list={['map-dot', `map-dot--${c}`, a.hq && 'map-dot--hq']} style={`--i:${i + 2}`}>
+                {a.hq && <circle class="map-hq-ring" cx={x} cy={y} r="11" />}
+                <circle cx={x} cy={y} r={a.hq ? 6 : 5} />
+                <text class="map-label" x={x + l.dx} y={y + l.dy} text-anchor={l.anchor}>{short(a)}</text>
+                {a.hq && <text class="map-note" x={x + l.dx} y={y + l.dy + 14} text-anchor={l.anchor}>{t.hq}</text>}
               </g>
             );
           })}
         </svg>
-      </figure>
+        <p class="mt-2 text-step--2 text-muted">{t.inset}</p>
+      </div>
+    </figure>
 
-      <div class="grid content-start gap-10 sm:grid-cols-2 sm:gap-12">
-        {columns.map((c, i) => (
-          <div class="reveal" style={`--i:${i + 1}`}>
-            <h3 class="flex items-baseline justify-between border-b-2 border-ink pb-2 text-step-1">
-              <span class="flex items-center gap-2"><i class:list={['areas-key', `areas-key--${c.key}`]} aria-hidden="true"></i>{c.title}</span>
-              <span class="text-step--1 font-semibold text-teal-text">{c.count}</span>
-            </h3>
-            <ul class="m-0 list-none p-0">
-              {c.items.map((item) => <li class="border-b border-line py-2.5">{item}</li>)}
-            </ul>
-          </div>
-        ))}
-        <div class="reveal rounded-lg bg-white p-5 sm:col-span-2" style="--i:3">
-          <h3 class="flex items-baseline justify-between text-step-1">
-            {t.online}<span class="text-step--1 font-semibold text-teal-text">{t.onlineCount}</span>
+    <div class="mt-10 grid gap-10 md:grid-cols-3 md:gap-12">
+      {columns.map((c, i) => (
+        <div class="reveal" style={`--i:${i}`}>
+          <h3 class="flex items-baseline justify-between border-b-2 border-ink pb-2 text-step-1">
+            <span class="flex items-center gap-2"><i class:list={['areas-key', `areas-key--${c.key}`]} aria-hidden="true"></i>{c.title}</span>
+            <span class="text-step--1 font-semibold text-teal-text">{c.count}</span>
           </h3>
-          <ul class="m-0 mt-2 list-none p-0 text-muted">
-            {t.onlineItems.map((item) => <li class="py-1">{item}</li>)}
+          <ul class="m-0 list-none p-0">
+            {c.items.map((item) => <li class="border-b border-line py-2.5">{item}</li>)}
           </ul>
         </div>
+      ))}
+      <div class="reveal" style="--i:2">
+        <h3 class="flex items-baseline justify-between border-b-2 border-ink pb-2 text-step-1">
+          <span class="flex items-center gap-2"><i class="areas-key areas-key--online" aria-hidden="true"></i>{t.online}</span>
+          <span class="text-step--1 font-semibold text-teal-text">{t.onlineCount}</span>
+        </h3>
+        <ul class="m-0 list-none p-0">
+          {t.onlineItems.map((item) => <li class="border-b border-line py-2.5">{item}</li>)}
+        </ul>
       </div>
     </div>
   </div>
 </section>
 
 <style>
-  .areas-map { font-family: var(--font-sans); overflow: visible; }
-  .map-grid line { stroke: var(--color-line); stroke-width: 1; stroke-dasharray: 3 4; }
-  .map-grid text { font-size: 9px; fill: var(--color-muted); }
-  .map-link { stroke: var(--color-teal); stroke-width: 1.8; stroke-linecap: round; opacity: 0.6; }
-  .map-offmap .map-link { stroke-dasharray: 4 5; }
-  .map-offmap path { fill: none; stroke: var(--color-ink); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-  .map-offmap text, .map-city text { font-size: 14px; font-weight: 700; fill: var(--color-ink); paint-order: stroke; stroke: white; stroke-width: 4px; stroke-linejoin: round; }
-  .map-note { font-size: 11px !important; font-weight: 400 !important; fill: var(--color-muted) !important; }
-  .map-city circle { stroke: white; stroke-width: 2; }
-  .map-city--tr circle { fill: var(--color-teal); }
-  .map-city--sy circle { fill: var(--color-ink); }
-  .map-city--hq circle { fill: var(--color-teal-text); }
-  .map-city .map-hq-ring { fill: none; stroke: var(--color-lime); stroke-width: 2.5; }
+  .areas-map { font-family: var(--font-sans); direction: ltr; }
+  .map-sea { fill: color-mix(in oklch, var(--color-teal) 7%, var(--color-paper)); }
+  .map-land { stroke: white; stroke-width: 0.8; stroke-linejoin: round; }
+  .map-land--other { fill: var(--color-line); }
+  .map-land--tr { fill: color-mix(in oklch, var(--color-teal) 26%, white); }
+  .map-land--sy { fill: color-mix(in oklch, var(--color-ink) 20%, white); }
+  .areas-map--inset .map-land { stroke-width: 1.6; }
+  .map-country { font-size: 15px; font-weight: 700; fill: color-mix(in oklch, var(--color-ink) 55%, transparent); }
+  .map-sea-label { font-size: 10px; fill: var(--color-muted); }
+  .map-inset-frame { fill: none; stroke: var(--color-ink); stroke-width: 1.2; stroke-dasharray: 3 2; }
+  .map-inset-edge { fill: none; stroke: var(--color-ink); stroke-width: 1.2; stroke-dasharray: 4 3; }
+  .map-dot circle { stroke: white; stroke-width: 1.5; }
+  .map-dot--tr circle { fill: var(--color-teal-text); }
+  .map-dot--sy circle { fill: var(--color-ink); }
+  .map-dot .map-hq-ring { fill: none; stroke: var(--color-lime); stroke-width: 3; }
+  .map-label { font-size: 12px; font-weight: 700; fill: var(--color-ink); paint-order: stroke; stroke: white; stroke-width: 3.5px; stroke-linejoin: round; }
+  .areas-map--inset .map-label { font-size: 13px; }
+  /* The main map renders at ~60% scale on phones: enlarge its type there. */
+  @media (max-width: 47.99rem) {
+    .areas-map--main .map-label { font-size: 19px; stroke-width: 5px; }
+    .areas-map--main .map-country { font-size: 22px; }
+    .areas-map--main .map-sea-label { font-size: 15px; }
+    .areas-map--main .map-dot circle { r: 5.5; }
+  }
+  .map-note { font-size: 10.5px; fill: var(--color-muted); paint-order: stroke; stroke: white; stroke-width: 3px; }
 
-  .areas-key { display: inline-block; inline-size: 0.6rem; block-size: 0.6rem; border-radius: 50%; }
-  .areas-key--tr { background: var(--color-teal); }
+  .areas-key { display: inline-block; inline-size: 0.65rem; block-size: 0.65rem; border-radius: 50%; }
+  .areas-key--tr { background: var(--color-teal-text); }
   .areas-key--sy { background: var(--color-ink); }
+  .areas-key--online { background: transparent; border: 2px solid var(--color-teal-text); }
 
-  /* Motion: links grow out from headquarters, then the cities appear. Hidden
-     only under .js (set by the reveal script), so without JS the map is complete. */
-  :global(.js) .map-link { transform: scale(0); transition: transform 900ms var(--ease-out); transition-delay: calc(250ms + var(--i, 0) * 80ms); }
-  :global(.js) .map-city { opacity: 0; transition: opacity 500ms var(--ease-out); transition-delay: calc(600ms + var(--i, 0) * 80ms); }
-  :global(.js) .map-offmap { opacity: 0; transition: opacity 600ms var(--ease-out) 900ms; }
-  :global(.js) .reveal.is-in .map-link { transform: none; }
-  :global(.js) .reveal.is-in .map-city,
-  :global(.js) .reveal.is-in .map-offmap { opacity: 1; }
+  /* Motion: once the map is revealed, the places appear one by one and the
+     headquarters ring pings once. Hidden only under .js, so the map is complete
+     without JavaScript; under reduced motion the dots simply fade in. */
+  :global(.js) .map-dot circle { transform-box: fill-box; transform-origin: center; transform: scale(0); transition: transform 500ms var(--ease-out); transition-delay: calc(400ms + var(--i, 0) * 110ms); }
+  :global(.js) .reveal.is-in .map-dot circle { transform: none; }
+  @keyframes map-ping { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(2.4); opacity: 0; } }
+  :global(.js) .reveal.is-in .map-hq-ring { animation: map-ping 1400ms var(--ease-out) 1600ms 2 backwards; }
   @media (prefers-reduced-motion: reduce) {
-    :global(.js) .map-link { transform: none; transition: none; }
+    :global(.js) .map-dot circle { transform: none; transition: none; }
+    :global(.js) .reveal.is-in .map-hq-ring { animation: none; }
   }
 </style>

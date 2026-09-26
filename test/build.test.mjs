@@ -253,15 +253,17 @@ for (const { lang, dir, file } of pages) {
     assert.match(ext, /link-arrow/);
   });
 
-  test(`${file}: the areas map is labelled and the lists stay as the real content`, () => {
+  test(`${file}: the areas map is a labelled real map with an inset, and the lists stay`, () => {
     const areasSec = html.match(/<section[^>]*id="areas"[\s\S]*?<\/section>/)?.[0] ?? '';
-    const svg = areasSec.match(/<svg[^>]*class="[^"]*areas-map[^"]*"[\s\S]*?<\/svg>/)?.[0] ?? '';
-    assert.ok(svg, 'schematic map missing');
-    assert.match(svg, /role="img"/);
-    assert.match(svg, /aria-label="[^"]+"/);
-    // Eight cities fit the map; Istanbul is an off-map pointer.
-    assert.equal((svg.match(/class="map-city/g) ?? []).length, 8);
-    assert.match(svg, /map-offmap/);
+    const main = areasSec.match(/<svg[^>]*class="[^"]*areas-map--main[^"]*"[\s\S]*?<\/svg>/)?.[0] ?? '';
+    assert.ok(main, 'main map missing');
+    assert.match(main, /role="img"/);
+    assert.match(main, /aria-label="[^"]+"/);
+    assert.match(main, /class="map-land map-land--tr"/, 'Türkiye outline');
+    assert.match(main, /class="map-land map-land--sy"/, 'Syria outline');
+    assert.equal((main.match(/class="map-dot/g) ?? []).length, 9, 'all nine places on the map');
+    const inset = areasSec.match(/<svg[^>]*class="[^"]*areas-map--inset[^"]*"[\s\S]*?<\/svg>/)?.[0] ?? '';
+    assert.match(inset, /aria-hidden="true"/, 'inset repeats the main map, so it is hidden from screen readers');
     assert.equal((areasSec.match(/<li\b/g) ?? []).length, 11, '4 + 5 + 2 list items');
   });
 
