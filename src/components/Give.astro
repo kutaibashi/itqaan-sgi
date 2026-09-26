@@ -1,0 +1,38 @@
+---
+import { donateUrl } from '../config/donate';
+
+interface Props { lang?: 'ar' | 'en'; }
+const { lang = 'ar' } = Astro.props;
+const isEn = lang === 'en';
+
+const t = isEn
+  ? {
+      h2: 'Your gift keeps a circle open, and a teacher in front of their students',
+      p: 'Gifts to this campaign support Itqaan’s education programmes in Syria and Türkiye.',
+      donate: 'Donate to Itqaan’s circles',
+      whoTitle: 'Who receives your gift',
+    }
+  : {
+      h2: 'تبرّعك يُبقي الحلقة مفتوحة، والمعلّمَ أمام طلابه',
+      p: 'تدعم تبرعات هذه الحملة برامج مؤسسة إتقان التعليمية في سوريا وتركيا.',
+      donate: 'تبرّع لحلقات إتقان',
+      whoTitle: 'من يستلم تبرعك',
+    };
+---
+<section id="donate" class="on-dark bg-ink text-white" aria-labelledby="donate-title">
+  <div class="mx-auto grid max-w-6xl items-center gap-8 px-4 py-14 sm:px-6 lg:grid-cols-[1.4fr_1fr] lg:py-20">
+    <div>
+      <h2 id="donate-title" class="text-step-4">{t.h2}</h2>
+      <p class="mt-4 max-w-[46ch] text-step-1 text-white/85">{t.p}</p>
+    </div>
+    <div class="rounded-md border border-white/20 bg-white/5 p-5">
+      <a href={donateUrl(lang)} data-donate-open class="btn-give btn-give--lg w-full">{t.donate}</a>
+      <h3 class="mt-5 text-step-0">{t.whoTitle}</h3>
+      <p class="mt-1 text-step--1 text-white/85">
+        {isEn
+          ? <>Smile Givers International (<bdi>SGI</bdi>), a registered US <bdi class="whitespace-nowrap">501(c)(3)</bdi>, receives donations to this campaign on behalf of Itqaan, and issues your receipt.</>
+          : <>تستقبل مؤسسة سمايل جيفرز إنترناشيونال (<bdi>SGI</bdi>) تبرعات هذه الحملة بالنيابة عن مؤسسة إتقان، وتُصدر إيصال تبرعك. وهي مؤسسة خيرية مسجّلة في الولايات المتحدة بموجب البند <bdi class="whitespace-nowrap">501(c)(3)</bdi>.</>}
+      </p>
+    </div>
+  </div>
+</section>

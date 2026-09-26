@@ -142,6 +142,39 @@ for (const { lang, dir, file } of pages) {
     assert.match(film, /<a[^>]*href="https:\/\/www\.youtube\.com\/watch\?v=9vrkcedB9LM"/);
     assert.doesNotMatch(film, /<iframe/, 'no YouTube request before a click');
   });
+
+  test(`${file}: sections in the agreed order`, () => {
+    const ids = [...html.matchAll(/<section[^>]*\bid="([^"]+)"/g)].map((m) => m[1]);
+    assert.deepEqual(ids, ['path', 'areas', 'voices', 'photos', 'film', 'donate', 'about']);
+  });
+
+  test(`${file}: no React left in the page`, () => {
+    assert.doesNotMatch(html, /astro-island|client:(visible|load|idle)/);
+  });
+
+  test(`${file}: outbound links stay on the allowlist`, () => {
+    const allowed = /^(https:\/\/(sgi\.ngo|itkan\.info|www\.youtube\.com\/watch|wa\.me)\b|mailto:)/;
+    const hrefs = [...html.matchAll(/<a\b[^>]*\bhref="([^"]+)"/g)].map((m) => m[1])
+      .filter((h) => /^(https?:|mailto:)/.test(h));
+    for (const h of hrefs) assert.match(h, allowed, `unexpected outbound link: ${h}`);
+  });
+
+  test(`${file}: Latin names inside Arabic are isolated`, () => {
+    if (lang !== 'ar') return;
+    const body = html.slice(html.indexOf('<body'));
+    // Strip bdi contents, attributes and URLs; any SGI or 501(c)(3) left is un-isolated.
+    const bare = body
+      .replace(/<script\b[\s\S]*?<\/script>/g, '')
+      .replace(/<bdi\b[^>]*>[\s\S]*?<\/bdi>/g, '')
+      .replace(/<[^>]+>/g, ' ');
+    assert.doesNotMatch(bare, /\bSGI\b|501\(c\)\(3\)/);
+  });
+
+  test(`${file}: the give band keeps the SGI disclosure`, () => {
+    const give = html.match(/<section[^>]*id="donate"[\s\S]*?<\/section>/)?.[0] ?? '';
+    assert.match(give, /data-donate-open/);
+    assert.match(give, /501\(c\)\(3\)/);
+  });
 }
 
 test('built CSS keeps anchors clear of the sticky header', () => {

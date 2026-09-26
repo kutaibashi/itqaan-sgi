@@ -1,74 +1,21 @@
 ---
-// Footer Component
-import SocialLinks from './SocialLinks.astro';
-
-interface Props {
-  lang?: 'ar' | 'en';
-}
-
+interface Props { lang?: 'ar' | 'en'; }
 const { lang = 'ar' } = Astro.props;
 const isEn = lang === 'en';
+const year = new Intl.NumberFormat(isEn ? 'en-US' : 'ar-SY', { useGrouping: false }).format(new Date().getFullYear());
 
-const t = isEn ? {
-  desc: "A pioneering reference foundation contributing to building a generation and advancing society.",
-  about: "About",
-  projects: "Programs",
-  areas: "Locations",
-  contact: "Contact",
-  rights: `© ${new Date().getFullYear()} Itqaan Foundation for Education and Development. All rights reserved.`,
-  licensed: "Licensed Foundation - Syria & Turkey"
-} : {
-  desc: "مؤسسة مرجعية رائدة تسهم في بناء الجيل ونهضة المجتمع.",
-  about: "عن المؤسسة",
-  projects: "مشاريعنا",
-  areas: "مناطق التوزع",
-  contact: "تواصل معنا",
-  rights: `© ${new Date().getFullYear()} مؤسسة إتقان للتعليم والتنمية. جميع الحقوق محفوظة.`,
-  licensed: "مؤسسة مرخصة في سوريا وتركيا"
-};
+const t = isEn
+  ? { rights: `© ${year} Itqaan Foundation for Education and Development`, circles: 'Questions about the circles:', giving: 'Questions about your donation or receipt:' }
+  : { rights: `© ${year} مؤسسة إتقان للتعليم والتنمية`, circles: 'أسئلة عن الحلقات:', giving: 'أسئلة عن تبرعك أو إيصالك:' };
 ---
-
-<footer class="bg-[#072a40] text-white border-t-[6px] border-[#0a3d62]">
-  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 md:py-20">
-    
-    <div class="flex flex-col md:flex-row items-center justify-between gap-10">
-      
-      <!-- Brand -->
-      <div class={`text-center ${isEn ? 'md:text-left' : 'md:text-right'}`}>
-        <div class={`flex items-center gap-3 justify-center ${isEn ? 'md:justify-start' : 'md:justify-start'} mb-4`}>
-          <div class="bg-white rounded-md px-2 py-1.5 shadow-sm">
-            <img src="/logo.png" alt="Itqaan" class="h-12 w-auto" width="190" height="102" />
-          </div>
-        </div>
-        <p class="text-white/80 text-sm max-w-sm leading-relaxed font-heading">
-          {t.desc}
-        </p>
-        <SocialLinks variant="footer" />
-      </div>
-      
-      <!-- Quick Links -->
-      <div class="flex flex-wrap items-center justify-center gap-8 text-sm">
-        <a href="#about" class="text-white/90 hover:text-[#8bc34a] transition-colors font-medium">{t.about}</a>
-        <a href="#projects" class="text-white/90 hover:text-[#8bc34a] transition-colors font-medium">{t.projects}</a>
-        <a href="#areas" class="text-white/90 hover:text-[#8bc34a] transition-colors font-medium">{t.areas}</a>
-        <a href="#contact" class="text-white/90 hover:text-[#8bc34a] transition-colors font-medium">{t.contact}</a>
-      </div>
-      
-    </div>
-    
-    <!-- Divider -->
-    <div class="border-t border-[#1a9a98]/20 my-10"></div>
-    
-    <!-- Bottom -->
-    <div class="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-white/80">
-      <p>{t.rights}</p>
-      <div class="flex items-center gap-2">
-        <svg class="w-4 h-4 text-[#1a9a98]" fill="currentColor" viewBox="0 0 20 20">
-          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-        </svg>
-        <span>{t.licensed}</span>
-      </div>
-    </div>
-    
+<footer class="on-dark bg-ink-deep text-step--1 text-white/85">
+  <div class="mx-auto flex max-w-6xl flex-col gap-3 px-4 py-8 sm:px-6 md:flex-row md:flex-wrap md:items-center md:justify-between">
+    <p>{t.rights}</p>
+    <p class="flex flex-wrap items-baseline gap-x-4 gap-y-1">
+      <span>{t.circles}</span>
+      <a href="https://wa.me/905378980555" class="underline underline-offset-4 hover:text-white"><bdi dir="ltr">+90 537 898 05 55</bdi></a>
+      <a href="mailto:info@itkan.info" class="underline underline-offset-4 hover:text-white"><bdi>info@itkan.info</bdi></a>
+    </p>
+    <p>{t.giving} <a href="https://sgi.ngo/" class="underline underline-offset-4 hover:text-white"><bdi>sgi.ngo</bdi></a></p>
   </div>
 </footer>

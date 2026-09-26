@@ -104,6 +104,3 @@
   .skip-link:focus { inset-block-start: 1rem; }
 }
 
-/* LEGACY — used by components deleted in Task 8. Remove with them. */
-.gradient-text { color: var(--color-teal-text); }
-.islamic-pattern { display: none; }

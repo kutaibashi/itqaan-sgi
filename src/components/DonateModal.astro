@@ -40,8 +40,6 @@ const t = isEn
       loading: 'Loading the donation form…',
       fallbackLead: 'The donation form could not load here.',
       fallbackLink: 'Open the donation page',
-      processedBy:
-        'Smile Givers International (SGI) receives donations to this campaign and issues the receipt, on behalf of Itqaan Foundation. SGI is a registered US 501(c)(3).',
     }
   : {
       dialogLabel: 'نافذة التبرع',
@@ -50,8 +48,6 @@ const t = isEn
       loading: 'جارٍ تحميل نموذج التبرع…',
       fallbackLead: 'تعذّر تحميل نموذج التبرع هنا.',
       fallbackLink: 'افتح صفحة التبرع',
-      processedBy:
-        'تستقبل مؤسسة سمايل جيفرز إنترناشيونال (SGI) تبرعات هذه الحملة وتُصدر إيصالها، بالنيابة عن مؤسسة إتقان. وهي مؤسسة خيرية مسجّلة في أمريكا بموجب البند 501(c)(3).',
     };
 
 // The un-framed URL, for the fallback link inside the modal.
@@ -84,7 +80,11 @@ const plainUrl = donateUrl(lang);
       three states, including the fallback where the donor is about to be sent to
       sgi.ngo in a new tab and would otherwise meet the name cold.
     */}
-    <p class="itq-modal__processor">{t.processedBy}</p>
+    <p class="itq-modal__processor">
+      {isEn
+        ? <>Smile Givers International (<bdi>SGI</bdi>) receives donations to this campaign and issues the receipt, on behalf of Itqaan Foundation. SGI is a registered US <bdi class="whitespace-nowrap">501(c)(3)</bdi>.</>
+        : <>تستقبل مؤسسة سمايل جيفرز إنترناشيونال (<bdi>SGI</bdi>) تبرعات هذه الحملة وتُصدر إيصالها، بالنيابة عن مؤسسة إتقان. وهي مؤسسة خيرية مسجّلة في أمريكا بموجب البند <bdi class="whitespace-nowrap">501(c)(3)</bdi>.</>}
+    </p>
 
     <p class="itq-modal__status" data-donate-status aria-live="polite">{t.loading}</p>
 
