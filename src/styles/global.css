@@ -157,6 +157,18 @@
   .btn-give--hello .di-cover { animation: di-close-cover 1600ms var(--ease-out) 1.3s 1; }
   .btn-give--hello .di-sq--1 { animation: di-fly 1600ms var(--ease-out) 1.3s 1; }
 
+  /* The same mark, large, in the give band: opens once the band is revealed. */
+  .donate-icon--mark { inline-size: clamp(7rem, 5rem + 8vw, 11rem); block-size: clamp(7rem, 5rem + 8vw, 11rem); color: var(--color-lime); }
+  .donate-icon--mark .di-stand, .donate-icon--mark .di-page, .donate-icon--mark .di-cover rect { stroke-width: 3; }
+  .donate-icon--mark .di-cover-spine { stroke-width: 2; }
+  .donate-icon--mark .di-page { transition-duration: 700ms, 300ms; transition-delay: 450ms; }
+  .donate-icon--mark .di-cover { transition-duration: 450ms, 300ms; transition-delay: 350ms; }
+  .donate-icon--mark .di-sq { transition-duration: 700ms, 500ms; }
+  :where(html:not(.js), .reveal.is-in) .donate-icon--mark .di-page { opacity: 1; transform: none; }
+  :where(html:not(.js), .reveal.is-in) .donate-icon--mark .di-cover { opacity: 0; transform: scaleX(0.4); }
+  :where(html:not(.js), .reveal.is-in) .donate-icon--mark .di-sq--1 { opacity: 1; transform: rotate(45deg); transition-delay: 900ms; }
+  :where(html:not(.js), .reveal.is-in) .donate-icon--mark .di-sq--2 { opacity: 0.75; transform: rotate(-20deg); transition-delay: 1000ms; }
+
   /* ── Links ─────────────────────────────────────────────────────────── */
   /* A quiet teal rule; on hover a second rule in the text colour draws across
      from the start of the text (a transform, so it stays cheap). */
@@ -204,6 +216,15 @@
   .frame { inline-size: 100%; max-inline-size: calc(var(--frame) + 2 * var(--frame-gutter)); margin-inline: auto; padding-inline: var(--frame-gutter); }
   .section { padding-block: var(--space-section); }
   .section-head { margin-block-end: var(--space-head); }
+  /* Rows of prayer-carpet arches (the rows the students sit in), faded out
+     toward the middle so they frame a dark band rather than sit behind text. */
+  .arch-rows::before {
+    content: ''; position: absolute; inset: 0; z-index: -1; opacity: 0.07; pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='64' viewBox='0 0 36 64'%3E%3Cpath d='M4 64V30Q4 12 18 4Q32 12 32 30V64' fill='none' stroke='white' stroke-width='1.5'/%3E%3C/svg%3E");
+    background-size: 2.25rem 4rem;
+    mask-image: linear-gradient(to bottom, #000 0, transparent 30%, transparent 70%, #000 100%);
+  }
+  .arch-rows--end::before { mask-image: linear-gradient(to bottom, transparent 45%, #000 100%); }
   .frame-photo { overflow: hidden; border-radius: 0.5rem; box-shadow: 0 1.9rem 3.75rem -1.9rem color-mix(in oklch, var(--color-ink-deep) 55%, transparent); }
 
   /* The logo's scattered squares, used as small separators (never "·": Readex

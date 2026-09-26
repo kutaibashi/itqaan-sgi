@@ -125,19 +125,22 @@ export const teacherTraining = { count: 14309 } as const;
 /** بالقراءة نحيا graduates online: "إلكتروني" 4,996 + "إلكتروني سوريا" 92. */
 export const onlineReadingGraduates = 4996 + 92;
 
-export const areas: { syria: L10n[]; turkey: L10n[] } = {
+/** A place Itqaan teaches, with its city's approximate coordinates for the schematic map. */
+export interface Area extends L10n { lat: number; lon: number; hq?: boolean }
+
+export const areas: { syria: Area[]; turkey: Area[] } = {
   syria: [
-    { ar: 'ريف دمشق', en: 'Rif Dimashq (Damascus countryside)' },
-    { ar: 'حلب وأريافها', en: 'Aleppo and its countryside' },
-    { ar: 'إدلب وأريافها', en: 'Idlib and its countryside' },
-    { ar: 'مدينة حماة', en: 'Hama' },
+    { ar: 'ريف دمشق', en: 'Rif Dimashq (Damascus countryside)', lat: 33.51, lon: 36.29 },
+    { ar: 'حلب وأريافها', en: 'Aleppo and its countryside', lat: 36.2, lon: 37.15 },
+    { ar: 'إدلب وأريافها', en: 'Idlib and its countryside', lat: 35.93, lon: 36.63 },
+    { ar: 'مدينة حماة', en: 'Hama', lat: 35.13, lon: 36.75 },
   ],
   turkey: [
-    { ar: 'غازي عنتاب (المركز الرئيسي)', en: 'Gaziantep · headquarters' },
-    { ar: 'إسطنبول', en: 'Istanbul' },
-    { ar: 'كهرمان مرعش', en: 'Kahramanmaraş' },
-    { ar: 'نزيب', en: 'Nizip' },
-    { ar: 'كلس', en: 'Kilis' },
+    { ar: 'غازي عنتاب (المركز الرئيسي)', en: 'Gaziantep (headquarters)', lat: 37.07, lon: 37.38, hq: true },
+    { ar: 'إسطنبول', en: 'Istanbul', lat: 41.01, lon: 28.98 },
+    { ar: 'كهرمان مرعش', en: 'Kahramanmaraş', lat: 37.58, lon: 36.93 },
+    { ar: 'نزيب', en: 'Nizip', lat: 37.01, lon: 37.79 },
+    { ar: 'كلس', en: 'Kilis', lat: 36.72, lon: 37.12 },
   ],
 };
 

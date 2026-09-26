@@ -14,17 +14,17 @@ const t = isEn
 ---
 <a class="skip-link" href="#main">{t.skip}</a>
 <header class="sticky top-0 z-40 border-b border-line bg-white/92 backdrop-blur-md">
-  <div class="frame flex h-(--header-h) items-center gap-3">
+  <div class="frame flex h-(--header-h) items-center gap-2 sm:gap-3">
     <a href={t.home} class="shrink-0 rounded-sm">
-      <img src="/logo.png" alt={t.logoAlt} width="190" height="102" class="h-11 w-auto" />
+      <img src="/logo.png" alt={t.logoAlt} width="190" height="102" class="h-9 w-auto sm:h-11" />
     </a>
     <span class="flex-1"></span>
     <a
       href={t.switchHref}
       hreflang={t.switchLang}
       lang={t.switchLang}
-      class="btn-lang"
+      class="btn-lang max-sm:px-2.5"
     >{t.switchLabel}</a>
-    <a href={donateUrl(lang)} data-donate-open class="btn-give"><DonateIcon />{t.donate}</a>
+    <a href={donateUrl(lang)} data-donate-open class="btn-give max-sm:px-3"><DonateIcon />{t.donate}</a>
   </div>
 </header>

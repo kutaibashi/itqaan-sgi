@@ -252,6 +252,30 @@ for (const { lang, dir, file } of pages) {
     const ext = html.match(/<a[^>]*href="https:\/\/itkan\.info\/"[^>]*>[\s\S]*?<\/a>/)?.[0] ?? '';
     assert.match(ext, /link-arrow/);
   });
+
+  test(`${file}: the areas map is labelled and the lists stay as the real content`, () => {
+    const areasSec = html.match(/<section[^>]*id="areas"[\s\S]*?<\/section>/)?.[0] ?? '';
+    const svg = areasSec.match(/<svg[^>]*class="[^"]*areas-map[^"]*"[\s\S]*?<\/svg>/)?.[0] ?? '';
+    assert.ok(svg, 'schematic map missing');
+    assert.match(svg, /role="img"/);
+    assert.match(svg, /aria-label="[^"]+"/);
+    // Eight cities fit the map; Istanbul is an off-map pointer.
+    assert.equal((svg.match(/class="map-city/g) ?? []).length, 8);
+    assert.match(svg, /map-offmap/);
+    assert.equal((areasSec.match(/<li\b/g) ?? []).length, 11, '4 + 5 + 2 list items');
+  });
+
+  test(`${file}: About sets Itqaan's facts out as a definition list`, () => {
+    const about = html.match(/<section[^>]*id="about"[\s\S]*?<\/section>/)?.[0] ?? '';
+    const dl = about.match(/<dl\b[\s\S]*?<\/dl>/)?.[0] ?? '';
+    assert.equal((dl.match(/<dt\b/g) ?? []).length, 4);
+    assert.match(dl, /ITKAN Eğitim ve Kalkınma Derneği/);
+  });
+
+  test(`${file}: the give band carries the large book mark`, () => {
+    const give = html.match(/<section[^>]*id="donate"[\s\S]*?<\/section>/)?.[0] ?? '';
+    assert.match(give, /donate-icon--mark/);
+  });
 }
 
 test('built CSS keeps anchors clear of the sticky header', () => {

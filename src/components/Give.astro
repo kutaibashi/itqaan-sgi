@@ -20,13 +20,19 @@ const t = isEn
       whoTitle: 'مَن يتسلّم تبرعكم',
     };
 ---
-<section id="donate" class="section on-dark relative isolate overflow-hidden bg-ink-deep text-white" aria-labelledby="donate-title">
-  <div class="frame grid items-center gap-10 lg:grid-cols-[1.4fr_1fr] lg:gap-16">
+<section id="donate" class="section arch-rows arch-rows--end on-dark relative isolate overflow-hidden bg-ink-deep text-white" aria-labelledby="donate-title">
+  <div class="frame grid items-center gap-10 lg:grid-cols-[1.25fr_auto_1fr] lg:gap-14">
     <div class="reveal">
       <h2 id="donate-title" class="text-step-4">{t.h2}</h2>
       <p class="mt-4 max-w-[46ch] text-step-1 text-white/85">{t.p}</p>
     </div>
-    <div class="reveal rounded-lg border border-white/15 bg-white/[0.06] p-6" style="--i:1">
+
+    {/* Itqaan's mark, large: the closed mushaf opens as the band comes into view. */}
+    <div class="reveal give-mark justify-self-center max-lg:order-first" style="--i:1" aria-hidden="true">
+      <DonateIcon class="donate-icon--mark" />
+    </div>
+
+    <div class="reveal rounded-lg border border-white/15 bg-white/[0.06] p-6" style="--i:2">
       <a href={donateUrl(lang)} data-donate-open class="btn-give btn-give--lg w-full"><DonateIcon />{t.donate}</a>
       <h3 class="mt-5 text-step-0">{t.whoTitle}</h3>
       <p class="mt-1 text-step--1 text-white/85">

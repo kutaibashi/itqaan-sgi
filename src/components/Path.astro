@@ -32,7 +32,7 @@ const t = isEn
       give: 'ساهم في إبقاء هذا الطريق مفتوحًا',
     };
 ---
-<section id="path" class="path on-dark section relative isolate overflow-hidden bg-ink text-white" aria-labelledby="path-title">
+<section id="path" class="path arch-rows on-dark section relative isolate overflow-hidden bg-ink text-white" aria-labelledby="path-title">
   <div class="frame grid gap-12 lg:grid-cols-[5fr_7fr] lg:gap-16">
     <div class="reveal lg:sticky lg:top-[calc(var(--header-h)+2rem)] lg:self-start">
       <h2 id="path-title" class="text-step-3">{t.h2}</h2>
@@ -79,19 +79,6 @@ const t = isEn
 </section>
 
 <style>
-  /* Rows of prayer-carpet arches, faded out toward the text so they frame the
-     band rather than sit behind the words. */
-  .path::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    opacity: 0.07;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='64' viewBox='0 0 36 64'%3E%3Cpath d='M4 64V30Q4 12 18 4Q32 12 32 30V64' fill='none' stroke='white' stroke-width='1.5'/%3E%3C/svg%3E");
-    background-size: 2.25rem 4rem;
-    mask-image: linear-gradient(to bottom, #000 0, transparent 30%, transparent 70%, #000 100%);
-  }
-
   .chain { list-style: none; margin: 0; padding: 0; position: relative; }
   /* The سند itself: one continuous line through every node. */
   .chain::before {
