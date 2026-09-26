@@ -8,7 +8,7 @@ Gaziantep, Türkiye. Live at <https://itqaan.sgi.ngo>.
 - English (left-to-right): `/en/`
 
 Built with Astro 5 as a static site, styled with Tailwind 4, with two small React
-islands (the image slider and testimonials). Hosted on Cloudflare Pages, which
+islands (the image slider and testimonials). Hosted on Cloudflare (Workers Builds), which
 builds and deploys every push to `main`.
 
 ## Commands
