@@ -41,3 +41,11 @@ strips the types from `src/config/donate.ts` on import). Run it before committin
   wholesale, which made every file show as modified.
 - The foundation's own email domain is `itkan.info` (Turkish registration:
   ITKAN Eğitim ve Kalkınma Derneği). It is not a typo for Itqaan.
+
+## Deploy
+
+- `wrangler.jsonc` makes the Worker assets-only (serves `dist/`). Keep its `name`
+  equal to the Worker name, `itqaan-sgi`. Don't add `@astrojs/cloudflare`: the site
+  is static and needs no server code.
+- Workers Builds runs `npm run build`, then `npx wrangler deploy` on `main` and
+  `npx wrangler versions upload` (a non-live preview version) on other branches.
