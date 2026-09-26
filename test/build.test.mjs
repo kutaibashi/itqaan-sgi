@@ -5,7 +5,7 @@
 // modal iframe that never loaded.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 
 import { donateUrl } from '../src/config/donate.ts';
 
@@ -35,6 +35,18 @@ for (const { lang, dir, file } of pages) {
       // The plain URL, never the framed one: a no-JS donor follows this href and
       // needs SGI's site chrome.
       assert.equal(href, donateUrl(lang));
+    }
+  });
+
+  test(`${file}: every local <link> in <head> resolves to a built file`, () => {
+    // /favicon.png was linked here for months with no file behind it.
+    const links = html.match(/<link\b[^>]*>/g) ?? [];
+    const local = links
+      .map((l) => l.match(/\bhref="(\/[^"/][^"]*)"/)?.[1])
+      .filter(Boolean);
+    assert.ok(local.length > 0, 'no local <link> hrefs found');
+    for (const href of local) {
+      assert.ok(existsSync(new URL(`../dist${href}`, import.meta.url)), `${href} is not in dist/`);
     }
   });
 
