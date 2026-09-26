@@ -1,4 +1,5 @@
 ---
+import LinkArrow from './LinkArrow.astro';
 // Just enough for a donor who wants to check who Itqaan is. Everything else —
 // enrolment, courses, apps, the full profile — lives on Itqaan's own site.
 interface Props { lang?: 'ar' | 'en'; }
@@ -28,6 +29,6 @@ const t = isEn
         ? <>A licensed foundation in Syria and Türkiye, registered in Türkiye as <bdi lang="tr">ITKAN Eğitim ve Kalkınma Derneği</bdi>, with its headquarters in Kartaş, Gaziantep.</>
         : <>مؤسسة مرخّصة في سوريا وتركيا، مسجّلة في تركيا باسم <bdi lang="tr">ITKAN Eğitim ve Kalkınma Derneği</bdi>، ومركزها الرئيسي في غازي عنتاب، حي كرتاش.</>}
     </p>
-    <p class="mt-5">{t.more} <a href="https://itkan.info/" class="link-quiet">{t.link}</a></p>
+    <p class="mt-5">{t.more} <a href="https://itkan.info/" class="link-quiet">{t.link}<LinkArrow to="out" /></a></p>
   </div>
 </section>

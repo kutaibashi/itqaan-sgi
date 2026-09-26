@@ -235,6 +235,23 @@ for (const { lang, dir, file } of pages) {
     assert.equal(steps.length, 4);
     for (const s of steps) assert.ok(s.indexOf('<h3') < s.indexOf('chain-count'), 'h3 must precede the count');
   });
+
+  test(`${file}: every donate button carries the book icon, hidden from screen readers`, () => {
+    const buttons = html.match(/<a\b[^>]*\bdata-donate-open\b[^>]*>[\s\S]*?<\/a>/g) ?? [];
+    assert.ok(buttons.length >= 3);
+    for (const b of buttons) {
+      assert.match(b, /<svg[^>]*class="[^"]*donate-icon[^"]*"[^>]*aria-hidden="true"/, b.slice(0, 120));
+      // The accessible name is still the visible text, not the icon.
+      assert.match(b.replace(/<svg[\s\S]*?<\/svg>/, '').replace(/<[^>]+>/g, '').trim(), /\S/);
+    }
+  });
+
+  test(`${file}: in-page and external links show where they go`, () => {
+    const toPath = html.match(/<a[^>]*href="#path"[^>]*>[\s\S]*?<\/a>/)?.[0] ?? '';
+    assert.match(toPath, /link-arrow/);
+    const ext = html.match(/<a[^>]*href="https:\/\/itkan\.info\/"[^>]*>[\s\S]*?<\/a>/)?.[0] ?? '';
+    assert.match(ext, /link-arrow/);
+  });
 }
 
 test('built CSS keeps anchors clear of the sticky header', () => {

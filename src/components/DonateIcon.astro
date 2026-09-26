@@ -1,0 +1,27 @@
+---
+/**
+ * Itqaan's mark, reduced to an icon: a book on a Qur'an stand (رحل) with two
+ * of the logo's flying squares. At rest the book is closed (a mushaf-style
+ * cover); on hover or focus the cover folds away, the pages unfold from the
+ * spine and the squares fly out of it (styles in
+ * global.css under .donate-icon). Symmetric, so never mirrored for RTL.
+ * Decorative: the button's text is its name.
+ */
+interface Props { class?: string; }
+const { class: cls } = Astro.props;
+---
+<svg class:list={['donate-icon', cls]} viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">
+  <path class="di-stand" d="M8 21.5 16 15.9M16 21.5 8 15.9" />
+  <g class="di-cover">
+    <rect x="7.4" y="5.2" width="9.2" height="10.8" rx=".6" />
+    <path class="di-cover-spine" d="M9.3 5.6v10" />
+    <g class="di-cover-mark">
+      <rect x="11.3" y="9.3" width="2.4" height="2.4" />
+      <rect x="11.3" y="9.3" width="2.4" height="2.4" transform="rotate(45 12.5 10.5)" />
+    </g>
+  </g>
+  <path class="di-page di-page--a" d="M12 8.2C9.6 6.6 6.6 6.3 4 6.9v8.7c2.6-.5 5.6-.2 8 1.4Z" />
+  <path class="di-page di-page--b" d="M12 8.2c2.4-1.6 5.4-1.9 8-1.3v8.7c-2.6-.5-5.6-.2-8 1.4Z" />
+  <rect class="di-sq di-sq--1" x="15.2" y="2.2" width="2.4" height="2.4" rx=".4" />
+  <rect class="di-sq di-sq--2" x="18.8" y="3.9" width="1.8" height="1.8" rx=".3" />
+</svg>

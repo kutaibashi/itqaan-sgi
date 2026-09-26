@@ -90,25 +90,108 @@
 }
 
 @layer components {
+  /* ── Donate button ─────────────────────────────────────────────────── */
   .btn-give {
-    display: inline-flex; align-items: center; justify-content: center;
-    min-block-size: 2.75rem; padding-inline: 1.25rem;
+    display: inline-flex; align-items: center; justify-content: center; gap: 0.55em;
+    min-block-size: 2.75rem; padding-inline: 1.1rem 1.25rem;
     border-radius: var(--radius-control);
     background: var(--btn-give-bg); color: var(--btn-give-fg);
     font-weight: 700; text-decoration: none; white-space: nowrap;
-    transition: background-color 150ms var(--ease-out), transform 100ms var(--ease-out);
+    box-shadow: 0 1px 0 color-mix(in oklch, var(--color-ink-deep) 18%, transparent),
+                inset 0 1px 0 color-mix(in oklch, white 35%, transparent);
+    transition: background-color var(--dur-ui) var(--ease-out),
+                transform 200ms var(--ease-out),
+                box-shadow 200ms var(--ease-out);
   }
-  .btn-give:hover { background: var(--btn-give-bg-hover); }
-  .btn-give:active { transform: scale(0.97); }
+  /* Hover only where hovering exists, so a tap on a phone doesn't leave it "lifted". */
+  @media (hover: hover) {
+    .btn-give:hover {
+      background: var(--btn-give-bg-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 0.5rem 1rem -0.55rem color-mix(in oklch, var(--color-ink-deep) 45%, transparent),
+                  inset 0 1px 0 color-mix(in oklch, white 35%, transparent);
+    }
+  }
+  .btn-give:active { transform: translateY(0) scale(0.97); box-shadow: none; transition-duration: 80ms; }
+  .on-dark .btn-give { --focus-ring: white; }
   /* Large buttons may wrap: on a 320px phone "Donate to Itqaan's circles" is wider than the screen. */
-  .btn-give--lg { min-block-size: 3.25rem; padding-inline: 1.75rem; font-size: var(--text-step-1); white-space: normal; text-align: center; }
+  .btn-give--lg { min-block-size: 3.25rem; padding-inline: 1.4rem 1.75rem; font-size: var(--text-step-1); white-space: normal; text-align: center; }
 
-  .link-quiet {
-    font-weight: 600; color: inherit;
-    text-decoration: underline; text-decoration-color: var(--color-teal);
-    text-decoration-thickness: 2px; text-underline-offset: 0.35em;
+  /* The book-on-a-stand icon. Closed at rest (pages folded in to the spine);
+     on hover or keyboard focus the pages unfold and the logo's squares fly out.
+     non-scaling-stroke keeps the line weight constant while the pages fold. */
+  .donate-icon { inline-size: 1.3em; block-size: 1.3em; flex: none; overflow: visible; }
+  .donate-icon .di-stand, .donate-icon .di-page { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+  .donate-icon .di-cover rect { fill: color-mix(in oklch, currentColor 14%, transparent); stroke: currentColor; stroke-width: 1.8; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+  .donate-icon .di-cover-spine { fill: none; stroke: currentColor; stroke-width: 1.2; vector-effect: non-scaling-stroke; }
+  .donate-icon .di-cover-mark rect { fill: currentColor; stroke: none; }
+  /* An Arabic mushaf's spine is on the right: flip only the closed cover on RTL pages. */
+  [dir='rtl'] .donate-icon .di-cover { scale: -1 1; }
+  .donate-icon .di-cover { transform-box: view-box; transform-origin: 12px 12px; transition: transform 260ms var(--ease-out), opacity 200ms var(--ease-out); }
+  .donate-icon .di-page {
+    fill: color-mix(in oklch, currentColor 14%, transparent);
+    transform-box: view-box; transform-origin: 12px 12px;
+    opacity: 0; transform: scaleX(0.25);
+    transition: transform 380ms var(--ease-out) 60ms, opacity 160ms var(--ease-out) 60ms;
   }
-  .link-quiet:hover { text-decoration-color: currentColor; }
+  .donate-icon .di-sq {
+    fill: currentColor; transform-box: fill-box; transform-origin: center;
+    opacity: 0; transform: translate(-3px, 5px) scale(0.4);
+    transition: transform 420ms var(--ease-out), opacity 300ms var(--ease-out);
+  }
+  .btn-give:focus-visible .di-page { opacity: 1; transform: none; }
+  .btn-give:focus-visible .di-cover { opacity: 0; transform: scaleX(0.4); }
+  .btn-give:focus-visible .di-sq--1 { opacity: 1; transform: rotate(45deg); transition-delay: 120ms; }
+  .btn-give:focus-visible .di-sq--2 { opacity: 0.75; transform: rotate(-20deg); transition-delay: 180ms; }
+  @media (hover: hover) {
+    .btn-give:hover .di-page { opacity: 1; transform: none; }
+    .btn-give:hover .di-cover { opacity: 0; transform: scaleX(0.4); }
+    .btn-give:hover .di-sq--1 { opacity: 1; transform: rotate(45deg); transition-delay: 120ms; }
+    .btn-give:hover .di-sq--2 { opacity: 0.75; transform: rotate(-20deg); transition-delay: 180ms; }
+  }
+  /* The hero button opens once after it rises in, then closes again; never loops. */
+  @keyframes di-open { 30%, 70% { opacity: 1; transform: none; } }
+  @keyframes di-close-cover { 25%, 75% { opacity: 0; transform: scaleX(0.4); } }
+  @keyframes di-fly { 30% { opacity: 0; } 50%, 70% { opacity: 1; transform: rotate(45deg); } }
+  .btn-give--hello .di-page { animation: di-open 1600ms var(--ease-out) 1.3s 1; }
+  .btn-give--hello .di-cover { animation: di-close-cover 1600ms var(--ease-out) 1.3s 1; }
+  .btn-give--hello .di-sq--1 { animation: di-fly 1600ms var(--ease-out) 1.3s 1; }
+
+  /* ── Links ─────────────────────────────────────────────────────────── */
+  /* A quiet teal rule; on hover a second rule in the text colour draws across
+     from the start of the text (a transform, so it stays cheap). */
+  .link-quiet {
+    position: relative; display: inline-flex; align-items: center; gap: 0.35em;
+    padding-block: 0.4em; font-weight: 600; color: inherit; text-decoration: none;
+  }
+  .link-quiet::before, .link-quiet::after {
+    content: ''; position: absolute; inset-inline: 0; inset-block-end: 0.3em; block-size: 2px; border-radius: 1px;
+  }
+  .link-quiet::before { background: var(--color-teal); }
+  .link-quiet::after { background: currentColor; transform: scaleX(0); transform-origin: left; transition: transform 280ms var(--ease-out); }
+  .link-quiet:dir(rtl)::after { transform-origin: right; }
+  @media (hover: hover) { .link-quiet:hover::after { transform: scaleX(1); } }
+  .link-quiet:focus-visible::after { transform: scaleX(1); }
+
+  .link-arrow { inline-size: 1em; block-size: 1em; flex: none; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; transition: transform 220ms var(--ease-out); }
+  .link-arrow--out:dir(rtl) { scale: -1 1; } /* ↗ points toward the reading direction */
+  @media (hover: hover) {
+    .link-quiet:hover .link-arrow--down { transform: translateY(2px); }
+    .link-quiet:hover .link-arrow--out { transform: translate(2px, -2px); }
+  }
+
+  /* Language switch: an outlined control, not a bare word. */
+  .btn-lang {
+    display: inline-flex; align-items: center; min-block-size: 2.75rem; padding-inline: 0.9rem;
+    border: 1px solid var(--color-line); border-radius: var(--radius-control);
+    color: var(--color-ink); font-size: var(--text-step--1); font-weight: 600; text-decoration: none;
+    transition: background-color var(--dur-ui) var(--ease-out), border-color var(--dur-ui) var(--ease-out);
+  }
+  @media (hover: hover) { .btn-lang:hover { background: var(--color-paper); border-color: color-mix(in oklch, var(--color-ink) 35%, transparent); } }
+
+  /* Footer links: underline brightens to lime on hover. */
+  .link-foot { text-decoration: underline; text-underline-offset: 0.3em; text-decoration-color: color-mix(in oklch, white 40%, transparent); transition: text-decoration-color var(--dur-ui) var(--ease-out), color var(--dur-ui) var(--ease-out); }
+  @media (hover: hover) { .link-foot:hover { color: white; text-decoration-color: var(--color-lime); } }
 
   .skip-link {
     position: absolute; inset-inline-start: 1rem; inset-block-start: -10rem; z-index: 60;
@@ -161,6 +244,11 @@
   html { scroll-behavior: auto; }
   .rise, .settle { animation: itq-fade 400ms linear both; }
   .gather > * { animation: none; }
+  .donate-icon *, .link-arrow { animation: none !important; transition: none !important; }
+  .btn-give .di-page { opacity: 0 !important; }
+  .btn-give .di-cover { opacity: 1 !important; transform: none !important; }
+  .btn-give .di-sq { opacity: 0 !important; }
+  .btn-give:hover { transform: none; }
   .js .reveal { transform: none; transition: opacity 400ms linear; transition-delay: 0ms; }
   *, ::before, ::after { transition-property: opacity, color, background-color, border-color, outline-color !important; }
 }

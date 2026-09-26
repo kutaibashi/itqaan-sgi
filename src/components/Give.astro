@@ -1,5 +1,6 @@
 ---
 import { donateUrl } from '../config/donate';
+import DonateIcon from './DonateIcon.astro';
 
 interface Props { lang?: 'ar' | 'en'; }
 const { lang = 'ar' } = Astro.props;
@@ -26,7 +27,7 @@ const t = isEn
       <p class="mt-4 max-w-[46ch] text-step-1 text-white/85">{t.p}</p>
     </div>
     <div class="reveal rounded-lg border border-white/15 bg-white/[0.06] p-6" style="--i:1">
-      <a href={donateUrl(lang)} data-donate-open class="btn-give btn-give--lg w-full">{t.donate}</a>
+      <a href={donateUrl(lang)} data-donate-open class="btn-give btn-give--lg w-full"><DonateIcon />{t.donate}</a>
       <h3 class="mt-5 text-step-0">{t.whoTitle}</h3>
       <p class="mt-1 text-step--1 text-white/85">
         {isEn

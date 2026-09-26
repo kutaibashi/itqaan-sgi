@@ -9,6 +9,7 @@
  * students sit in. The line draws itself with scroll where the browser has
  * scroll-driven animations; everywhere else it is simply there.
  */
+import LinkArrow from './LinkArrow.astro';
 import { programmes, ijazaLine, teacherTraining, formatCount, countPrefix, num, roundDown, DATA_SOURCE } from '../data/itqaan';
 
 interface Props { lang?: 'ar' | 'en'; }
@@ -72,7 +73,7 @@ const t = isEn
         <span>{t.track}</span>
       </p>
 
-      <p class="reveal mt-8"><a href="#donate" class="link-quiet text-white">{t.give}</a></p>
+      <p class="reveal mt-8"><a href="#donate" class="link-quiet text-white">{t.give}<LinkArrow to="down" /></a></p>
     </div>
   </div>
 </section>

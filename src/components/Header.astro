@@ -1,5 +1,6 @@
 ---
 import { donateUrl } from '../config/donate';
+import DonateIcon from './DonateIcon.astro';
 
 // A fundraising page's header: who, which language, give. No section menu —
 // on a donation page every nav link is an exit (see the spec).
@@ -22,8 +23,8 @@ const t = isEn
       href={t.switchHref}
       hreflang={t.switchLang}
       lang={t.switchLang}
-      class="inline-flex min-h-11 items-center rounded-sm px-3 text-step--1 font-medium text-ink underline-offset-4 hover:underline"
+      class="btn-lang"
     >{t.switchLabel}</a>
-    <a href={donateUrl(lang)} data-donate-open class="btn-give">{t.donate}</a>
+    <a href={donateUrl(lang)} data-donate-open class="btn-give"><DonateIcon />{t.donate}</a>
   </div>
 </header>
