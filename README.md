@@ -7,9 +7,9 @@ Gaziantep, Türkiye. Live at <https://itqaan.sgi.ngo>.
 - Arabic (default, right-to-left): `/`
 - English (left-to-right): `/en/`
 
-Built with Astro 5 as a static site, styled with Tailwind 4, with two small React
-islands (the image slider and testimonials). Hosted on Cloudflare (Workers Builds), which
-builds and deploys every push to `main`.
+Built with Astro 5 as a static site, styled with Tailwind 4, with no client framework:
+a few small inline scripts (scroll reveals, the photo viewer) and SGI's donate embed.
+Hosted on Cloudflare (Workers Builds), which builds and deploys every push to `main`.
 
 ## Commands
 
@@ -44,9 +44,10 @@ test/                     node:test — the donation URL contract and built HTML
 
 This site takes no payments. Every donate button is a plain link to Smile Givers
 International's (SGI) checkout at `sgi.ngo/donate/`. SGI is a US 501(c)(3) that
-receives gifts for this campaign and issues the receipts. With JavaScript,
-`DonateModal.astro` opens that checkout in a modal iframe instead of leaving the page.
+receives gifts for this campaign and issues the receipts. With JavaScript, SGI's
+shared embed script (`sgi.ngo/embed/v1/donate.js`, loaded in `Layout.astro`) opens
+that checkout in a modal instead of leaving the page.
 
 `src/config/donate.ts` is the whole integration surface. Read its comments before
 changing it. In particular, the campaign slug's odd spelling is deliberate. The other
-half of the contract is documented in the SGI theme at `docs/itqaan-embed.md`.
+half of the contract is documented in the SGI theme at `docs/donate-embed.md`.

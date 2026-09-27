@@ -45,17 +45,20 @@ strips the types from `src/config/donate.ts` on import). Run it before committin
 
 - All donation config lives in `src/config/donate.ts`. Don't scatter URLs, ids or
   vendor attributes across components.
-- Donate buttons are real `<a href={donateUrl(lang)} data-donate-open>` links.
-  The href is the **plain** URL. `sgi_frame=1` is added only by the modal script.
+- Donate buttons are real `<a href={donateUrl(lang)} data-sgi-donate>` links.
+  The href is the **plain** URL; a no-JS donor follows it to a working checkout.
+- The modal is SGI's shared embed script (`EMBED_SRC`), loaded once in
+  `Layout.astro` with `data-sgi-site={SITE}` (`itqaan`, the key in the theme's
+  `Frame\SITES`). It adds `sgi_frame`, `sgi_parent` and the attribution params
+  (utm_*, click ids, `sgi_ref`, `sgi_land`) itself. Don't rebuild a modal here:
+  two on one page would both open on a click. Fixes to the modal belong in the
+  SGI theme (`assets/embed/v1/donate.js`, `docs/donate-embed.md`).
+- No `integrity` attribute on that script tag, on purpose: the URL is fixed so a
+  fix reaches every site. SGI's page monitor checks the served file instead.
 - `CAMPAIGN_SLUG` keeps its typo (`itkan-foundationfor-...`). It is an identifier.
   A wrong slug still takes the gift but silently drops the attribution.
-- The modal iframe must **never** get `loading="lazy"` (it deadlocks, because the
-  frame is hidden until SGI posts `ready`) and must have no `src` in the markup.
-  Tests enforce both.
-- Reveal the frame only on a `ready`/`height` postMessage from `DONATE_ORIGIN`.
-  Never treat the iframe's `load` event as success.
-- Keep the "SGI receives this donation" disclosure visible, both in the modal and
-  in the donation section.
+- Keep the "SGI receives this donation" disclosure visible in the donation section.
+  The modal's own disclosure comes from the shared script.
 
 ## Repo hygiene
 

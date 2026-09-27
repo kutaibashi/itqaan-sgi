@@ -3,6 +3,7 @@ import '@fontsource-variable/readex-pro';
 import '@fontsource/amiri/400.css';
 import '@fontsource/amiri/700.css';
 import '../styles/global.css';
+import { EMBED_SRC, SITE as DONATE_SITE } from '../config/donate';
 
 interface Props {
   lang?: 'ar' | 'en';
@@ -78,6 +79,11 @@ const schemaOrg = {
     <meta name="theme-color" content="#0a3d62" />
 
     <script type="application/ld+json" set:html={JSON.stringify(schemaOrg)}></script>
+
+    {/* SGI's shared donate embed: turns every [data-sgi-donate] link into a modal
+        checkout. If it fails to load, the links still go to a working checkout.
+        No integrity attribute, on purpose: see donate-embed.md in the SGI theme. */}
+    <script is:inline src={EMBED_SRC} data-sgi-site={DONATE_SITE} defer></script>
   </head>
   <body>
     <slot />

@@ -1,13 +1,13 @@
 // Checks the built pages in dist/. Run `npm run build` first — `npm test` does.
 //
 // These guard the failure modes that have already happened once and looked fine
-// while they were happening: donate buttons pointing somewhere wrong, and the
-// modal iframe that never loaded.
+// while they were happening: donate buttons pointing somewhere wrong, and a
+// donate modal that never loaded.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
 
-import { donateUrl } from '../src/config/donate.ts';
+import { EMBED_SRC, SITE, donateUrl } from '../src/config/donate.ts';
 
 const pages = [
   { lang: 'ar', dir: 'rtl', file: 'dist/index.html' },
@@ -26,7 +26,7 @@ for (const { lang, dir, file } of pages) {
   });
 
   test(`${file}: every donate button is a real link to SGI`, () => {
-    const anchors = html.match(/<a\b[^>]*\bdata-donate-open\b[^>]*>/g) ?? [];
+    const anchors = html.match(/<a\b[^>]*\bdata-sgi-donate\b[^>]*>/g) ?? [];
     // Header, hero and give band. The old mobile-menu duplicate is gone with the menu.
     assert.ok(anchors.length >= 3, `expected at least 3 donate buttons, found ${anchors.length}`);
 
@@ -50,19 +50,21 @@ for (const { lang, dir, file } of pages) {
     }
   });
 
-  test(`${file}: the donate modal is present`, () => {
-    assert.match(html, /<dialog[^>]*id="itq-donate-modal"/);
+  test(`${file}: SGI's embed script is loaded once, for this site`, () => {
+    const tags = html.match(/<script\b[^>]*\bsrc="[^"]*\/embed\/v1\/donate\.js"[^>]*>/g) ?? [];
+    assert.equal(tags.length, 1, `expected one embed script, found ${tags.length}`);
+    const tag = tags[0];
+    assert.match(tag, new RegExp(`src="${EMBED_SRC.replaceAll('.', '\\.')}"`));
+    assert.match(tag, new RegExp(`data-sgi-site="${SITE}"`));
+    assert.match(tag, /\bdefer\b/);
+    // No SRI, on purpose: the script is fixed in place so a fix reaches every site.
+    assert.doesNotMatch(tag, /\bintegrity=/);
   });
 
-  test(`${file}: the modal iframe is not lazy and has no src`, () => {
-    const frame = html.match(/<iframe\b[^>]*\bdata-donate-frame\b[^>]*>/)?.[0];
-    assert.ok(frame, 'modal iframe not found');
-    // loading="lazy" on a hidden frame means it is never fetched — the modal
-    // deadlocks on "Loading…". See the comment above the iframe in DonateModal.astro.
-    assert.doesNotMatch(frame, /loading=/);
-    // src is set on first open, so the payment page is not loaded for every visitor.
-    assert.doesNotMatch(frame, /\bsrc=/);
-    assert.match(frame, /allow="payment"/);
+  test(`${file}: no bespoke donate modal is left behind`, () => {
+    // Two modals on one page would both try to open on a click.
+    assert.doesNotMatch(html, /itq-donate-modal|data-donate-open|data-donate-frame/);
+    assert.doesNotMatch(html, /<iframe\b/);
   });
 
   test(`${file}: canonical and hreflang alternates`, () => {
@@ -204,7 +206,7 @@ for (const { lang, dir, file } of pages) {
 
   test(`${file}: the give band keeps the SGI disclosure`, () => {
     const give = html.match(/<section[^>]*id="donate"[\s\S]*?<\/section>/)?.[0] ?? '';
-    assert.match(give, /data-donate-open/);
+    assert.match(give, /data-sgi-donate/);
     assert.match(give, /501\(c\)\(3\)/);
   });
 
@@ -238,7 +240,7 @@ for (const { lang, dir, file } of pages) {
   });
 
   test(`${file}: every donate button carries the book icon, hidden from screen readers`, () => {
-    const buttons = html.match(/<a\b[^>]*\bdata-donate-open\b[^>]*>[\s\S]*?<\/a>/g) ?? [];
+    const buttons = html.match(/<a\b[^>]*\bdata-sgi-donate\b[^>]*>[\s\S]*?<\/a>/g) ?? [];
     assert.ok(buttons.length >= 3);
     for (const b of buttons) {
       assert.match(b, /<svg[^>]*class="[^"]*donate-icon[^"]*"[^>]*aria-hidden="true"/, b.slice(0, 120));

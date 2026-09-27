@@ -6,7 +6,8 @@ import assert from 'node:assert/strict';
 import {
   CAMPAIGN_SLUG,
   DONATE_ORIGIN,
-  FRAME_FLAG,
+  EMBED_SRC,
+  SITE,
   donateUrl,
 } from '../src/config/donate.ts';
 
@@ -16,10 +17,16 @@ test('the campaign slug is pinned, typo and all', () => {
   assert.equal(CAMPAIGN_SLUG, 'itkan-foundationfor-education-and-development');
 });
 
-test('the frame flag is not a WordPress query var', () => {
-  // ?embed=1 makes WordPress serve its oEmbed template instead of the donate page.
-  assert.notEqual(FRAME_FLAG, 'embed');
-  assert.equal(FRAME_FLAG, 'sgi_frame');
+test('the site key is the one in SGI\'s registry', () => {
+  // Donations\Frame\SITES on sgi.ngo maps 'itqaan' to https://itqaan.sgi.ngo. The
+  // embed script refuses a key that does not match ^[a-z][a-z0-9-]{0,31}$.
+  assert.equal(SITE, 'itqaan');
+  assert.match(SITE, /^[a-z][a-z0-9-]{0,31}$/);
+});
+
+test('the embed script comes from the checkout origin, v1', () => {
+  // The script frames whatever origin it was loaded from, so these must agree.
+  assert.equal(EMBED_SRC, `${DONATE_ORIGIN}/embed/v1/donate.js`);
 });
 
 test('English is SGI\'s default language and takes no prefix', () => {
@@ -36,10 +43,11 @@ test('Arabic takes the /ar/ prefix', () => {
   );
 });
 
-test('only the framed URL carries the frame flag', () => {
+test('the href never carries frame mode: the embed script adds it', () => {
+  // A no-JS donor follows this href and needs SGI's site chrome.
   for (const lang of ['ar', 'en']) {
-    assert.equal(new URL(donateUrl(lang)).searchParams.has(FRAME_FLAG), false);
-    assert.equal(new URL(donateUrl(lang, true)).searchParams.get(FRAME_FLAG), '1');
+    const params = new URL(donateUrl(lang)).searchParams;
+    for (const k of ['sgi_frame', 'sgi_parent', 'embed']) assert.equal(params.has(k), false, k);
   }
 });
 

@@ -1,16 +1,22 @@
 /**
  * Where donations go.
  *
- * Every donate button on this site opens SGI's own checkout at sgi.ngo in a modal
- * iframe. Nothing about a payment happens in this repo — no card fields, no
- * amounts, no gateway. This file is the whole of the integration surface, which is
- * deliberate: the previous arrangement (a third-party widget, four buttons each
- * carrying its own template id, tenant id and base URL as data attributes) meant
- * the vendor's contract was copy-pasted into four components, and when the vendor
- * deleted their files there was no single place to change.
+ * Every donate button on this site is a plain link to SGI's own checkout at
+ * sgi.ngo. SGI's shared embed script (EMBED_SRC, loaded once in Layout.astro)
+ * opens that link in a modal instead of leaving the page. Nothing about a payment
+ * happens in this repo — no card fields, no amounts, no gateway, and since
+ * 2026-09-27 no modal code either: frame mode, the ready/height handshake and the
+ * attribution parameters (utm_*, click ids, sgi_ref, sgi_land) all live in the
+ * script, which SGI serves and monitors for every site that embeds its checkout.
  *
- * The theme-side counterpart, and the contract these URLs have to satisfy, is
- * documented in the SGI theme at docs/itqaan-embed.md.
+ * This file is the whole of the integration surface, which is deliberate: the
+ * previous arrangement (a third-party widget, four buttons each carrying its own
+ * template id, tenant id and base URL as data attributes) meant the vendor's
+ * contract was copy-pasted into four components, and when the vendor deleted
+ * their files there was no single place to change.
+ *
+ * The contract, including the site registry this depends on, is documented in the
+ * SGI theme at docs/donate-embed.md.
  */
 
 /** SGI's origin. Must match Donations\Frame\DEFAULT_ORIGIN's counterpart exactly. */
@@ -45,76 +51,33 @@ export const DONATE_ORIGIN = 'https://sgi.ngo';
 export const CAMPAIGN_SLUG = 'itkan-foundationfor-education-and-development';
 
 /**
- * The query flag that asks SGI to render its checkout without site chrome.
- *
- * `sgi_frame`, not `embed`: `embed` is one of WordPress's own public query vars, so
- * `?embed=1` would make WordPress serve its oEmbed template and the donate page
- * would never run.
+ * This site's key in SGI's registry of sites allowed to frame the checkout
+ * (Donations\Frame\SITES, which maps it to https://itqaan.sgi.ngo). The script
+ * sends it as `sgi_parent`. Before 2026-09-27 this site sent none, and SGI
+ * resolved the absence to Itqaan (Frame\LEGACY_SITE).
  */
-export const FRAME_FLAG = 'sgi_frame';
+export const SITE = 'itqaan';
 
 /**
- * Marketing parameters forwarded from THIS page's URL into the checkout.
- *
- * A donor who arrives here from an ad and then opens the modal would otherwise
- * reach a checkout that knows nothing about how they got here.
+ * The shared embed script. Served by the same origin as the checkout it opens,
+ * at a fixed, versioned URL: a fix reaches this site without a redeploy here.
  */
-export const FORWARD_PARAMS = [
-  'utm_source',
-  'utm_medium',
-  'utm_campaign',
-  'utm_content',
-  'utm_term',
-  'gclid',
-  'fbclid',
-  'msclkid',
-  'ttclid',
-  'twclid',
-  'li_fat_id',
-] as const;
-
-/**
- * The two parameters that hand SGI *this page's* context, because inside the
- * iframe nothing else can.
- *
- * The framed checkout has its own `sessionStorage`, so SGI's site-wide
- * attribution script starts from nothing in there. And the frame carries
- * `referrerpolicy="strict-origin"`, so its `document.referrer` is only
- * `https://itqaan.sgi.ngo/` — which SGI correctly reads as internal navigation
- * rather than a marketing touch.
- *
- * The result, until 2026-08-24, was that every gift made through this modal was
- * recorded as `direct` with a landing page of `/donate/`. Two real gifts went
- * that way before anyone noticed, because nothing about it looks broken.
- *
- * `sgi_ref` is a REFERRER HOSTNAME ONLY — never a full URL, so no path or query
- * string from another site is handed on. `sgi_land` is this page's own path.
- *
- * SGI honours these only when `sgi_frame=1` is also present, validates both to a
- * shape, and treats them as marketing data carrying no authority — the same
- * standing as `utm_source`, which any visitor can already type for themselves.
- */
-export const REF_PARAM = 'sgi_ref';
-export const LAND_PARAM = 'sgi_land';
+export const EMBED_SRC = `${DONATE_ORIGIN}/embed/v1/donate.js`;
 
 export type Lang = 'ar' | 'en';
 
 /**
- * The donation URL for a language.
- *
- * `framed` is what the modal opens; the un-framed form is what the anchor's href
- * carries, so that a visitor with no JavaScript — or a browser without <dialog> —
- * still reaches a complete, working donation page by simply following the link.
- * The button is a real link first and a modal trigger second.
+ * The donation URL for a language: the anchor's href, and the URL the embed
+ * script frames (it adds `sgi_frame=1` and the rest itself). A visitor with no
+ * JavaScript, or a browser without <dialog>, follows it to a complete donation
+ * page. The button is a real link first and a modal trigger second.
  */
-export function donateUrl(lang: Lang, framed = false): string {
+export function donateUrl(lang: Lang): string {
   // Arabic is SGI's non-default language and takes a path prefix; English is the
   // default and takes none.
   const path = lang === 'ar' ? '/ar/donate/' : '/donate/';
 
   const params = new URLSearchParams({ campaign_slug: CAMPAIGN_SLUG });
-
-  if (framed) params.set(FRAME_FLAG, '1');
 
   return `${DONATE_ORIGIN}${path}?${params.toString()}`;
 }
